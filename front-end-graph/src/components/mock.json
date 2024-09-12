@@ -1,0 +1,227 @@
+[
+  {
+    "id": "d3df87fd-0612-42d3-8671-a8e6dd615e9c",
+    "label": "Google Search Central - 2023",
+    "type": "page"
+  },
+  {
+    "id": "9cd12535-3e60-4493-bc03-b5ace2e01986",
+    "label": "SEO Optimizations",
+    "type": "page"
+  },
+  {
+    "source": "d0d18ece-8d6d-469b-a1f8-ed28508f6809",
+    "target": "9cd12535-3e60-4493-bc03-b5ace2e01986",
+    "type": "node"
+  },
+  {
+    "source": "b7744720-2cfc-4742-9c16-57c944078c34",
+    "target": "9cd12535-3e60-4493-bc03-b5ace2e01986",
+    "type": "node"
+  },
+  {
+    "id": "eeb786b5-6469-42d5-ac6f-fdc41d09000a",
+    "label": "Web Performance",
+    "type": "page"
+  },
+  {
+    "source": "30ea9115-0150-463a-8160-6c9e8ec3a548",
+    "target": "eeb786b5-6469-42d5-ac6f-fdc41d09000a",
+    "type": "node"
+  },
+  {
+    "source": "b7744720-2cfc-4742-9c16-57c944078c34",
+    "target": "eeb786b5-6469-42d5-ac6f-fdc41d09000a",
+    "type": "node"
+  },
+  {
+    "id": "f8ccc03b-44f9-4483-891d-6d4782434309",
+    "label": "Métricas Digitais",
+    "type": "page"
+  },
+  {
+    "source": "c3170ae5-8964-4897-a139-78f1129211ef",
+    "target": "f8ccc03b-44f9-4483-891d-6d4782434309",
+    "type": "node"
+  },
+  {
+    "source": "b7744720-2cfc-4742-9c16-57c944078c34",
+    "target": "f8ccc03b-44f9-4483-891d-6d4782434309",
+    "type": "node"
+  },
+  {
+    "id": "f7d1dd97-9d93-4653-9bfc-71dece77e3fa",
+    "label": "Google Ranking Factors",
+    "type": "page"
+  },
+  {
+    "source": "3b065527-b5c2-45c0-9a1d-fbd5d734872c",
+    "target": "f7d1dd97-9d93-4653-9bfc-71dece77e3fa",
+    "type": "node"
+  },
+  {
+    "source": "b7744720-2cfc-4742-9c16-57c944078c34",
+    "target": "f7d1dd97-9d93-4653-9bfc-71dece77e3fa",
+    "type": "node"
+  },
+  {
+    "id": "1070d12a-5695-472e-b938-e47cf45c87a5",
+    "label": "Checklist de SEO",
+    "type": "page"
+  },
+  {
+    "source": "9cd12535-3e60-4493-bc03-b5ace2e01986",
+    "target": "1070d12a-5695-472e-b938-e47cf45c87a5",
+    "type": "node"
+  },
+  {
+    "id": "93e01026-a3d4-419d-a53a-e029ddd45dd1",
+    "label": "Crawl Budget",
+    "type": "page"
+  },
+  {
+    "source": "25b6cdb7-ec5b-49f7-999c-0dc06ab799a7",
+    "target": "93e01026-a3d4-419d-a53a-e029ddd45dd1",
+    "type": "node"
+  },
+  {
+    "source": "9cd12535-3e60-4493-bc03-b5ace2e01986",
+    "target": "93e01026-a3d4-419d-a53a-e029ddd45dd1",
+    "type": "node"
+  },
+  {
+    "id": "bc93eb19-a673-46c5-8e97-266924cd263e",
+    "label": "Ferramentas de SEO",
+    "type": "page"
+  },
+  {
+    "source": "d6a67dca-07c4-4033-b350-00cd5a8eb16c",
+    "target": "bc93eb19-a673-46c5-8e97-266924cd263e",
+    "type": "node"
+  },
+  {
+    "source": "9cd12535-3e60-4493-bc03-b5ace2e01986",
+    "target": "bc93eb19-a673-46c5-8e97-266924cd263e",
+    "type": "node"
+  },
+  {
+    "id": "5ee610b9-5228-4c21-b8d3-6ccf450ae966",
+    "label": "Dados Estruturados",
+    "type": "page"
+  },
+  {
+    "source": "9266e265-2b63-4688-a8f5-0f7f406d94fc",
+    "target": "5ee610b9-5228-4c21-b8d3-6ccf450ae966",
+    "type": "node"
+  },
+  {
+    "source": "9cd12535-3e60-4493-bc03-b5ace2e01986",
+    "target": "5ee610b9-5228-4c21-b8d3-6ccf450ae966",
+    "type": "node"
+  },
+  {
+    "id": "ba74f6ff-d3b1-436d-8b35-ae0be6d12b9d",
+    "label": "Core Web Vitals",
+    "type": "page"
+  },
+  {
+    "source": "16c6a078-934e-4efd-9f18-34c298a1a0c8",
+    "target": "ba74f6ff-d3b1-436d-8b35-ae0be6d12b9d",
+    "type": "node"
+  },
+  {
+    "source": "9cd12535-3e60-4493-bc03-b5ace2e01986",
+    "target": "ba74f6ff-d3b1-436d-8b35-ae0be6d12b9d",
+    "type": "node"
+  },
+  {
+    "id": "8a242f26-c09d-4af4-b04a-442dd057c23d",
+    "label": "Má prática de SEO",
+    "type": "page"
+  },
+  {
+    "source": "1e19bc30-6d8d-4fe4-bbb5-027f8f6ff349",
+    "target": "8a242f26-c09d-4af4-b04a-442dd057c23d",
+    "type": "node"
+  },
+  {
+    "source": "9cd12535-3e60-4493-bc03-b5ace2e01986",
+    "target": "8a242f26-c09d-4af4-b04a-442dd057c23d",
+    "type": "node"
+  },
+  {
+    "id": "f5dd21b4-da5a-4dfd-a128-1f1259504334",
+    "label": "SEO On Page",
+    "type": "page"
+  },
+  {
+    "source": "3a71deb4-e9fb-434c-9918-c17b06271522",
+    "target": "f5dd21b4-da5a-4dfd-a128-1f1259504334",
+    "type": "node"
+  },
+  {
+    "source": "9cd12535-3e60-4493-bc03-b5ace2e01986",
+    "target": "f5dd21b4-da5a-4dfd-a128-1f1259504334",
+    "type": "node"
+  },
+  {
+    "id": "6730858e-ea30-44a3-b509-71e9bf799007",
+    "label": "FCP - First Contentful Paintt",
+    "type": "page"
+  },
+  {
+    "source": "7b11d4eb-7aa9-4389-a139-f92066d413a4",
+    "target": "6730858e-ea30-44a3-b509-71e9bf799007",
+    "type": "node"
+  },
+  {
+    "source": "ba74f6ff-d3b1-436d-8b35-ae0be6d12b9d",
+    "target": "6730858e-ea30-44a3-b509-71e9bf799007",
+    "type": "node"
+  },
+  {
+    "id": "d0362617-79a9-400a-9c5a-6aeb512aca4f",
+    "label": "CLS - Cumulative Layout Shift",
+    "type": "page"
+  },
+  {
+    "source": "c941cfc0-d365-4845-bf02-93d917523666",
+    "target": "d0362617-79a9-400a-9c5a-6aeb512aca4f",
+    "type": "node"
+  },
+  {
+    "source": "ba74f6ff-d3b1-436d-8b35-ae0be6d12b9d",
+    "target": "d0362617-79a9-400a-9c5a-6aeb512aca4f",
+    "type": "node"
+  },
+  {
+    "id": "3dc05f91-5b49-4c6f-9a15-602c9e3bfd98",
+    "label": "FID - First Input Delay (1)",
+    "type": "page"
+  },
+  {
+    "source": "39c0ba75-1f83-4147-b616-871508ff251b",
+    "target": "3dc05f91-5b49-4c6f-9a15-602c9e3bfd98",
+    "type": "node"
+  },
+  {
+    "source": "ba74f6ff-d3b1-436d-8b35-ae0be6d12b9d",
+    "target": "3dc05f91-5b49-4c6f-9a15-602c9e3bfd98",
+    "type": "node"
+  },
+  {
+    "id": "77f879cf-9320-415b-83c9-ffbc712128c0",
+    "label": "LCP Largest Contentful Paint",
+    "type": "page"
+  },
+  {
+    "source": "bc1fb2cf-20b5-4de5-925b-923551fc0fa0",
+    "target": "77f879cf-9320-415b-83c9-ffbc712128c0",
+    "type": "node"
+  },
+  {
+    "source": "ba74f6ff-d3b1-436d-8b35-ae0be6d12b9d",
+    "target": "77f879cf-9320-415b-83c9-ffbc712128c0",
+    "type": "node"
+  }
+]

@@ -1,0 +1,16 @@
+### Get All Blocks from Notion and serve to User
+GET http://localhost:3001/blocks/81c0cfd3b10c4757bb1dd3d46dcb6606
+Authorization: Bearer SECRET INTERNAL TOKEN
+
+### Get Only One Block from Notion
+GET http://localhost:3001/only/ac2f9127-2a35-401c-87cb-2081a8aef1f4
+Authorization: Bearer SECRET INTERNAL TOKEN
+
+### Search in Notion API
+POST http://localhost:3001/search
+Content-Type: application/json
+
+{
+  "query": "Web Devel"
+}
+

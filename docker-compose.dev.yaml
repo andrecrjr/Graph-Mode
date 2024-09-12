@@ -1,0 +1,33 @@
+services:
+  front-app:
+    build: 
+      context: ./front-end-graph
+      dockerfile: Dockerfile
+    volumes:
+      - ./front-end-graph:/app 
+      - /app/node_modules
+    env_file:
+      - ./front-end-graph/.env
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    depends_on:
+      - server
+  server:
+    build: 
+      context: ./graph-server
+      dockerfile: Dockerfile
+    volumes:
+      - ./graph-server:/server  # Mapeia o código-fonte local para o diretório de trabalho no container
+      - /server/node_modules  # Evita sobrescrever node_modules com o volume local
+    env_file:
+      - ./graph-server/.env  # Caminho para o arquivo .env
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
