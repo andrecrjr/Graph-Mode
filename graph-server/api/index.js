@@ -23,8 +23,6 @@ app.use(cors({
   }
 }));
 
-const API_URL = process.env.API_URL;
-
 app.use("/", router)
 
 // Inicializa o servidor Express

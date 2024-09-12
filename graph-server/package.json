@@ -7,8 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon api/index.js",
-    "start:prod":"node dist/index.js",
-    "build":"cp -r api/ dist/"
+    "start:prod":"node api/index.js"
   },
   "keywords": [],
   "author": "André Carlos Jr.",
