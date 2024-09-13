@@ -179,7 +179,7 @@ export const useGraph = () => {
           Math.abs(y) * 2,
         );
         svg.attr("width", newWidth).attr("height", newHeight);
-
+        
         container.attr("transform", `translate(${x},${y}) scale(${k})`);
       };
 

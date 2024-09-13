@@ -43,7 +43,7 @@ export const GraphComponent: React.FC = () => {
         </p>
       )}
       <Sidebar />
-      {/* <DrawingCanvas svgRef={svgRef} /> */}
+      <DrawingCanvas svgRef={svgRef} pageId={pageUID} />
 
       <svg ref={svgRef} className="dark:bg-black cursor-move"></svg>
     </div>
