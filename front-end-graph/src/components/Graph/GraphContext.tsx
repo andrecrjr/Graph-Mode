@@ -1,12 +1,14 @@
 "use client";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useReducer } from "react";
+import {
+  GraphContextType,
+  graphReducer,
+  initialState,
+} from "../reducers/GraphData";
 
-export const GraphContext = createContext<{
-  getNodes: { nodes: Node[] };
-  setNodes: React.Dispatch<React.SetStateAction<{ nodes: Node[] }>>;
-}>({
-  getNodes: { nodes: [] },
-  setNodes: () => {},
+export const GraphContext = createContext<GraphContextType>({
+  state: initialState,
+  dispatch: () => null,
 });
 
 export const GraphContextProvider = ({
@@ -14,15 +16,16 @@ export const GraphContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [getNodes, setNodes] = useState<{ nodes: Node[] }>({ nodes: [] });
+  const [state, dispatch] = useReducer(graphReducer, initialState);
+
   return (
-    <GraphContext.Provider value={{ getNodes, setNodes }}>
+    <GraphContext.Provider value={{ state, dispatch }}>
       {children}
     </GraphContext.Provider>
   );
 };
 
 export const useGraphContextData = () => {
-  const { getNodes, setNodes } = useContext(GraphContext);
-  return { getNodes, setNodes };
+  const { state, dispatch } = useContext(GraphContext);
+  return { state, dispatch };
 };

@@ -1,3 +1,4 @@
+import { Link, Node } from "../../../types/graph";
 import { fetchServer } from "../service/Notion";
 import { saveStorage } from "./";
 

@@ -3,9 +3,10 @@ import React, { useCallback, useState } from "react";
 import { saveNodePositions } from "../utils/graph";
 import * as d3 from "d3";
 import { useGraphContextData } from "../Graph/GraphContext";
+import { Link, Node } from "../../../types/graph";
 
 export const useGraph = () => {
-  const { setNodes } = useGraphContextData();
+  const { dispatch } = useGraphContextData();
 
   const LOCAL_SETTINGS = {
     MAX_GRAPH_WIDTH: 6000,
@@ -216,7 +217,7 @@ export const useGraph = () => {
         if (!event.active) simulation.alphaTarget(0);
         d.fx = event.x;
         d.fy = event.y;
-        setNodes(data);
+        dispatch({ payload: data, type: "SET_NODES" });
       }
 
       return () => {
