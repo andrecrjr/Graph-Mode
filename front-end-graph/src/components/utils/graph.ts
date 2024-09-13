@@ -53,14 +53,18 @@ export const processGraphData = (data: any, blockId: string) => {
   return { nodes, links };
 };
 
-export const saveNodePositions = (data: { nodes: Node[] }, pageId: string) => {
-  const positions = data.nodes.reduce(
-    (acc, node) => {
-      acc[node.id] = { x: node.x || 0, y: node.y || 0 };
-      return acc;
-    },
-    {} as Record<string, { x: number | null; y: number | null }>,
-  );
+export const saveNodePositions = (
+  data: { nodes?: Node[]; links?: Link[] },
+  pageId: string,
+) => {
+  const positions =
+    data?.nodes?.reduce(
+      (acc, node) => {
+        acc[node.id] = { x: node.x || 0, y: node.y || 0 };
+        return acc;
+      },
+      {} as Record<string, { x: number | null; y: number | null }>,
+    ) || [];
 
   saveStorage.set(`nodePositions-${pageId}`, positions);
 };

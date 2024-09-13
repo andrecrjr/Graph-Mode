@@ -19,11 +19,12 @@ import {
   saveNodePositions,
   syncPage,
 } from "../utils/graph";
-import { GraphContext } from "../Graph/GraphContext";
+import { useGraphContextData } from "../Graph/GraphContext";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { getNodes } = useContext(GraphContext);
+  const { state } = useGraphContextData();
+  const { nodes } = state;
   const router = useRouter();
 
   const path = usePathname().replace("/graph/", "");
@@ -54,11 +55,11 @@ const Sidebar = () => {
                 title="You can fix positions to arrange the graphs later"
                 onClick={(e) => {
                   e.preventDefault();
-                  saveNodePositions(getNodes, path);
+                  saveNodePositions(nodes, path);
                   window.location.reload();
                 }}
               >
-                <Pin className="mr-4" /> Pin {getNodes && "current"} Positions
+                <Pin className="mr-4" /> Pin {nodes && "current"} Positions
               </button>
             </li>
             {saveStorage.get(`nodePositions-${path}`) && (

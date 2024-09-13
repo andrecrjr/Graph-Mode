@@ -6,17 +6,8 @@ import { useGraphContextData } from "../Graph/GraphContext";
 import { Link, Node } from "../../../types/graph";
 
 export const useGraph = () => {
-  const { dispatch } = useGraphContextData();
-
-  const LOCAL_SETTINGS = {
-    MAX_GRAPH_WIDTH: 6000,
-    MAX_GRAPH_HEIGHT: 6000,
-    RESPONSE_BREAKPOINT: 600,
-    WINDOW_WIDTH: window.innerWidth,
-    WINDOW_HEIGHT: window.innerHeight,
-    GRAPH_BALL_SIZE: { sm: 10, lg: 15, master: 22 },
-    GRAPH_BALL_LABEL_MARGIN: { sm: -35, lg: -45, master: -55 },
-  };
+  const { dispatch, state } = useGraphContextData();
+  const { LOCAL_SETTINGS } = state;
 
   const mountGraph = useCallback(
     (
@@ -29,7 +20,7 @@ export const useGraph = () => {
         .attr("width", LOCAL_SETTINGS.MAX_GRAPH_WIDTH)
         .attr("height", LOCAL_SETTINGS.MAX_GRAPH_HEIGHT);
 
-      const container = svg.append("g");
+      const container = svg.append("g").attr("class", "graph-container");
 
       const simulation = d3
         .forceSimulation<Node>(data.nodes)
@@ -179,7 +170,7 @@ export const useGraph = () => {
           Math.abs(y) * 2,
         );
         svg.attr("width", newWidth).attr("height", newHeight);
-        
+
         container.attr("transform", `translate(${x},${y}) scale(${k})`);
       };
 

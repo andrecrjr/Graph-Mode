@@ -32,6 +32,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ svgRef, pageId }) => {
   const [pathsCount, setPathsCount] = useState(0);
   const { dispatch, state } = useGraphContextData();
   const [pathsData, setPathsData] = useState<string[]>([]);
+  const { LOCAL_SETTINGS } = state;
 
   const handlePenClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -49,7 +50,9 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ svgRef, pageId }) => {
       const parsedPaths = savedPaths as string[];
       const svgElement = svgRef.current;
       if (!svgElement) return;
-      const svg = select(svgElement);
+      const svg = select(svgElement)
+        .attr("width", LOCAL_SETTINGS.MAX_GRAPH_WIDTH)
+        .attr("height", LOCAL_SETTINGS.MAX_GRAPH_HEIGHT);
 
       parsedPaths.forEach((pathD) => {
         const path = svg
