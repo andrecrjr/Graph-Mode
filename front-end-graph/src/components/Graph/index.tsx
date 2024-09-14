@@ -32,7 +32,8 @@ export const GraphComponent: React.FC = () => {
   }, [graphData]);
 
   useEffect(() => {
-    if (state.nodes) mountGraph(state.nodes, svgRef, pageUID);
+    if (state.nodes.nodes && state.nodes.links)
+      mountGraph(state.nodes, svgRef, pageUID);
   }, [state.nodes, mountGraph, pageUID]);
 
   return (
