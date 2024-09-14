@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import dataMock from "@/components/mock.json";
 import { fetchAndSaveCacheData, processGraphData } from "../utils/graph";
 import { useSession } from "next-auth/react";
+import { Link, Node } from "../../../types/graph";
 
 export const useFetchGraphData = (pageId: string) => {
   const { data: authData, status } = useSession();

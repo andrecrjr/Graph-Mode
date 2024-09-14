@@ -7,12 +7,14 @@ import { useParams, useRouter } from "next/navigation";
 
 import LoadingPlaceholder from "./Loading";
 import Sidebar from "../Sidebar";
+import { PenIcon } from "lucide-react";
+import { Button } from "../ui/button";
 
 export const GraphComponent: React.FC = () => {
   document.body.style.overflow = "hidden";
   const { id: pageId } = useParams();
   const pageUID = pageId as string;
-  const { setNodes } = useGraphContextData();
+  const { state, dispatch } = useGraphContextData();
   const router = useRouter();
   if (!pageId) {
     router.push("/");
@@ -24,11 +26,14 @@ export const GraphComponent: React.FC = () => {
 
   useEffect(() => {
     if (graphData) {
-      mountGraph(graphData, svgRef, pageUID);
-      setNodes(graphData);
+      dispatch({ payload: graphData, type: "SET_NODES" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [graphData]);
+
+  useEffect(() => {
+    if (state.nodes) mountGraph(state.nodes, svgRef, pageUID);
+  }, [state.nodes, mountGraph, pageUID]);
 
   return (
     <div className="graph overflow-hidden max-w-screen">

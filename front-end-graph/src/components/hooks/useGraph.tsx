@@ -1,34 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useState } from "react";
-import { saveNodePositions } from "../utils/graph";
+import React, { useCallback } from "react";
+// import { saveNodePositions } from "../utils/graph";
 import * as d3 from "d3";
 import { useGraphContextData } from "../Graph/GraphContext";
+import { Link, Node } from "../../../types/graph";
 
 export const useGraph = () => {
-  const { setNodes } = useGraphContextData();
+  const { dispatch, state } = useGraphContextData();
+  const { LOCAL_SETTINGS } = state;
 
-  const LOCAL_SETTINGS = {
-    MAX_GRAPH_WIDTH: 6000,
-    MAX_GRAPH_HEIGHT: 6000,
-    RESPONSE_BREAKPOINT: 600,
+  const WINDOW = {
     WINDOW_WIDTH: window.innerWidth,
-    WINDOW_HEIGHT: window.innerHeight,
-    GRAPH_BALL_SIZE: { sm: 10, lg: 15, master: 22 },
-    GRAPH_BALL_LABEL_MARGIN: { sm: -35, lg: -45, master: -55 },
+    WINDOW_HEIGHT: window.innerWidth,
   };
 
   const mountGraph = useCallback(
     (
-      data: { nodes: Node[]; links: Link[] },
+      data: { nodes?: Node[]; links?: Link[] },
       svgRef: React.MutableRefObject<SVGSVGElement | null>,
       pageUID: string,
     ) => {
-      const svg = d3 //@ts-ignore
+      if (!data.nodes || !data.links) return;
+
+      const svg = d3
         .select(svgRef.current)
         .attr("width", LOCAL_SETTINGS.MAX_GRAPH_WIDTH)
         .attr("height", LOCAL_SETTINGS.MAX_GRAPH_HEIGHT);
 
-      const container = svg.append("g");
+      const container = svg.append("g").attr("class", "graph-container");
 
       const simulation = d3
         .forceSimulation<Node>(data.nodes)
@@ -40,7 +39,12 @@ export const useGraph = () => {
             .distance(280)
             .strength(2),
         )
-        .force("charge", d3.forceManyBody().strength(-(data.nodes.length * 4)))
+        .force(
+          "charge",
+          d3
+            .forceManyBody()
+            .strength(-(data.nodes.length > 0 && data.nodes.length * 4)),
+        )
         .force(
           "center",
           d3.forceCenter(
@@ -86,7 +90,7 @@ export const useGraph = () => {
               return LOCAL_SETTINGS.GRAPH_BALL_SIZE["master"];
             }
             return LOCAL_SETTINGS.GRAPH_BALL_SIZE[
-              LOCAL_SETTINGS.WINDOW_WIDTH > LOCAL_SETTINGS.RESPONSE_BREAKPOINT
+              WINDOW.WINDOW_WIDTH > LOCAL_SETTINGS.RESPONSE_BREAKPOINT
                 ? "sm"
                 : "lg"
             ];
@@ -113,12 +117,12 @@ export const useGraph = () => {
           "dy",
 
           LOCAL_SETTINGS.GRAPH_BALL_SIZE[
-            LOCAL_SETTINGS.WINDOW_WIDTH > LOCAL_SETTINGS.RESPONSE_BREAKPOINT
+            WINDOW.WINDOW_WIDTH > LOCAL_SETTINGS.RESPONSE_BREAKPOINT
               ? "sm"
               : "lg"
           ] +
             LOCAL_SETTINGS.GRAPH_BALL_LABEL_MARGIN[
-              LOCAL_SETTINGS.WINDOW_WIDTH > LOCAL_SETTINGS.RESPONSE_BREAKPOINT
+              WINDOW.WINDOW_WIDTH > LOCAL_SETTINGS.RESPONSE_BREAKPOINT
                 ? "sm"
                 : "lg"
             ],
@@ -126,9 +130,9 @@ export const useGraph = () => {
         .text((d) => d.label);
 
       const initialX =
-        LOCAL_SETTINGS.WINDOW_WIDTH / 2 - LOCAL_SETTINGS.MAX_GRAPH_WIDTH / 3;
+        WINDOW.WINDOW_WIDTH / 2 - LOCAL_SETTINGS.MAX_GRAPH_WIDTH / 3;
       const initialY =
-        LOCAL_SETTINGS.WINDOW_HEIGHT / 2 - LOCAL_SETTINGS.MAX_GRAPH_HEIGHT / 3;
+        WINDOW.WINDOW_HEIGHT / 2 - LOCAL_SETTINGS.MAX_GRAPH_HEIGHT / 3;
 
       container.attr("transform", `translate(${initialX},${initialY})`);
 
@@ -216,7 +220,6 @@ export const useGraph = () => {
         if (!event.active) simulation.alphaTarget(0);
         d.fx = event.x;
         d.fy = event.y;
-        setNodes(data);
       }
 
       return () => {
