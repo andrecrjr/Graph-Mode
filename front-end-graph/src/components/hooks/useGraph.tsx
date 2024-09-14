@@ -9,6 +9,11 @@ export const useGraph = () => {
   const { dispatch, state } = useGraphContextData();
   const { LOCAL_SETTINGS } = state;
 
+  const WINDOW = {
+    WINDOW_WIDTH: window.innerWidth,
+    WINDOW_HEIGHT: window.innerWidth,
+  };
+
   const mountGraph = useCallback(
     (
       data: { nodes?: Node[]; links?: Link[] },
@@ -85,7 +90,7 @@ export const useGraph = () => {
               return LOCAL_SETTINGS.GRAPH_BALL_SIZE["master"];
             }
             return LOCAL_SETTINGS.GRAPH_BALL_SIZE[
-              LOCAL_SETTINGS.WINDOW_WIDTH > LOCAL_SETTINGS.RESPONSE_BREAKPOINT
+              WINDOW.WINDOW_WIDTH > LOCAL_SETTINGS.RESPONSE_BREAKPOINT
                 ? "sm"
                 : "lg"
             ];
@@ -112,12 +117,12 @@ export const useGraph = () => {
           "dy",
 
           LOCAL_SETTINGS.GRAPH_BALL_SIZE[
-            LOCAL_SETTINGS.WINDOW_WIDTH > LOCAL_SETTINGS.RESPONSE_BREAKPOINT
+            WINDOW.WINDOW_WIDTH > LOCAL_SETTINGS.RESPONSE_BREAKPOINT
               ? "sm"
               : "lg"
           ] +
             LOCAL_SETTINGS.GRAPH_BALL_LABEL_MARGIN[
-              LOCAL_SETTINGS.WINDOW_WIDTH > LOCAL_SETTINGS.RESPONSE_BREAKPOINT
+              WINDOW.WINDOW_WIDTH > LOCAL_SETTINGS.RESPONSE_BREAKPOINT
                 ? "sm"
                 : "lg"
             ],
@@ -125,9 +130,9 @@ export const useGraph = () => {
         .text((d) => d.label);
 
       const initialX =
-        LOCAL_SETTINGS.WINDOW_WIDTH / 2 - LOCAL_SETTINGS.MAX_GRAPH_WIDTH / 3;
+        WINDOW.WINDOW_WIDTH / 2 - LOCAL_SETTINGS.MAX_GRAPH_WIDTH / 3;
       const initialY =
-        LOCAL_SETTINGS.WINDOW_HEIGHT / 2 - LOCAL_SETTINGS.MAX_GRAPH_HEIGHT / 3;
+        WINDOW.WINDOW_HEIGHT / 2 - LOCAL_SETTINGS.MAX_GRAPH_HEIGHT / 3;
 
       container.attr("transform", `translate(${initialX},${initialY})`);
 

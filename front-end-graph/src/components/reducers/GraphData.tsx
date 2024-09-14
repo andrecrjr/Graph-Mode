@@ -12,8 +12,6 @@ interface GraphState {
     MAX_GRAPH_WIDTH: 6000;
     MAX_GRAPH_HEIGHT: 6000;
     RESPONSE_BREAKPOINT: 600;
-    WINDOW_WIDTH: number;
-    WINDOW_HEIGHT: number;
     GRAPH_BALL_SIZE: { sm: 10; lg: 15; master: 22 };
     GRAPH_BALL_LABEL_MARGIN: { sm: -35; lg: -45; master: -55 };
   };
@@ -41,8 +39,6 @@ export const initialState: GraphState = {
     MAX_GRAPH_WIDTH: 6000,
     MAX_GRAPH_HEIGHT: 6000,
     RESPONSE_BREAKPOINT: 600,
-    WINDOW_WIDTH: window.innerWidth,
-    WINDOW_HEIGHT: window.innerHeight,
     GRAPH_BALL_SIZE: { sm: 10, lg: 15, master: 22 },
     GRAPH_BALL_LABEL_MARGIN: { sm: -35, lg: -45, master: -55 },
   },
