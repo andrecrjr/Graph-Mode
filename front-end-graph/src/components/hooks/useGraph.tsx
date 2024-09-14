@@ -7,11 +7,15 @@ import { Link, Node } from "../../../types/graph";
 
 export const useGraph = () => {
   const { dispatch, state } = useGraphContextData();
-  const { LOCAL_SETTINGS } = state;
 
   const WINDOW = {
+    MAX_GRAPH_WIDTH: 6000,
+    MAX_GRAPH_HEIGHT: 6000,
+    RESPONSE_BREAKPOINT: 600,
     WINDOW_WIDTH: window.innerWidth,
-    WINDOW_HEIGHT: window.innerWidth,
+    WINDOW_HEIGHT: window.innerHeight,
+    GRAPH_BALL_SIZE: { sm: 10, lg: 15, master: 22 },
+    GRAPH_BALL_LABEL_MARGIN: { sm: -35, lg: -45, master: -55 },
   };
 
   const mountGraph = useCallback(
@@ -21,11 +25,10 @@ export const useGraph = () => {
       pageUID: string,
     ) => {
       if (!data.nodes || !data.links) return;
-
       const svg = d3
         .select(svgRef.current)
-        .attr("width", LOCAL_SETTINGS.MAX_GRAPH_WIDTH)
-        .attr("height", LOCAL_SETTINGS.MAX_GRAPH_HEIGHT);
+        .attr("width", WINDOW.MAX_GRAPH_WIDTH)
+        .attr("height", WINDOW.MAX_GRAPH_HEIGHT);
 
       const container = svg.append("g").attr("class", "graph-container");
 
@@ -48,8 +51,8 @@ export const useGraph = () => {
         .force(
           "center",
           d3.forceCenter(
-            LOCAL_SETTINGS.MAX_GRAPH_WIDTH / 3,
-            LOCAL_SETTINGS.MAX_GRAPH_HEIGHT / 3,
+            WINDOW.MAX_GRAPH_WIDTH / 3,
+            WINDOW.MAX_GRAPH_HEIGHT / 3,
           ),
         )
         .force("collide", d3.forceCollide().radius(50)); // Ajuste o raio conforme necessário
@@ -87,12 +90,10 @@ export const useGraph = () => {
 
           (d: any) => {
             if (d.firstParent) {
-              return LOCAL_SETTINGS.GRAPH_BALL_SIZE["master"];
+              return WINDOW.GRAPH_BALL_SIZE["master"];
             }
-            return LOCAL_SETTINGS.GRAPH_BALL_SIZE[
-              WINDOW.WINDOW_WIDTH > LOCAL_SETTINGS.RESPONSE_BREAKPOINT
-                ? "sm"
-                : "lg"
+            return WINDOW.GRAPH_BALL_SIZE[
+              WINDOW.WINDOW_WIDTH > WINDOW.RESPONSE_BREAKPOINT ? "sm" : "lg"
             ];
           },
         )
@@ -116,23 +117,17 @@ export const useGraph = () => {
         .attr(
           "dy",
 
-          LOCAL_SETTINGS.GRAPH_BALL_SIZE[
-            WINDOW.WINDOW_WIDTH > LOCAL_SETTINGS.RESPONSE_BREAKPOINT
-              ? "sm"
-              : "lg"
+          WINDOW.GRAPH_BALL_SIZE[
+            WINDOW.WINDOW_WIDTH > WINDOW.RESPONSE_BREAKPOINT ? "sm" : "lg"
           ] +
-            LOCAL_SETTINGS.GRAPH_BALL_LABEL_MARGIN[
-              WINDOW.WINDOW_WIDTH > LOCAL_SETTINGS.RESPONSE_BREAKPOINT
-                ? "sm"
-                : "lg"
+            WINDOW.GRAPH_BALL_LABEL_MARGIN[
+              WINDOW.WINDOW_WIDTH > WINDOW.RESPONSE_BREAKPOINT ? "sm" : "lg"
             ],
         )
         .text((d) => d.label);
 
-      const initialX =
-        WINDOW.WINDOW_WIDTH / 2 - LOCAL_SETTINGS.MAX_GRAPH_WIDTH / 3;
-      const initialY =
-        WINDOW.WINDOW_HEIGHT / 2 - LOCAL_SETTINGS.MAX_GRAPH_HEIGHT / 3;
+      const initialX = WINDOW.WINDOW_WIDTH / 2 - WINDOW.MAX_GRAPH_WIDTH / 3;
+      const initialY = WINDOW.WINDOW_HEIGHT / 2 - WINDOW.MAX_GRAPH_HEIGHT / 3;
 
       container.attr("transform", `translate(${initialX},${initialY})`);
 
@@ -149,7 +144,7 @@ export const useGraph = () => {
             (d) =>
               ((d as Node).x = Math.max(
                 10,
-                Math.min(LOCAL_SETTINGS.MAX_GRAPH_WIDTH - 10, (d as Node).x!),
+                Math.min(WINDOW.MAX_GRAPH_WIDTH - 10, (d as Node).x!),
               )),
           )
           .attr(
@@ -157,7 +152,7 @@ export const useGraph = () => {
             (d) =>
               ((d as Node).y = Math.max(
                 10,
-                Math.min(LOCAL_SETTINGS.MAX_GRAPH_HEIGHT - 10, (d as Node).y!),
+                Math.min(WINDOW.MAX_GRAPH_HEIGHT - 10, (d as Node).y!),
               )),
           );
 
@@ -173,14 +168,8 @@ export const useGraph = () => {
       const zoomed = (event: d3.D3ZoomEvent<Element, unknown>) => {
         const { k, x, y } = event.transform;
 
-        const newWidth = Math.max(
-          LOCAL_SETTINGS.MAX_GRAPH_WIDTH,
-          Math.abs(x) * 2,
-        );
-        const newHeight = Math.max(
-          LOCAL_SETTINGS.MAX_GRAPH_HEIGHT,
-          Math.abs(y) * 2,
-        );
+        const newWidth = Math.max(WINDOW.MAX_GRAPH_WIDTH, Math.abs(x) * 2);
+        const newHeight = Math.max(WINDOW.MAX_GRAPH_HEIGHT, Math.abs(y) * 2);
         svg.attr("width", newWidth).attr("height", newHeight);
 
         container.attr("transform", `translate(${x},${y}) scale(${k})`);
