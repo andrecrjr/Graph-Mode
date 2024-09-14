@@ -9,7 +9,6 @@ import LoadingPlaceholder from "./Loading";
 import Sidebar from "../Sidebar";
 import { PenIcon } from "lucide-react";
 import { Button } from "../ui/button";
-import DrawingCanvas from "./DrawingCanvas";
 
 export const GraphComponent: React.FC = () => {
   document.body.style.overflow = "hidden";
@@ -27,24 +26,19 @@ export const GraphComponent: React.FC = () => {
 
   useEffect(() => {
     if (graphData) {
-      mountGraph(graphData, svgRef, pageUID);
       dispatch({ payload: graphData, type: "SET_NODES" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [graphData]);
 
+  useEffect(() => {
+    if (state.nodes) mountGraph(state.nodes, svgRef, pageUID);
+  }, [state.nodes, mountGraph, pageUID]);
+
   return (
     <div className="graph overflow-hidden max-w-screen">
       {loading && <LoadingPlaceholder />}
-      {error && (
-        <p>
-          Oops sorry there was a problem in server right now, try again later{" "}
-          {`:(`}
-        </p>
-      )}
       <Sidebar />
-      <DrawingCanvas svgRef={svgRef} pageId={pageUID} />
-
       <svg ref={svgRef} className="dark:bg-black cursor-move"></svg>
     </div>
   );

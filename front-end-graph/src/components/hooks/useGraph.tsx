@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useState } from "react";
-import { saveNodePositions } from "../utils/graph";
+import React, { useCallback } from "react";
+// import { saveNodePositions } from "../utils/graph";
 import * as d3 from "d3";
 import { useGraphContextData } from "../Graph/GraphContext";
 import { Link, Node } from "../../../types/graph";
@@ -11,11 +11,13 @@ export const useGraph = () => {
 
   const mountGraph = useCallback(
     (
-      data: { nodes: Node[]; links: Link[] },
+      data: { nodes?: Node[]; links?: Link[] },
       svgRef: React.MutableRefObject<SVGSVGElement | null>,
       pageUID: string,
     ) => {
-      const svg = d3 //@ts-ignore
+      if (!data.nodes || !data.links) return;
+
+      const svg = d3
         .select(svgRef.current)
         .attr("width", LOCAL_SETTINGS.MAX_GRAPH_WIDTH)
         .attr("height", LOCAL_SETTINGS.MAX_GRAPH_HEIGHT);
@@ -32,7 +34,12 @@ export const useGraph = () => {
             .distance(280)
             .strength(2),
         )
-        .force("charge", d3.forceManyBody().strength(-(data.nodes.length * 4)))
+        .force(
+          "charge",
+          d3
+            .forceManyBody()
+            .strength(-(data.nodes.length > 0 && data.nodes.length * 4)),
+        )
         .force(
           "center",
           d3.forceCenter(
@@ -208,7 +215,6 @@ export const useGraph = () => {
         if (!event.active) simulation.alphaTarget(0);
         d.fx = event.x;
         d.fy = event.y;
-        dispatch({ payload: data, type: "SET_NODES" });
       }
 
       return () => {
