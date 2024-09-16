@@ -1,9 +1,9 @@
 "use client";
 import { Notebook, X } from "lucide-react";
 import React, { useState } from "react";
-import { ForwardRefEditor } from "./ForwardRefEditor";
+import { Editor } from "../Editor";
 
-export default function MarkDownPage() {
+export default function EditorPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [markdown, setMarkdown] = useState("");
 
@@ -30,7 +30,7 @@ export default function MarkDownPage() {
         } transition-transform duration-300 ease-in-out z-40`}
       >
         <div className="mt-20 mx-2">
-          <ForwardRefEditor markdown={`Hello`} />
+          <Editor />
         </div>
       </div>
     </>
