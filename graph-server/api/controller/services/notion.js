@@ -41,6 +41,65 @@ class NotionAPI {
     }
   }
 
+    async createPage(parentId, title, children = []) {
+    try {
+      const url = `${this.apiUrl}/pages`;
+      const body = {
+        parent: { page_id: parentId },
+        properties: {
+          title: [
+            {
+              type: 'text',
+              text: {
+                content: title
+              }
+            }
+          ]
+        },
+        children: children
+      };
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: this.getHeaders(),
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to create page: ${response.statusText}`);
+      }
+
+      return response.json();
+    } catch (error) {
+      console.error('Error creating page in Notion API:', error);
+      throw new Error(`Error creating page: ${error.message}`);
+    }
+  }
+
+  async updatePage(pageId, properties = {}) {
+    try {
+      const url = `${this.apiUrl}/pages/${pageId}`;
+      const body = {
+        properties
+      };
+
+      const response = await fetch(url, {
+        method: 'PATCH',
+        headers: this.getHeaders(),
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to update page ${pageId}: ${response.statusText}`);
+      }
+
+      return response.json();
+    } catch (error) {
+      console.error('Error updating page in Notion API:', error);
+      throw new Error(`Error updating page: ${error.message}`);
+    }
+  }
+
   getHeaders() {
     return {
       'Authorization': `${this.apiKey}`,

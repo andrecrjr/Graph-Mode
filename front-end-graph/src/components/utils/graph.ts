@@ -15,10 +15,7 @@ export const fetchAndSaveCacheData = async (pageId: string, token: string) => {
     return JSON.parse(cachedData);
   }
 
-  const data = await fetchServer(
-    `${process.env.NEXT_PUBLIC_SERVER_API}/blocks/${pageId}`,
-    token,
-  );
+  const data = await fetchServer(`/blocks/${pageId}`, token);
 
   saveStorage.set(localStorageKey, data);
   return data;
