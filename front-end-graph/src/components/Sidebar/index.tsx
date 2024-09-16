@@ -34,7 +34,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div>
+    <>
       <button
         className="fixed top-4 left-4 min-w-12 z-50 p-2 flex justify-center bg-blue-500 text-white rounded-full focus:outline-none"
         onClick={toggleSidebar}
@@ -102,7 +102,7 @@ const Sidebar = () => {
           </ul>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

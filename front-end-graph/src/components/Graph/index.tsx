@@ -9,6 +9,7 @@ import LoadingPlaceholder from "./Loading";
 import Sidebar from "../Sidebar";
 import { PenIcon } from "lucide-react";
 import { Button } from "../ui/button";
+import MarkDownPage from "../Markdown";
 
 export const GraphComponent: React.FC = () => {
   document.body.style.overflow = "hidden";
@@ -41,6 +42,7 @@ export const GraphComponent: React.FC = () => {
       {loading && <LoadingPlaceholder />}
       <Sidebar />
       <svg ref={svgRef} className="dark:bg-black cursor-move"></svg>
+      <MarkDownPage />
     </div>
   );
 };
