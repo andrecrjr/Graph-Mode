@@ -19,7 +19,7 @@ import {
   saveNodePositions,
   syncPage,
 } from "../utils/graph";
-import { useGraphContextData } from "../Graph/GraphContext";
+import { useGraphContextData } from "../Context/GraphContext";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);

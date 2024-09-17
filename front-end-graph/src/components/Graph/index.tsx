@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef } from "react";
 import { useGraph } from "../hooks/useGraph";
-import { useGraphContextData } from "./GraphContext";
+import { useGraphContextData } from "../Context/GraphContext";
 import { useFetchGraphData } from "../hooks/useFetchGraphData";
 import { useParams, useRouter } from "next/navigation";
 

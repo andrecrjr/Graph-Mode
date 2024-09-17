@@ -2,17 +2,13 @@
 import { Notebook, X } from "lucide-react";
 import React, { useState } from "react";
 import { Editor } from "../Editor";
+import { Button } from "../ui/button";
 
 export default function EditorPage() {
   const [isOpen, setIsOpen] = useState(false);
-  const [markdown, setMarkdown] = useState("");
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
-  };
-
-  const handleChange = (e: any) => {
-    setMarkdown(e.target.value);
   };
 
   return (
@@ -30,6 +26,8 @@ export default function EditorPage() {
         } transition-transform duration-300 ease-in-out z-40`}
       >
         <div className="mt-20 mx-2">
+          <Button>Create Page</Button>
+
           <Editor />
         </div>
       </div>

@@ -8,13 +8,6 @@ interface GraphState {
     links?: Link[];
   };
   graphMode: "DRAW" | "WATCH";
-  LOCAL_SETTINGS: {
-    MAX_GRAPH_WIDTH: 6000;
-    MAX_GRAPH_HEIGHT: 6000;
-    RESPONSE_BREAKPOINT: 600;
-    GRAPH_BALL_SIZE: { sm: 10; lg: 15; master: 22 };
-    GRAPH_BALL_LABEL_MARGIN: { sm: -35; lg: -45; master: -55 };
-  };
 }
 
 export interface GraphContextType {
@@ -35,13 +28,6 @@ type Action =
 export const initialState: GraphState = {
   nodes: {},
   graphMode: "WATCH",
-  LOCAL_SETTINGS: {
-    MAX_GRAPH_WIDTH: 6000,
-    MAX_GRAPH_HEIGHT: 6000,
-    RESPONSE_BREAKPOINT: 600,
-    GRAPH_BALL_SIZE: { sm: 10, lg: 15, master: 22 },
-    GRAPH_BALL_LABEL_MARGIN: { sm: -35, lg: -45, master: -55 },
-  },
 };
 
 export function graphReducer(state: GraphState, action: Action): GraphState {

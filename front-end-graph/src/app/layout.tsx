@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/Auth/AuthProvider";
-import { GraphContextProvider } from "@/components/Graph/GraphContext";
+import { GraphContextProvider } from "@/components/Context/GraphContext";
 import { MainContainer } from "@/components/Layout/MainLayout";
 import { GoogleAnalytics } from "@next/third-parties/google";
 

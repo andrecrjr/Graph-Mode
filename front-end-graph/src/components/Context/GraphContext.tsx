@@ -4,7 +4,7 @@ import {
   GraphContextType,
   graphReducer,
   initialState,
-} from "../reducers/GraphData";
+} from "../Reducers/GraphData";
 
 export const GraphContext = createContext<GraphContextType>({
   state: initialState,

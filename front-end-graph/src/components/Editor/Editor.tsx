@@ -18,13 +18,14 @@ export default function Editor() {
       },
     ],
   });
-  // Renders the editor instance using a React component.
   return (
-    <BlockNoteView
-      editor={editor}
-      onChange={() => {
-        console.log(editor.document);
-      }}
-    />
+    <>
+      <BlockNoteView
+        editor={editor}
+        onChange={() => {
+          console.log(editor.document);
+        }}
+      />
+    </>
   );
 }
