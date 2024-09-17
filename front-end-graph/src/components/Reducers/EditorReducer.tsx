@@ -1,5 +1,6 @@
+import { BlockNoteEditor } from "@blocknote/core";
 interface EditorState {
-  editorDocument: Array<never>;
+  editorDocument?: BlockNoteEditor<any>;
   pageId: string;
   notionKey: string;
 }
@@ -19,8 +20,7 @@ type Action =
   | {
       type: "SET_EDITOR_UPDATE";
       payload: {
-        editorDocument: [];
-        pageId: string;
+        editorDocument: BlockNoteEditor;
       };
     }
   | {
@@ -31,7 +31,7 @@ type Action =
     };
 
 export const initialState: EditorState = {
-  editorDocument: [],
+  editorDocument: undefined,
   pageId: "",
   notionKey: "",
 };

@@ -25,12 +25,9 @@ export default function Editor() {
         onChange={() => {
           editorDispatch({
             type: "SET_EDITOR_UPDATE",
-            //@ts-ignore
-            payload: { editorDocument: editor.document },
+            payload: { editorDocument: editor },
           });
         }}
-
-        
       />
     </>
   );
