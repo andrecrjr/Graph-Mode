@@ -8,19 +8,19 @@ import {
 
 export const EditorContext = createContext<EditorContextType>({
   state: initialState,
-  dispatch: () => null,
+  editorDispatch: () => null,
 });
 
 export const EditorProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(editorReducer, initialState);
   return (
-    <EditorContext.Provider value={{ state, dispatch }}>
+    <EditorContext.Provider value={{ state, editorDispatch: dispatch }}>
       {children}
     </EditorContext.Provider>
   );
 };
 
 export const useEditorContext = () => {
-  const { state, dispatch } = useContext(EditorContext);
-  return { state, dispatch };
+  const { state, editorDispatch } = useContext(EditorContext);
+  return { state, editorDispatch };
 };

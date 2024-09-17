@@ -7,16 +7,15 @@ import { useParams, useRouter } from "next/navigation";
 
 import LoadingPlaceholder from "./Loading";
 import Sidebar from "../Sidebar";
-import { PenIcon } from "lucide-react";
-import { Button } from "../ui/button";
-import { Editor } from "../Editor";
 import EditorPage from "../EditorPage";
+import { useEditorContext } from "../Context/EditorContext";
 
 export const GraphComponent: React.FC = () => {
   document.body.style.overflow = "hidden";
   const { id: pageId } = useParams();
   const pageUID = pageId as string;
   const { state, dispatch } = useGraphContextData();
+  const { editorDispatch } = useEditorContext();
   const router = useRouter();
   if (!pageId) {
     router.push("/");
@@ -28,14 +27,18 @@ export const GraphComponent: React.FC = () => {
 
   useEffect(() => {
     if (graphData) {
+      editorDispatch({ payload: { pageId: pageUID }, type: "SET_PAGE_ID" });
       dispatch({ payload: graphData, type: "SET_NODES" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [graphData]);
 
   useEffect(() => {
-    if (state.nodes.nodes && state.nodes.links)
+    if (state.nodes.nodes && state.nodes.links) {
       mountGraph(state.nodes, svgRef, pageUID);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.nodes, mountGraph, pageUID]);
 
   return (

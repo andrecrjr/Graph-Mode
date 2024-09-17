@@ -28,6 +28,8 @@ export const useFetchGraphData = (pageId: string) => {
           authData?.user?.tokens?.access_token || "",
         );
         const processedGraphData = processGraphDataMemoized(data);
+
+
         setData(processedGraphData);
       } else {
         setError("No data returned from API.");

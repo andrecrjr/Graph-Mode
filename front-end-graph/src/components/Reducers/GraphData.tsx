@@ -23,10 +23,20 @@ type Action =
         links?: Link[];
       };
     }
-  | { type: "SET_GRAPH_MODE"; payload: "DRAW" | "WATCH" };
+  | { type: "SET_GRAPH_MODE"; payload: "DRAW" | "WATCH" }
+  | {
+      type: "UPDATE_NODES";
+      payload: {
+        nodes: Node[];
+        links: Link[];
+      };
+    };
 
 export const initialState: GraphState = {
-  nodes: {},
+  nodes: {
+    nodes: [],
+    links: [],
+  },
   graphMode: "WATCH",
 };
 
@@ -41,6 +51,14 @@ export function graphReducer(state: GraphState, action: Action): GraphState {
       return {
         ...state,
         graphMode: action.payload,
+      };
+    case "UPDATE_NODES":
+      return {
+        ...state,
+        nodes: {
+          nodes: [...(state.nodes?.nodes ?? []), ...action.payload.nodes],
+          links: [...(state.nodes?.links ?? []), ...action.payload.links],
+        },
       };
     default:
       return state;

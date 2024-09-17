@@ -1,11 +1,11 @@
 import "@blocknote/core/fonts/inter.css";
-import { useCreateBlockNote } from "@blocknote/react";
+import { useCreateBlockNote, useEditorChange } from "@blocknote/react";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
+import { useEditorContext } from "../Context/EditorContext";
 
-// Our <Editor> component we can reuse later
 export default function Editor() {
-  // Creates a new editor instance.
+  const { editorDispatch } = useEditorContext();
   const editor = useCreateBlockNote({
     initialContent: [
       {
@@ -24,6 +24,11 @@ export default function Editor() {
         editor={editor}
         onChange={() => {
           console.log(editor.document);
+          editorDispatch({
+            type: "SET_EDITOR_UPDATE",
+            //@ts-ignore
+            payload: { editorDocument: editor.document },
+          });
         }}
       />
     </>

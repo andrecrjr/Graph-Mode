@@ -5,6 +5,7 @@ import AuthProvider from "@/components/Auth/AuthProvider";
 import { GraphContextProvider } from "@/components/Context/GraphContext";
 import { MainContainer } from "@/components/Layout/MainLayout";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { EditorProvider } from "@/components/Context/EditorContext";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["100", "300", "400"] });
 
@@ -23,7 +24,9 @@ export default function RootLayout({
       <body className={`w-screen ${roboto.className}`}>
         <MainContainer>
           <GraphContextProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <EditorProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </EditorProvider>
           </GraphContextProvider>
         </MainContainer>
         {process.env.NODE_ENV === "production" &&
