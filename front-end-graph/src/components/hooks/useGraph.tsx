@@ -22,7 +22,6 @@ export const useGraph = () => {
     (
       data: { nodes?: Node[]; links?: Link[] },
       svgRef: React.MutableRefObject<SVGSVGElement | null>,
-      pageUID: string,
     ) => {
       if (!data.nodes || !data.links) return;
       const svg = d3

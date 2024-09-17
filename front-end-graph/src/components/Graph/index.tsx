@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
-import { useGraph } from "../hooks/useGraph";
+import React, { useEffect } from "react";
 import { useGraphContextData } from "../Context/GraphContext";
 import { useFetchGraphData } from "../hooks/useFetchGraphData";
 import { useParams, useRouter } from "next/navigation";
@@ -15,7 +14,6 @@ export const GraphComponent: React.FC = () => {
   document.body.style.overflow = "hidden";
   const { id: pageId } = useParams();
   const pageUID = pageId as string;
-  const { dispatch } = useGraphContextData();
   const { editorDispatch } = useEditorContext();
   const router = useRouter();
   if (!pageId) {
@@ -25,12 +23,8 @@ export const GraphComponent: React.FC = () => {
   const { data: graphData, loading, error } = useFetchGraphData(pageUID);
 
   useEffect(() => {
-    if (graphData) {
-      editorDispatch({ payload: { pageId: pageUID }, type: "SET_PAGE_ID" });
-      dispatch({ payload: graphData, type: "SET_NODES" });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [graphData]);
+    editorDispatch({ payload: { pageId: pageUID }, type: "SET_PAGE_ID" });
+  }, []);
 
   return (
     <div className="graph overflow-hidden max-w-screen">

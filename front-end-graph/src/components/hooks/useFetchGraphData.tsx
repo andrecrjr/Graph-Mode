@@ -2,14 +2,12 @@ import { useState, useEffect, useCallback } from "react";
 import dataMock from "@/components/mock.json";
 import { fetchAndSaveCacheData, processGraphData } from "../utils/graph";
 import { useSession } from "next-auth/react";
-import { Link, Node } from "../../../types/graph";
+import { useGraphContextData } from "../Context/GraphContext";
 
 export const useFetchGraphData = (pageId: string) => {
   const { data: authData, status } = useSession();
+  const { dispatch, state } = useGraphContextData();
 
-  const [data, setData] = useState<{ nodes: Node[]; links: Link[] } | null>(
-    null,
-  );
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,11 +26,11 @@ export const useFetchGraphData = (pageId: string) => {
           authData?.user?.tokens?.access_token || "",
         );
         const processedGraphData = processGraphDataMemoized(data);
-
-
-        setData(processedGraphData);
+        console.log(processedGraphData);
+        dispatch({ type: "SET_NODES", payload: processedGraphData });
       } else {
         setError("No data returned from API.");
+        throw new Error("Problem no data returned from API");
       }
     } catch (error) {
       //@ts-expect-error
@@ -41,17 +39,22 @@ export const useFetchGraphData = (pageId: string) => {
     } finally {
       setLoading(false);
     }
-  }, [authData?.user?.tokens.access_token, pageId, processGraphDataMemoized]);
+  }, [
+    authData?.user?.tokens.access_token,
+    pageId,
+    processGraphDataMemoized,
+    dispatch,
+  ]);
 
   useEffect(() => {
-    if (authData && !data) {
+    if (authData && state.nodes && state?.nodes?.nodes?.length === 0) {
       fetchGraphData();
     }
-    if (pageId === "mock" && !data) {
+    if (pageId === "mock" && !state.nodes) {
       const data = processGraphData(dataMock, "mock");
-      setData(data);
+      dispatch({ type: "SET_NODES", payload: data });
     }
-  }, [status, authData, data, pageId, fetchGraphData]);
+  }, [status, authData, state.nodes, pageId, fetchGraphData]);
 
-  return { data, loading, error };
+  return { data: state.nodes, loading, error };
 };

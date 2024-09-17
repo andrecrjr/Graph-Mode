@@ -1,5 +1,5 @@
 import "@blocknote/core/fonts/inter.css";
-import { useCreateBlockNote, useEditorChange } from "@blocknote/react";
+import { useCreateBlockNote } from "@blocknote/react";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useEditorContext } from "../Context/EditorContext";
@@ -23,13 +23,14 @@ export default function Editor() {
       <BlockNoteView
         editor={editor}
         onChange={() => {
-          console.log(editor.document);
           editorDispatch({
             type: "SET_EDITOR_UPDATE",
             //@ts-ignore
             payload: { editorDocument: editor.document },
           });
         }}
+
+        
       />
     </>
   );

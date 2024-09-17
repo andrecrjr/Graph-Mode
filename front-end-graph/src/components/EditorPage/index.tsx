@@ -7,6 +7,7 @@ import { useEditorContext } from "../Context/EditorContext";
 import { fetchServer } from "../service/Notion";
 import { useGraphContextData } from "../Context/GraphContext";
 import { saveStorage, uuidFormatted } from "../utils";
+import { INotionPage } from "../../../types/notionPage";
 
 export default function EditorPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +20,7 @@ export default function EditorPage() {
   console.log(state);
   const createOrUpdatePage = async () => {
     if (state.editorDocument.length > 0) {
-      const { id } = await fetchServer(
+      const { id, properties } = await fetchServer<INotionPage>(
         "/translate/page",
         saveStorage.get("notionKey", true),
         {
@@ -36,7 +37,7 @@ export default function EditorPage() {
           nodes: [
             {
               id,
-              label: "Testando titulo",
+              label: properties?.title.title[0].plain_text,
             },
           ],
           links: [
@@ -61,9 +62,9 @@ export default function EditorPage() {
       <div
         className={`fixed top-0 right-0 h-full w-6/12 bg-white dark:bg-gray-800 transform ${
           !isOpen ? "translate-x-full" : "translate-x-0"
-        } transition-transform duration-300 ease-in-out z-40`}
+        } transition-transform duration-200 ease-in-out z-40`}
       >
-        <div className="mt-20 mx-2">
+        <div className="mt-20">
           <Button onClick={createOrUpdatePage}>Create Page</Button>
 
           <Editor />
