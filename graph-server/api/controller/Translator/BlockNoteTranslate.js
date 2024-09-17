@@ -15,7 +15,6 @@ class BlockNoteToNotionConverter {
   }
 
   convertHeading(block) {
-    // Notion heading levels go from 1 to 3, so we limit it here.
     const headingLevel = Math.min(block.props.level || 1, 3);
     
     return {

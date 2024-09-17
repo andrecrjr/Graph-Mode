@@ -70,36 +70,3 @@ class NotionToBlockNoteConverter {
     return `${Math.random().toString(36).substr(2, 9)}-${Date.now()}`;
   }
 }
-
-// Exemplo de uso:
-
-const notionExample = [
-    {
-      "object": "block",
-      "type": "heading_2",
-      "heading_2": {
-        "rich_text": [
-          {
-            "type": "text",
-            "text": {
-              "content": "Seção de introdução"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "object": "block",
-      "type": "paragraph",
-      "paragraph": {
-        "rich_text": [
-          {
-            "type": "text",
-            "text": {
-              "content": "Este é um parágrafo dentro da nova página criada via API."
-            }
-          }
-        ]
-      }
-    }
-  ]

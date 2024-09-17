@@ -6,6 +6,7 @@ import ElementProcessor from "../controller/ElementProcessor/index.js"
 import mock from "../controller/mock.json" with {type: "json"};
 import path from "path";
 import dotenv from 'dotenv';
+import { authMiddleware } from "../middleware/authMiddleware.js";
 dotenv.config()
 
 const __filename = fileURLToPath(import.meta.url);
@@ -13,15 +14,6 @@ const __dirname = path.resolve(path.dirname(__filename), "../../");
 
 const router = Router()
 
-const authMiddleware = (req, res, next) => {
-
-  const AUTH = req.headers?.authorization;
-  if (!AUTH) {
-    return res.status(401).json({ error: 'Authorization token missing' });
-  }
-  req.notionAPI = new NotionAPI(null, AUTH);
-  next();
-}
 
 router.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/index.html'));

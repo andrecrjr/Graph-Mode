@@ -41,7 +41,7 @@ class NotionAPI {
     }
   }
 
-    async createPage(parentId, title, children = []) {
+  async createPage(parentId, title, children = []) {
     try {
       const url = `${this.apiUrl}/pages`;
       const body = {
