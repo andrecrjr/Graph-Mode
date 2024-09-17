@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback } from "react";
-// import { saveNodePositions } from "../utils/graph";
 import * as d3 from "d3";
 import { useGraphContextData } from "../Context/GraphContext";
 import { Link, Node } from "../../../types/graph";

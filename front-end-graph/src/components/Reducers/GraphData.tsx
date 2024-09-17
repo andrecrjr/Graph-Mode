@@ -7,6 +7,8 @@ interface GraphState {
     nodes?: Node[];
     links?: Link[];
   };
+  loadingFetchGraph: boolean;
+  errorFetchGraph: boolean;
   graphMode: "DRAW" | "WATCH";
 }
 
@@ -30,6 +32,14 @@ type Action =
         nodes: Node[];
         links: Link[];
       };
+    }
+  | {
+      type: "ERROR_GRAPH";
+      payload: boolean;
+    }
+  | {
+      type: "LOADED_GRAPH";
+      payload: boolean;
     };
 
 export const initialState: GraphState = {
@@ -38,6 +48,8 @@ export const initialState: GraphState = {
     links: [],
   },
   graphMode: "WATCH",
+  loadingFetchGraph: true,
+  errorFetchGraph: false,
 };
 
 export function graphReducer(state: GraphState, action: Action): GraphState {
@@ -59,6 +71,17 @@ export function graphReducer(state: GraphState, action: Action): GraphState {
           nodes: [...(state.nodes?.nodes ?? []), ...action.payload.nodes],
           links: [...(state.nodes?.links ?? []), ...action.payload.links],
         },
+      };
+
+    case "ERROR_GRAPH":
+      return {
+        ...state,
+        errorFetchGraph: action.payload,
+      };
+    case "LOADED_GRAPH":
+      return {
+        ...state,
+        loadingFetchGraph: action.payload,
       };
     default:
       return state;

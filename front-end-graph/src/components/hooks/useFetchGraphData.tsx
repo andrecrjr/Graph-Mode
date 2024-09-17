@@ -8,9 +8,6 @@ export const useFetchGraphData = (pageId: string) => {
   const { data: authData, status } = useSession();
   const { dispatch, state } = useGraphContextData();
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
   const processGraphDataMemoized = useCallback(
     (data: any) => processGraphData(data, pageId),
     [pageId],
@@ -18,26 +15,25 @@ export const useFetchGraphData = (pageId: string) => {
 
   const fetchGraphData = useCallback(async () => {
     try {
-      setLoading(true);
-      setError(null);
+      // setLoading(true);
+
+      // setError(null);
       if (authData?.user?.tokens.access_token) {
         const data = await fetchAndSaveCacheData(
           pageId,
           authData?.user?.tokens?.access_token || "",
         );
         const processedGraphData = processGraphDataMemoized(data);
-        console.log(processedGraphData);
         dispatch({ type: "SET_NODES", payload: processedGraphData });
       } else {
-        setError("No data returned from API.");
+        dispatch({ type: "ERROR_GRAPH", payload: true });
         throw new Error("Problem no data returned from API");
       }
     } catch (error) {
-      //@ts-expect-error
-      setError("Error fetching graph data: " + error.message);
+      dispatch({ type: "ERROR_GRAPH", payload: true });
       console.error("Error fetching graph data:", error);
     } finally {
-      setLoading(false);
+      dispatch({ type: "LOADED_GRAPH", payload: false });
     }
   }, [
     authData?.user?.tokens.access_token,
@@ -50,11 +46,12 @@ export const useFetchGraphData = (pageId: string) => {
     if (authData && state.nodes && state?.nodes?.nodes?.length === 0) {
       fetchGraphData();
     }
-    if (pageId === "mock" && !state.nodes) {
+    if (pageId === "mock" && state.nodes && state?.nodes?.nodes?.length === 0) {
       const data = processGraphData(dataMock, "mock");
+      dispatch({ type: "LOADED_GRAPH", payload: false });
       dispatch({ type: "SET_NODES", payload: data });
     }
-  }, [status, authData, state.nodes, pageId, fetchGraphData]);
+  }, [status, authData, state.nodes, pageId, fetchGraphData, dispatch]);
 
-  return { data: state.nodes, loading, error };
+  return { data: state.nodes };
 };

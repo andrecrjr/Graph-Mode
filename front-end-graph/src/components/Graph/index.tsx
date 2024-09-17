@@ -15,12 +15,15 @@ export const GraphComponent: React.FC = () => {
   const { id: pageId } = useParams();
   const pageUID = pageId as string;
   const { editorDispatch } = useEditorContext();
+  const {
+    state: { errorFetchGraph, loadingFetchGraph },
+  } = useGraphContextData();
   const router = useRouter();
   if (!pageId) {
     router.push("/");
   }
 
-  const { data: graphData, loading, error } = useFetchGraphData(pageUID);
+  const { data: graphData } = useFetchGraphData(pageUID);
 
   useEffect(() => {
     editorDispatch({ payload: { pageId: pageUID }, type: "SET_PAGE_ID" });
@@ -28,10 +31,10 @@ export const GraphComponent: React.FC = () => {
 
   return (
     <div className="graph overflow-hidden max-w-screen">
-      {loading && <LoadingPlaceholder />}
+      {loadingFetchGraph && <LoadingPlaceholder />}
       <Sidebar />
       <GraphSvg pageUID={pageUID} />
-      <EditorPage />
+      {pageUID !== "mock" && <EditorPage />}
     </div>
   );
 };
