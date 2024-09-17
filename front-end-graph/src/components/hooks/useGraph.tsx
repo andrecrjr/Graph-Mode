@@ -30,7 +30,14 @@ export const useGraph = () => {
         .attr("width", WINDOW.MAX_GRAPH_WIDTH)
         .attr("height", WINDOW.MAX_GRAPH_HEIGHT);
 
-      const container = svg.append("g").attr("class", "graph-container");
+      let container = svg.select(".graph-container");
+
+      if (container.empty()) {
+        //@ts-ignore
+        container = svg.append("g").attr("class", "graph-container");
+      } else {
+        container.selectAll("*").remove();
+      }
 
       const simulation = d3
         .forceSimulation<Node>(data.nodes)
