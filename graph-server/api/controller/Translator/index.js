@@ -1,6 +1,6 @@
 import BlockNoteToNotionConverter from "./BlockNoteTranslate.js";
 
-class TranslateController {
+class BlocknoteToNotionTranslateController {
     constructor(){
         this.blockNoteToNotion = new BlockNoteToNotionConverter()
     }
@@ -16,4 +16,4 @@ class TranslateController {
     }
 }
 
-export default TranslateController
+export default BlocknoteToNotionTranslateController
