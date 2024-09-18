@@ -11,7 +11,9 @@ import { INotionPage } from "../../../types/notionPage";
 
 export default function EditorPage() {
   const [isOpen, setIsOpen] = useState(false);
-  const { state } = useEditorContext();
+  const {
+    state: { editorDocument, pageId },
+  } = useEditorContext();
   const { dispatch } = useGraphContextData();
 
   const toggleSidebar = () => {
@@ -19,35 +21,38 @@ export default function EditorPage() {
   };
 
   const createOrUpdatePage = async () => {
-    if (state.editorDocument.length > 0) {
-      const { id, properties } = await fetchServer<INotionPage>(
+    if (editorDocument?.document && editorDocument.document.length > 0) {
+      const data = await fetchServer<INotionPage>(
         "/translate/page",
         saveStorage.get("notionKey", true),
         {
           method: "POST",
           body: JSON.stringify({
-            children: state.editorDocument,
-            parentId: state.pageId,
+            children: editorDocument.document,
+            parentId: pageId,
+            debug: false,
           }),
         },
       );
-      dispatch({
-        type: "UPDATE_NODES",
-        payload: {
-          nodes: [
-            {
-              id,
-              label: properties?.title.title[0].plain_text,
-            },
-          ],
-          links: [
-            {
-              source: id,
-              target: uuidFormatted(state.pageId),
-            },
-          ],
-        },
-      });
+      console.log(data);
+      // dispatch({
+      //   type: "UPDATE_NODES",
+      //   payload: {
+      //     nodes: [
+      //       {
+      //         id,
+      //         label: properties?.title.title[0].plain_text,
+      //       },
+      //     ],
+      //     links: [
+      //       {
+      //         source: id,
+      //         target: uuidFormatted(pageId),
+      //       },
+      //     ],
+      //   },
+      // });
+      //setIsOpen(false);
     }
   };
   return (

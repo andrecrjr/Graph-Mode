@@ -1,6 +1,13 @@
-import { BlockNoteEditor } from "@blocknote/core";
+import { Block, BlockNoteEditor } from "@blocknote/core";
+import {schema} from "@blocknote/core"
+export type Schema = Block<
+  typeof schema.blockSchema,
+  typeof schema.inlineContentSchema,
+  typeof schema.styleSchema
+>;
+
 interface EditorState {
-  editorDocument?: BlockNoteEditor<any>;
+  editorDocument?: BlockNoteEditor<Schema>;
   pageId: string;
   notionKey: string;
 }
@@ -20,7 +27,7 @@ type Action =
   | {
       type: "SET_EDITOR_UPDATE";
       payload: {
-        editorDocument: BlockNoteEditor;
+        editorDocument: BlockNoteEditor<any>;
       };
     }
   | {
