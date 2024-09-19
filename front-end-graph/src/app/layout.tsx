@@ -12,6 +12,7 @@ const roboto = Roboto({ subsets: ["latin"], weight: ["100", "300", "400"] });
 export const metadata: Metadata = {
   title: "Notion Graph Mode",
   description: "Your Notion Pages with Graph View in Pages like-Obsidian",
+  category: "",
 };
 
 export default function RootLayout({
@@ -19,8 +20,28 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const ldJSON = {
+    "@context": "https://schema.org",
+    "@type": ["WebApplication", "MobileApplication"],
+    name: "Notion Graph Mode",
+    description:
+      "Transform your Notion pages into an interactive graphic view.",
+    operatingSystem: "All",
+    applicationCategory: "ProductivityApplication",
+  };
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="canonical"
+          href={`${process.env.NEXT_PUBLIC_FRONT_USER_URL}`}
+        />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ldJSON) }}
+        />
+      </head>
       <body className={`w-screen ${roboto.className}`}>
         <MainContainer>
           <GraphContextProvider>

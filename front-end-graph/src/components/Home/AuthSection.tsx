@@ -5,7 +5,7 @@ import { SearchByUrl } from "../SearchInput/SearchByUrl";
 
 export function AuthSection({ data }: { data: Session | null }) {
   return (
-    <section className="flex flex-col mb-4 items-center justify-center">
+    <section className="w-8/12 flex flex-col mb-4 items-center justify-center">
       {!!data ? (
         <>
           <SearchByUrl />

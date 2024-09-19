@@ -4,6 +4,8 @@ import { useParams, useRouter } from "next/navigation";
 import { useEditorContext } from "../Context/EditorContext";
 
 export function LoadPageData({ children }: { children: React.ReactNode }) {
+  document.body.style.overflow = "hidden";
+
   const { id: pageId } = useParams();
   const pageUID = pageId as string;
   const router = useRouter();
