@@ -1,23 +1,27 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import { useFetchGraphData } from "../hooks/useFetchGraphData";
 import { useGraphContextData } from "../Context/GraphContext";
 import { useGraph } from "../hooks/useGraph";
+import { useEditorContext } from "../Context/EditorContext";
 
 type Props = {
-  pageUID: string;
+  pageUID?: string;
 };
 export default function GraphSvg({ pageUID }: Props) {
   const svgRef = useRef<SVGSVGElement | null>(null);
-
-  const { state } = useGraphContextData();
+  const {
+    state: { pageId },
+  } = useEditorContext();
+  const {
+    state: { nodes },
+  } = useGraphContextData();
   const { mountGraph } = useGraph();
 
   useEffect(() => {
-    if (state.nodes.nodes && state.nodes.links) {
-      mountGraph(state.nodes, svgRef);
+    if (nodes && nodes.links) {
+      mountGraph(nodes, svgRef);
     }
-  }, [state.nodes, mountGraph, pageUID]);
+  }, [nodes, mountGraph, pageId]);
 
   return <svg ref={svgRef} className="dark:bg-black cursor-move"></svg>;
 }
