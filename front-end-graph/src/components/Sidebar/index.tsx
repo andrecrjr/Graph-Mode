@@ -2,13 +2,10 @@
 import {
   ArrowLeft,
   Coffee,
-  LoaderIcon,
   Pin,
   PinOff,
   RefreshCcw,
-  Save,
   Settings,
-  UnplugIcon,
   X,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
