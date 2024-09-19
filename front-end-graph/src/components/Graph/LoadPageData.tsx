@@ -10,7 +10,7 @@ export function LoadPageData({ children }: { children: React.ReactNode }) {
   const pageUID = pageId as string;
   const router = useRouter();
   if (!pageId) {
-    router.push("/");
+    router.push("/app");
   }
   // fetch all data and send by GraphDataContext
   useFetchGraphData(pageUID);

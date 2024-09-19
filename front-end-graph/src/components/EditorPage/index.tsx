@@ -53,6 +53,7 @@ export default function EditorPage() {
       //   },
       // });
       //setIsOpen(false);
+      editorDocument.removeBlocks(editorDocument.document);
     }
   };
   if (pageId !== "mock")

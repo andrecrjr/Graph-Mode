@@ -40,7 +40,7 @@ export default function Editor() {
       },
     ],
   });
-  
+
   return (
     <>
       <BlockNoteView
@@ -103,8 +103,6 @@ export default function Editor() {
         <SuggestionMenuController
           triggerCharacter={"["}
           getItems={async (query) =>
-            // Gets the mentions menu items
-
             //@ts-ignore
             filterSuggestionItems(getMentionMenuItems(editor, nodes), query)
           }

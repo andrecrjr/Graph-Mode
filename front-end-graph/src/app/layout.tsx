@@ -42,7 +42,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ldJSON) }}
         />
       </head>
-      <body className={`w-screen ${roboto.className}`}>
+      <body className={`w-full ${roboto.className}`}>
         <MainContainer>
           <GraphContextProvider>
             <EditorProvider>

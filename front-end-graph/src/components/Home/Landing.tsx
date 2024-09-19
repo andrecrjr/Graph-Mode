@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { PricingTiers } from "./Tier";
 
 export default function Landing() {
   return (
@@ -13,13 +14,13 @@ export default function Landing() {
                 Explore Graph Mode
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                Visualize your Notion workspace like never before. Inspired by
+                Visualize your Notion Pages like never before. Inspired by
                 Obsidian, powered by Notion.
               </p>
             </div>
             <div className="space-x-4">
               <Link href="/graph/mock">
-                <Button>Get Started in Example</Button>
+                <Button>View Example Graph</Button>
               </Link>
               <Link href={"#why"}>
                 <Button variant="outline">Learn More</Button>
@@ -68,8 +69,8 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
-      <section className="w-full py-12 md:py-24 lg:py-32 h-screen  flex items-center justify-center">
+      {/* <PricingTiers /> */}
+      <section className="w-full py-12 md:py-24 lg:py-32 h-screen  bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 mb-8 md:mb-0">
@@ -81,7 +82,9 @@ export default function Landing() {
                 Uncover connections, navigate seamlessly, and gain fresh
                 insights into your information.
               </p>
-              <Button>Try Graph Mode Now</Button>
+              <Link href="/app">
+                <Button>Try Graph Mode Now</Button>
+              </Link>
             </div>
             <div className="md:w-1/2 flex justify-center">
               <svg

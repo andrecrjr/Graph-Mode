@@ -92,7 +92,7 @@ const Sidebar = () => {
               </button>
             </li>
             <li className="w-full mt-auto self-center">
-              <a className="p-4 w-full hover:bg-gray-700 flex" href="/">
+              <a className="p-4 w-full hover:bg-gray-700 flex" href="/app">
                 <ArrowLeft className="mr-4" /> Back to Home
               </a>
             </li>
