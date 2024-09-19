@@ -1,20 +1,13 @@
 import {
-  Block,
-  BlockNoteSchema,
-  defaultInlineContentSpecs,
-  PropSpec,
-} from "@blocknote/core";
-import {
   createReactInlineContentSpec,
   DefaultReactSuggestionItem,
 } from "@blocknote/react";
 import { Node } from "../../../../types/graph"; // Importando o tipo Node
 import { schema } from ".";
 
-// Definição do conteúdo inline para Page Mention
 export const PageMention = createReactInlineContentSpec(
   {
-    type: "page",
+    type: "pageMention",
     propSchema: {
       id: {
         default: "",
@@ -23,7 +16,7 @@ export const PageMention = createReactInlineContentSpec(
         default: "",
       },
     },
-    content: "none", // Não há conteúdo aninhado
+    content: "none",
   },
   {
     render: (props) => {
@@ -49,7 +42,7 @@ export const getMentionMenuItems = (
     onItemClick: () => {
       editor.insertInlineContent([
         {
-          type: "page",
+          type: "pageMention",
           props: {
             id: node.id,
             label: node.label,

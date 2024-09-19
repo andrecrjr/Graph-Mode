@@ -7,7 +7,7 @@ import { useEditorContext } from "../Context/EditorContext";
 type Props = {
   pageUID?: string;
 };
-export default function GraphSvg({ pageUID }: Props) {
+export default function GraphSvg() {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const {
     state: { pageId },

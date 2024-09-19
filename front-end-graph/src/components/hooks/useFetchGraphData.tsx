@@ -15,9 +15,6 @@ export const useFetchGraphData = (pageId: string) => {
 
   const fetchGraphData = useCallback(async () => {
     try {
-      // setLoading(true);
-
-      // setError(null);
       if (authData?.user?.tokens.access_token) {
         const data = await fetchAndSaveCacheData(
           pageId,
@@ -46,6 +43,7 @@ export const useFetchGraphData = (pageId: string) => {
     if (authData && state.nodes && state?.nodes?.nodes?.length === 0) {
       fetchGraphData();
     }
+    
     if (pageId === "mock" && state.nodes && state?.nodes?.nodes?.length === 0) {
       const data = processGraphData(dataMock, "mock");
       dispatch({ type: "LOADED_GRAPH", payload: false });

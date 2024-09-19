@@ -1,5 +1,5 @@
 "use client";
-import { Notebook, X } from "lucide-react";
+import { Notebook, PenIcon, X } from "lucide-react";
 import React, { useState } from "react";
 import { Editor } from "../Editor";
 import { Button } from "../ui/button";
@@ -55,23 +55,27 @@ export default function EditorPage() {
       //setIsOpen(false);
     }
   };
+
   return (
     <>
-      <button
-        className="fixed bottom-6 right-4 min-w-12 z-50 p-2 flex justify-center bg-blue-500 text-white rounded-full focus:outline-none"
+      <Button
+        className="fixed bottom-6 right-4 min-w-16 sm:min-w-12 z-50 p-2 flex justify-center bg-blue-500 hover:bg-blue-600 text-white rounded-full focus:outline-none"
         onClick={toggleSidebar}
       >
-        {!isOpen ? <Notebook /> : <X />}
-      </button>
-
+        {!isOpen ? <Notebook width={32} /> : <X />}
+      </Button>
       <div
-        className={`fixed top-0 right-0 h-full w-6/12 bg-white dark:bg-gray-800 transform ${
+        className={`fixed top-0 right-0 h-full w-full sm:w-8/12 bg-white dark:bg-gray-800 transform ${
           !isOpen ? "translate-x-full" : "translate-x-0"
         } transition-transform duration-200 ease-in-out z-40`}
       >
         <div className="mt-20">
-          <Button onClick={createOrUpdatePage}>Create Page</Button>
-
+          <Button
+            className="fixed bottom-20 right-4 min-w-16 sm:min-w-12 z-50 p-2 flex justify-center bg-green-600 hover:bg-green-700 text-white rounded-full focus:outline-none"
+            onClick={createOrUpdatePage}
+          >
+            <PenIcon />
+          </Button>
           <Editor />
         </div>
       </div>

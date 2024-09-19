@@ -1,5 +1,4 @@
-import { BlockNoteEditor, BlockSchemaFromSpecs } from "@blocknote/core";
-import { schema } from "@/components/Editor/custom";
+import { BlockNoteEditor } from "@blocknote/core";
 
 interface EditorState {
   editorDocument?: BlockNoteEditor;
