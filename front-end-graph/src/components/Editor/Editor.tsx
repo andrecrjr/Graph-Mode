@@ -17,15 +17,16 @@ import { useEditorContext } from "../Context/EditorContext";
 import { filterSuggestionItems } from "@blocknote/core";
 import { getMentionMenuItems } from "./custom/inlinePageMention";
 import { useGraphContextData } from "../Context/GraphContext";
-import { schema } from "./custom/inlinePageMention";
+import { schema } from "./custom/";
 
 export default function Editor() {
-  const { editorDispatch } = useEditorContext();
   const {
     state: {
       nodes: { nodes },
     },
   } = useGraphContextData();
+  const { editorDispatch } = useEditorContext();
+
   const editor = useCreateBlockNote({
     schema,
     initialContent: [
@@ -46,6 +47,7 @@ export default function Editor() {
         onChange={() => {
           editorDispatch({
             type: "SET_EDITOR_UPDATE",
+            //@ts-ignore
             payload: { editorDocument: editor },
           });
         }}
@@ -101,6 +103,7 @@ export default function Editor() {
           triggerCharacter={"["}
           getItems={async (query) =>
             // Gets the mentions menu items
+
             //@ts-ignore
             filterSuggestionItems(getMentionMenuItems(editor, nodes), query)
           }

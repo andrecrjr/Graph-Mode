@@ -19,7 +19,7 @@ export default function EditorPage() {
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
-
+  console.log(editorDocument?.document);
   const createOrUpdatePage = async () => {
     if (editorDocument?.document && editorDocument.document.length > 0) {
       const data = await fetchServer<INotionPage>(
