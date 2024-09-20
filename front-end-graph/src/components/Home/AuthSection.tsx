@@ -1,6 +1,5 @@
 import { Session } from "next-auth";
 import AuthButton from "../Buttons";
-import { KofiDonate } from "../Donate";
 import { SearchByUrl } from "../SearchInput/SearchByUrl";
 
 export function AuthSection({ data }: { data: Session | null }) {
@@ -19,7 +18,6 @@ export function AuthSection({ data }: { data: Session | null }) {
           <AuthButton />
         </>
       )}
-      <KofiDonate />
     </section>
   );
 }
