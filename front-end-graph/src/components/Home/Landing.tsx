@@ -33,13 +33,13 @@ export default function Landing() {
             </div>
           </div>
         </div>
-        <Link href="https://notion.so" className="mt-auto">
+        <Link href="https://notion.so" className="mt-auto pb-8">
           <NotionHome />
         </Link>
       </section>
 
       <section
-        className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800 h-screen  flex items-center justify-center"
+        className="w-full md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800 h-screen  flex items-center justify-center"
         id="why"
       >
         <div className="container px-4 md:px-6">
@@ -82,7 +82,7 @@ export default function Landing() {
         </div>
       </section>
       <BuyMeCoffee />
-      <section className="w-full py-12 md:py-24 lg:py-32 h-screen  bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+      <section className="w-full md:py-24 lg:py-32 h-screen  bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 mb-8 md:mb-0">
