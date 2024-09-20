@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { useEditorContext } from "../Context/EditorContext";
 import { fetchServer } from "../service/Notion";
 import { useGraphContextData } from "../Context/GraphContext";
-import { saveStorage, uuidFormatted } from "../utils";
+import { IS_DEVELOPMENT, saveStorage, uuidFormatted } from "../utils";
 import { INotionPage } from "../../../types/notionPage";
 
 export default function EditorPage() {
@@ -56,7 +56,8 @@ export default function EditorPage() {
       editorDocument.removeBlocks(editorDocument.document);
     }
   };
-  if (pageId !== "mock")
+
+  if (pageId !== "mock" || IS_DEVELOPMENT)
     return (
       <>
         <Button

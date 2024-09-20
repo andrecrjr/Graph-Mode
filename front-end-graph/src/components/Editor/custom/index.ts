@@ -4,6 +4,6 @@ import { PageMention } from "./inlinePageMention";
 export const schema = BlockNoteSchema.create({
   inlineContentSpecs: {
     ...defaultInlineContentSpecs,
-    ...{ page: PageMention },
+    ...{ pageMention: PageMention },
   },
 });
