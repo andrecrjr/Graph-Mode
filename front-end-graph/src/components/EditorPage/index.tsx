@@ -57,7 +57,7 @@ export default function EditorPage() {
     }
   };
 
-  if (pageId !== "mock" || IS_DEVELOPMENT)
+  if (pageId !== "mock")
     return (
       <>
         <Button

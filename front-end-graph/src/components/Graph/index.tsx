@@ -14,7 +14,7 @@ export const GraphComponent: React.FC = () => {
         <LoadingPlaceholder />
         <Sidebar />
         <GraphSvg />
-        {/* <EditorPage /> */}
+        <EditorPage />
       </div>
     </LoadPageData>
   );
