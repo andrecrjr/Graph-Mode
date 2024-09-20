@@ -3,12 +3,13 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { PricingTiers } from "./Tier";
 import BuyMeCoffee from "./BuyCoffee";
+import { NotionHome } from "../svg/NotionHome";
 
 export default function Landing() {
   return (
     <div className="flex flex-col min-h-screen">
-      <section className="w-full  md:py-24 h-screen flex items-center justify-center">
-        <div className="container px-4 md:px-6">
+      <section className="w-full  md:py-24 h-screen flex flex-col items-center justify-center">
+        <div className="container mt-auto px-4 md:px-6">
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
@@ -19,16 +20,22 @@ export default function Landing() {
                 Obsidian, powered by Notion.
               </p>
             </div>
-            <div className="space-x-4">
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
               <Link href="/graph/mock">
-                <Button>View Example Graph</Button>
+                <Button>View Example Graph 👀</Button>
               </Link>
               <Link href={"#why"}>
-                <Button variant="outline">Why Graph Mode?</Button>
+                <Button variant="outline">Why Graph Mode? 🤔</Button>
+              </Link>
+              <Link href="/app" className="mt-4 sm:mt-0">
+                <Button>Go to Graph Mode ✨</Button>
               </Link>
             </div>
           </div>
         </div>
+        <Link href="https://notion.so" className="mt-auto">
+          <NotionHome />
+        </Link>
       </section>
 
       <section
