@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback } from "react";
-// import { saveNodePositions } from "../utils/graph";
 import * as d3 from "d3";
-import { useGraphContextData } from "../Graph/GraphContext";
+import { useGraphContextData } from "../Context/GraphContext";
 import { Link, Node } from "../../../types/graph";
 
 export const useGraph = () => {
@@ -22,7 +21,6 @@ export const useGraph = () => {
     (
       data: { nodes?: Node[]; links?: Link[] },
       svgRef: React.MutableRefObject<SVGSVGElement | null>,
-      pageUID: string,
     ) => {
       if (!data.nodes || !data.links) return;
       const svg = d3
@@ -30,7 +28,14 @@ export const useGraph = () => {
         .attr("width", WINDOW.MAX_GRAPH_WIDTH)
         .attr("height", WINDOW.MAX_GRAPH_HEIGHT);
 
-      const container = svg.append("g").attr("class", "graph-container");
+      let container = svg.select(".graph-container");
+
+      if (container.empty()) {
+        //@ts-ignore
+        container = svg.append("g").attr("class", "graph-container");
+      } else {
+        container.selectAll("*").remove();
+      }
 
       const simulation = d3
         .forceSimulation<Node>(data.nodes)

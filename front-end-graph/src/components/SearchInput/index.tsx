@@ -8,14 +8,10 @@ import { useRouter } from "next/navigation";
 import { fetchServer } from "../service/Notion";
 type ResultSearch = { id: string; name: string };
 const fetchSearchResults = async (query: string, token: string) => {
-  const data = (await fetchServer(
-    `${process.env.NEXT_PUBLIC_SERVER_API}/search`,
-    token,
-    {
-      method: "POST",
-      body: JSON.stringify({ query }),
-    },
-  )) as SearchRoot;
+  const data = (await fetchServer(`/search`, token, {
+    method: "POST",
+    body: JSON.stringify({ query }),
+  })) as SearchRoot;
 
   const result = data?.results
     .map((item) => ({

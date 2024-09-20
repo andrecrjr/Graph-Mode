@@ -1,15 +1,22 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { auth } from "../Auth";
+import { KofiDonate } from "../Donate";
 
 // DemoSection.js
-export function DemoSection() {
+export async function DemoSection() {
+  const data = await auth();
+
   return (
-    <section className="flex justify-center">
-      <Link href="/graph/mock">
-        <Button className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
-          Demo Graph example
-        </Button>
-      </Link>
+    <section className="flex justify-center items-center">
+      <KofiDonate />
+      {!data && (
+        <Link href="/graph/mock" className="ml-4">
+          <Button className="flex items-center space-x-2">
+            See Graph Example
+          </Button>
+        </Link>
+      )}
     </section>
   );
 }

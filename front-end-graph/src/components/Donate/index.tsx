@@ -1,23 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
 import React from "react";
+import { Button } from "@/components/ui/button";
+import { Coffee } from "lucide-react";
 
-type Props = {};
-
-export const KofiDonate = (props: Props) => {
-  //   if (process.env.NODE_ENV === "production")
+export const KofiDonate = () => {
   return (
-    <a
-      href="https://ko-fi.com/B0B812WECP"
-      className="w-[125px] mt-10"
-      target="_blank"
-    >
-      <img
-        height="36"
-        className="w-[125px]"
-        src="https://storage.ko-fi.com/cdn/kofi5.png?v=3"
-        alt="Buy Me a Coffee at ko-fi.com"
-        loading="lazy"
-      />
-    </a>
+    <Link href="https://ko-fi.com/B0B812WECP">
+      <Button variant="outline" className="flex items-center space-x-2">
+        <Coffee className="h-4 w-4" />
+        <span>Buy Me a Coffee</span>
+      </Button>
+    </Link>
   );
 };
