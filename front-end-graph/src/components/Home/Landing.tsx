@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { PricingTiers } from "./Tier";
+import BuyMeCoffee from "./BuyCoffee";
 
 export default function Landing() {
   return (
@@ -23,7 +24,7 @@ export default function Landing() {
                 <Button>View Example Graph</Button>
               </Link>
               <Link href={"#why"}>
-                <Button variant="outline">Learn More</Button>
+                <Button variant="outline">Why Graph Mode?</Button>
               </Link>
             </div>
           </div>
@@ -43,33 +44,37 @@ export default function Landing() {
               <NetworkIcon className="h-12 w-12 mb-4 text-primary" />
               <h3 className="text-lg font-bold">Visualize Connections</h3>
               <p className="text-gray-500 dark:text-gray-400">
-                Effortlessly map how your notes and ideas are interlinked with a
-                dynamic, interactive graph. Gain a clear, big-picture view of
-                your entire Notion workspace.
+                Easily map out how your notes and ideas are interwoven with a
+                dynamic, interactive graph. Get a bird’s-eye view of a Notion
+                page that you chose, revealing the structure and relationships
+                within your content like never before.
               </p>
             </div>
             <div className="flex flex-col items-center text-center">
               <SearchIcon className="h-12 w-12 mb-4 text-primary" />
               <h3 className="text-lg font-bold">Enhanced Discovery</h3>
               <p className="text-gray-500 dark:text-gray-400">
-                Uncover hidden patterns, relationships, and insights buried
-                within your Notion database. Transform the way you explore and
-                understand your information.
+                Uncover hidden patterns, connections, and insights buried deep
+                within your Notion pages. Transform the way you explore,
+                navigate, and make sense of your information, enhancing your
+                workflow and understanding.
               </p>
             </div>
             <div className="flex flex-col items-center text-center">
               <LayersIcon className="h-12 w-12 mb-4 text-primary" />
-              <h3 className="text-lg font-bold">Seamless Integration</h3>
+              <h3 className="text-lg font-bold">Seamless Workflow</h3>
               <p className="text-gray-500 dark:text-gray-400">
-                Experience the power of graph visualization seamlessly
-                integrated with Notion—just log in with your Notion account and
-                unlock a whole new way to interact with your workspace!
+                Experience the power of graph visualization, seamlessly
+                integrated with your Notion workspace. Log in with your Notion
+                account to get started. After logging in, simply paste the URL
+                of the Notion page you want to visualize, and watch as your
+                content transforms into an interactive, dynamic graph!
               </p>
             </div>
           </div>
         </div>
       </section>
-      {/* <PricingTiers /> */}
+      <BuyMeCoffee />
       <section className="w-full py-12 md:py-24 lg:py-32 h-screen  bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between">
@@ -78,7 +83,7 @@ export default function Landing() {
                 Visualize Your Ideas
               </h2>
               <p className="text-gray-500 dark:text-gray-400 mb-4">
-                Turn your Notion workspace into an interactive knowledge graph.
+                Turn your Notion pages into an interactive knowledge node graph.
                 Uncover connections, navigate seamlessly, and gain fresh
                 insights into your information.
               </p>

@@ -10,6 +10,7 @@ interface GraphState {
   loadingFetchGraph: boolean;
   errorFetchGraph: boolean;
   graphMode: "DRAW" | "WATCH";
+  pageId: string;
 }
 
 export interface GraphContextType {
@@ -40,6 +41,10 @@ type Action =
   | {
       type: "LOADED_GRAPH";
       payload: boolean;
+    }
+  | {
+      type: "SET_PAGE_ID";
+      payload: string;
     };
 
 export const initialState: GraphState = {
@@ -47,6 +52,7 @@ export const initialState: GraphState = {
     nodes: [],
     links: [],
   },
+  pageId: "mock",
   graphMode: "WATCH",
   loadingFetchGraph: true,
   errorFetchGraph: false,
@@ -82,6 +88,11 @@ export function graphReducer(state: GraphState, action: Action): GraphState {
       return {
         ...state,
         loadingFetchGraph: action.payload,
+      };
+    case "SET_PAGE_ID":
+      return {
+        ...state,
+        pageId: action.payload,
       };
     default:
       return state;

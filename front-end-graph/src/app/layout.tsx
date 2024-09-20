@@ -12,7 +12,6 @@ const roboto = Roboto({ subsets: ["latin"], weight: ["100", "300", "400"] });
 export const metadata: Metadata = {
   title: "Notion Graph Mode",
   description: "Your Notion Pages with Graph View in Pages like-Obsidian",
-  category: "",
 };
 
 export default function RootLayout({

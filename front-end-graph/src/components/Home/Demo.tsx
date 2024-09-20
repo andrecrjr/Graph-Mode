@@ -9,8 +9,8 @@ export async function DemoSection() {
     return (
       <section className="flex justify-center">
         <Link href="/graph/mock">
-          <Button className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
-            Demo Graph example
+          <Button className="inline-block text-white font-semibold py-2 px-4 rounded-lg shadow">
+            See Graph Example
           </Button>
         </Link>
       </section>

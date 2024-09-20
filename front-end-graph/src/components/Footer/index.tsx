@@ -12,13 +12,9 @@ export const GeneralFooter = (props: Props) => {
         </p>
       )}
       <p className="w-8/12 mx-auto text-xs">
-        This project was initially developed as an MVP in Alpha Version.
-        However, it is open-source, and contributions are welcome. You can
-        contribute to the project on{" "}
-        <b className="underline">
-          <a href="https://github.com/andrecrjr/Notion-Graph-View">Github</a>
-        </b>
-        .
+        This project was initially developed as an MVP in BETA Version. However,
+        some feature can be a bit bug in this beggining,{" "}
+        <a href="mailto:andreandreuchiha@gmail.com">you can mail me</a>.
       </p>
     </footer>
   );

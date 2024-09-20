@@ -18,4 +18,7 @@ export const saveStorage = {
 
 export const IS_DEVELOPMENT = process.env.NODE_ENV === "development";
 
-export const uuidFormatted = (originalString:string) => `${originalString.slice(0, 8)}-${originalString.slice(8, 12)}-${originalString.slice(12, 16)}-${originalString.slice(16, 20)}-${originalString.slice(20)}`;
+export const uuidFormatted = (originalString: string) =>
+  `${originalString.slice(0, 8)}-${originalString.slice(8, 12)}-${originalString.slice(12, 16)}-${originalString.slice(16, 20)}-${originalString.slice(20)}`;
+
+export const isMock = (pageId: string) => pageId === "mock";

@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
-import { saveStorage } from "../utils";
+import { isMock, saveStorage } from "../utils";
 import {
   clearNodePositions,
   saveNodePositions,
@@ -80,17 +80,19 @@ const Sidebar = () => {
                 <Coffee className="mr-4" /> Buy me a coffee {";)"}
               </a>
             </li>
-            <li className="w-full mt-auto self-center">
-              <button
-                className="p-4 w-full hover:bg-gray-700 flex"
-                onClick={(e) => {
-                  syncPage(path);
-                  window.location.reload();
-                }}
-              >
-                <RefreshCcw className="mr-4" /> Syncronize with Notion
-              </button>
-            </li>
+            {!isMock(state.pageId) && (
+              <li className="w-full mt-auto self-center">
+                <button
+                  className="p-4 w-full hover:bg-gray-700 flex"
+                  onClick={(e) => {
+                    syncPage(path);
+                    window.location.reload();
+                  }}
+                >
+                  <RefreshCcw className="mr-4" /> Syncronize with Notion
+                </button>
+              </li>
+            )}
             <li className="w-full mt-auto self-center">
               <a className="p-4 w-full hover:bg-gray-700 flex" href="/app">
                 <ArrowLeft className="mr-4" /> Back to Home
