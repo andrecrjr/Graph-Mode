@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect } from "react";
 import { useFetchGraphData } from "../hooks/useFetchGraphData";
 import { useParams, useRouter } from "next/navigation";
