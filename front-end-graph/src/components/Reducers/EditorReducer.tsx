@@ -52,7 +52,6 @@ export const initialState: EditorState = {
   initialContentDocument: [
     {
       type: "heading",
-      content: "Your Page Title",
     },
     ...paragraphsArray,
   ],

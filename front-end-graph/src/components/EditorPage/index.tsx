@@ -1,17 +1,12 @@
 "use client";
-import { Notebook, PenIcon, Send, X } from "lucide-react";
+import { Notebook, Send, X } from "lucide-react";
 import React, { useState } from "react";
 import { Editor } from "../Editor";
 import { Button } from "../ui/button";
 import { useEditorContext } from "../Context/EditorContext";
 import { fetchServer } from "../service/Notion";
 import { useGraphContextData } from "../Context/GraphContext";
-import {
-  createOrUpdateNode,
-  IS_DEVELOPMENT,
-  saveStorage,
-  uuidFormatted,
-} from "../utils";
+import { createOrUpdateNode, IS_DEVELOPMENT, saveStorage } from "../utils";
 import { INotionPage } from "../../../types/notionPage";
 import { useToast } from "@/components/hooks/use-toast";
 
