@@ -2,11 +2,9 @@ import React from "react";
 import { IS_DEVELOPMENT } from "../utils";
 import { NotionHome } from "../svg/NotionHome";
 
-type Props = {};
-
-export const GeneralFooter = (props: Props) => {
+export const GeneralFooter = () => {
   return (
-    <footer className="mt-auto mb-12 pt-5 text-center flex justify-center flex-col items-center">
+    <footer className="mt-auto h-full pt-5 bg-gray-100 text-center flex justify-center flex-col items-center  z-50">
       <NotionHome />
       {IS_DEVELOPMENT && (
         <p className="text-center text-sm w-auto mb-2">
