@@ -11,12 +11,12 @@ export function AuthSection({ data }: { data: Session | null }) {
           <AuthButton />
         </>
       ) : (
-        <>
-          <p className="font-bold bg-yellow-200">
+        <section className="mx-2">
+          <p className="font-bold mx-auto bg-yellow-200">
             You need to log in to our Notion Integration to continue.
           </p>
           <AuthButton />
-        </>
+        </section>
       )}
     </section>
   );
