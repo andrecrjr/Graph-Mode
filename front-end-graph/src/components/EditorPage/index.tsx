@@ -6,11 +6,19 @@ import { Button } from "../ui/button";
 import { useEditorContext } from "../Context/EditorContext";
 import { fetchServer } from "../service/Notion";
 import { useGraphContextData } from "../Context/GraphContext";
-import { IS_DEVELOPMENT, saveStorage, uuidFormatted } from "../utils";
+import {
+  createOrUpdateNode,
+  IS_DEVELOPMENT,
+  saveStorage,
+  uuidFormatted,
+} from "../utils";
 import { INotionPage } from "../../../types/notionPage";
+import { useToast } from "@/components/hooks/use-toast";
 
 export default function EditorPage() {
   const [isOpen, setIsOpen] = useState(false);
+  const { toast } = useToast();
+
   const {
     state: { editorDocument, pageId, initialContentDocument },
   } = useEditorContext();
@@ -21,42 +29,37 @@ export default function EditorPage() {
   };
 
   const createOrUpdatePage = async () => {
-    if (editorDocument?.document && editorDocument.document.length > 0) {
-      const data = await fetchServer<{ data: INotionPage; graphBlocks: any[] }>(
-        "/translate/page",
-        saveStorage.get("notionKey", true),
-        {
-          method: "POST",
-          body: JSON.stringify({
-            children: editorDocument.document,
-            parentId: pageId,
-            debug: false,
-          }),
-        },
-      );
-      console.log(data);
-      // dispatch({
-      //   type: "UPDATE_NODES",
-      //   payload: {
-      //     nodes: [
-      //       {
-      //         id,
-      //         label: properties?.title.title[0].plain_text,
-      //       },
-      //     ],
-      //     links: [
-      //       {
-      //         source: id,
-      //         target: uuidFormatted(pageId),
-      //       },
-      //     ],
-      //   },
-      // });
-      //setIsOpen(false);
-      editorDocument.replaceBlocks(
-        editorDocument.document,
-        initialContentDocument,
-      );
+    try {
+      if (editorDocument?.document && editorDocument.document.length > 0) {
+        const data = await fetchServer<INotionPage>(
+          "/translate/page",
+          saveStorage.get("notionKey", true),
+          {
+            method: "POST",
+            body: JSON.stringify({
+              children: editorDocument.document,
+              parentId: pageId,
+              debug: false,
+            }),
+          },
+        );
+        dispatch({
+          type: "UPDATE_NODES",
+          payload: createOrUpdateNode(pageId, data),
+        });
+        setIsOpen(false);
+        editorDocument.replaceBlocks(
+          editorDocument.document,
+          initialContentDocument,
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: `Error`,
+        description: "Problem to create your new Page Node, please try again.",
+        className: "bg-red-500 text-white",
+      });
     }
   };
 

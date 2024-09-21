@@ -6,6 +6,7 @@ import { GraphContextProvider } from "@/components/Context/GraphContext";
 import { MainContainer } from "@/components/Layout/MainLayout";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { EditorProvider } from "@/components/Context/EditorContext";
+import { Toaster } from "@/components/ui/toaster";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["100", "300", "400"] });
 
@@ -50,6 +51,7 @@ export default function RootLayout({
             </EditorProvider>
           </GraphContextProvider>
         </MainContainer>
+        <Toaster />
         {process.env.NODE_ENV === "production" &&
           process.env.NEXT_PUBLIC_GA_TAG && (
             <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_TAG} />
