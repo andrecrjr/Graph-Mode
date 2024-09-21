@@ -19,10 +19,9 @@ const AuthButton = () => {
       ) : (
         <Button
           onClick={() => signIn("notion")}
-          className="w-fit bg-gray-700 text-white absolute top-0 right-0 mr-4 font-semibold py-2 px-4 rounded-lg shadow mt-2"
-          variant={"default"}
+          className="w-fit text-white absolute top-0 right-0 mr-4 font-semibold py-2 px-4 rounded-lg shadow mt-2"
         >
-          Login with Notion Integration
+          Login with Notion
           <img
             loading="lazy"
             alt="notion site logo"

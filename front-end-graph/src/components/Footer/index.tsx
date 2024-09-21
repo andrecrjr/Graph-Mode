@@ -4,8 +4,10 @@ import { NotionHome } from "../svg/NotionHome";
 
 export const GeneralFooter = () => {
   return (
-    <footer className="mt-auto h-full pt-5 bg-gray-100 text-center flex justify-center flex-col items-center  z-50">
-      <NotionHome />
+    <footer className="mt-auto h-auto pt-5 bg-gray-50 text-center flex justify-center flex-col items-center  z-50">
+      <div className="pb-2">
+        <NotionHome />
+      </div>
       {IS_DEVELOPMENT && (
         <p className="text-center text-sm w-auto mb-2">
           You are using <strong>localhost/development env</strong>
