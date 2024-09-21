@@ -10,8 +10,9 @@ import { EditorProvider } from "@/components/Context/EditorContext";
 const roboto = Roboto({ subsets: ["latin"], weight: ["100", "300", "400"] });
 
 export const metadata: Metadata = {
-  title: "Notion Graph Mode",
-  description: "Your Notion Pages with Graph View in Pages like-Obsidian",
+  title: "Graph Mode",
+  description:
+    "A integration to watch your Notion Pages in a Graph View like-Obsidian",
 };
 
 export default function RootLayout({
