@@ -13,7 +13,7 @@ class NotionAPI {
 
   async fetchBlockChildren(blockId, nextCursor = null, children=true) {
     try {
-      if(this.limitNotionRefresh && this.count > this.limitNotionRefresh && process.env.NODE_ENV==="development"){
+      if(this.limitNotionRefresh && this.count > this.limitNotionRefresh){
         this.rateLimit=true;
         return {id:null, results:[], hasMore:false, rateLimit:true};
       }else{
