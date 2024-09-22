@@ -9,17 +9,18 @@ export const loadNodePositions = (blockId: string) => {
 
 export const fetchAndSaveCacheData = async (pageId: string, token: string) => {
   const localStorageKey = `data-block-${pageId}`;
-  const cachedData = localStorage.getItem(localStorageKey);
-  console.log(cachedData);
+  const tempStorageKey = `data-block-temp-${pageId}`;
+  const cachedData = saveStorage.get(localStorageKey);
   saveStorage.set("notionKey", token);
 
   if (cachedData) {
-    return JSON.parse(cachedData);
+    return cachedData;
   }
 
   const data = await fetchServer(`/blocks/${pageId}`, token);
 
   saveStorage.set(localStorageKey, data);
+  saveStorage.set(tempStorageKey, data);
   return data;
 };
 

@@ -17,7 +17,10 @@ export default function EditorPage() {
   const {
     state: { editorDocument, pageId, initialContentDocument },
   } = useEditorContext();
-  const { dispatch } = useGraphContextData();
+  const {
+    dispatch,
+    state: { errorFetchGraph, loadingFetchGraph },
+  } = useGraphContextData();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -58,7 +61,12 @@ export default function EditorPage() {
     }
   };
 
-  if (pageId !== "mock" && IS_DEVELOPMENT)
+  if (
+    pageId !== "mock" &&
+    !loadingFetchGraph &&
+    !errorFetchGraph &&
+    IS_DEVELOPMENT
+  )
     return (
       <>
         <Button
