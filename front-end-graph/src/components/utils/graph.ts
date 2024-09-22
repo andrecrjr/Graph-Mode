@@ -10,6 +10,7 @@ export const loadNodePositions = (blockId: string) => {
 export const fetchAndSaveCacheData = async (pageId: string, token: string) => {
   const localStorageKey = `data-block-${pageId}`;
   const cachedData = localStorage.getItem(localStorageKey);
+  console.log(cachedData);
   saveStorage.set("notionKey", token);
 
   if (cachedData) {
