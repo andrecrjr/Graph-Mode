@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {fetchBlockChildrenRecursively} from "../controller/index.js"
+import {NotionAPI, fetchBlockChildrenRecursively} from "../controller/index.js"
 import { fileURLToPath } from 'url';
 
 import ElementProcessor from "../controller/ElementProcessor/index.js"
@@ -26,9 +26,8 @@ router.get('/blocks/:blockId', authMiddleware, async (req, res) => {
     const firstParent = await req.notionAPI.fetchBlockChildren(blockId, false, false);
     elementProcessor.processParent(firstParent)
     const elements = await fetchBlockChildrenRecursively(blockId, req.notionAPI, elementProcessor, firstParent.id);
-    res.json([...elements,{rateLimit:!req.notionAPI.getRateLimit()}]);
+    res.json(elements);
   } catch (error) {
-    console.log(error)
     res.status(404).json({ error: `Erro ao buscar filhos do bloco: ${error.message}` });
   }
 });

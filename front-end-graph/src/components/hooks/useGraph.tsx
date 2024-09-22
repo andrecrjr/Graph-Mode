@@ -13,8 +13,8 @@ export const useGraph = () => {
     RESPONSE_BREAKPOINT: 600,
     WINDOW_WIDTH: window.innerWidth,
     WINDOW_HEIGHT: window.innerHeight,
-    GRAPH_BALL_SIZE: { sm: 10, lg: 15, master: 20 },
-    GRAPH_BALL_LABEL_MARGIN: { sm: -35, lg: -45, master: -50 },
+    GRAPH_BALL_SIZE: { sm: 10, lg: 15, master: 22 },
+    GRAPH_BALL_LABEL_MARGIN: { sm: -35, lg: -45, master: -55 },
   };
 
   const mountGraph = useCallback(
@@ -69,7 +69,7 @@ export const useGraph = () => {
         .data(data.links)
         .enter()
         .append("line")
-        .attr("class", "link stroke-gray-700 dark:stroke-gray-100");
+        .attr("class", "link stroke-gray-400 dark:stroke-gray-200");
 
       const node = container
         .append("g")
@@ -88,7 +88,7 @@ export const useGraph = () => {
           `node hover:fill-blue-700 dark:hover:fill-blue-500 cursor-pointer`,
         )
         .attr("class", (d) =>
-          d?.firstParent ? "fill-gray-500" : "fill-gray-600 dark:fill-gray-200",
+          d?.firstParent ? "fill-red-600" : "fill-blue-600 dark:fill-blue-300",
         )
         .attr(
           "r",
@@ -117,7 +117,7 @@ export const useGraph = () => {
         .data(data.nodes)
         .enter()
         .append("text")
-        .attr("class", "label fill-gray-800 dark:fill-yellow-300")
+        .attr("class", "label fill-gray-700 dark:fill-yellow-300")
         .attr("text-anchor", "middle")
         .attr(
           "dy",
