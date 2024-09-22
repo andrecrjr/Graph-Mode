@@ -36,7 +36,6 @@ export const getMentionMenuItems = (
   editor: typeof schema.BlockNoteEditor,
   nodes: Node[],
 ): DefaultReactSuggestionItem[] => {
-  console.log(nodes);
   return nodes.map((node) => ({
     title: node.label,
     onItemClick: () => {

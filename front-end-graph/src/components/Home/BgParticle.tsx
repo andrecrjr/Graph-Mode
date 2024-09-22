@@ -3,6 +3,7 @@ import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { type Container, type ISourceOptions } from "@tsparticles/engine";
 import React, { useEffect, useMemo, useState } from "react";
 import { loadSlim } from "@tsparticles/slim";
+import { IS_DEVELOPMENT } from "../utils";
 
 export const BGParticle = () => {
   const [init, setInit] = useState(false);
@@ -16,7 +17,7 @@ export const BGParticle = () => {
   }, []);
 
   const particlesLoaded = async (container?: Container): Promise<void> => {
-    console.log(container);
+    IS_DEVELOPMENT && console.log(container);
   };
 
   const options: ISourceOptions = useMemo(
