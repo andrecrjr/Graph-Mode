@@ -1,9 +1,10 @@
 import React from "react";
 import { useGraphContextData } from "../Context/GraphContext";
+import { useToast } from "../hooks/use-toast";
 
 const LoadingPlaceholder: React.FC = () => {
   const {
-    state: { loadingFetchGraph },
+    state: { loadingFetchGraph, errorFetchGraph },
   } = useGraphContextData();
 
   if (loadingFetchGraph)
