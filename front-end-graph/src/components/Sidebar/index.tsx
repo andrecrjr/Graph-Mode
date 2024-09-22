@@ -33,14 +33,14 @@ const Sidebar = () => {
   return (
     <>
       <button
-        className="fixed top-4 left-4 min-w-12 z-40 p-2 flex justify-center bg-blue-500 text-white rounded-full focus:outline-none"
+        className={`fixed top-4 left-4 min-w-12 z-40 p-2 flex justify-center ${isOpen ? "bg-gray-700" : "bg-gray-800"} text-white rounded-full focus:outline-none`}
         onClick={toggleSidebar}
       >
         {isOpen ? <X /> : <Settings />}
       </button>
 
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-gray-800 text-white transform ${
+        className={`fixed top-0 left-0 h-full w-64 bg-gray-900 text-white transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out z-30`}
       >
