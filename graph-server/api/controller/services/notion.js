@@ -78,7 +78,7 @@ class NotionAPI {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to create page: ${response.statusText}`);
+        throw new Error(`Failed to create Notion page: ${response.statusText}`);
       }
 
       return response.json();

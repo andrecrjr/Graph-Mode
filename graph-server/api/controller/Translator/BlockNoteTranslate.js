@@ -51,8 +51,8 @@ class BlockNoteToNotionConverter {
       image: {
         type: 'external',
         external: {
-          url: block.props.url
-        }
+          url: block.props.url,
+        },
       }
     };
   }
@@ -71,13 +71,14 @@ class BlockNoteToNotionConverter {
   }
 
   convertFile(block) {
+    console.log(block)
     return {
       object: 'block',
       type: 'file',
       file: {
         type: 'external',
         external: {
-          url: block.props.url
+          url: block.props.url,
         }
       }
     };
@@ -103,17 +104,17 @@ class BlockNoteToNotionConverter {
         return this.convertQuote(block);
       case 'checkListItem':
         return this.convertCheckListItem(block);
-      case 'toggle':  // Novo caso adicionado
+      case 'toggle': 
         return this.convertToggle(block);
-      case 'divider':  // Novo caso adicionado
+      case 'divider':
         return this.convertDivider(block);
-      case 'callout':  // Novo caso adicionado
+      case 'callout': 
         return this.convertCallout(block);
-      case 'image':  // Novo caso adicionado
+      case 'image':
         return this.convertImage(block);
-      case 'video':  // Novo caso adicionado
+      case 'video': 
         return this.convertVideo(block);
-      case 'file':  // Novo caso adicionado
+      case 'file': 
         return this.convertFile(block);
       default:
         throw new Error(`Unsupported block type: ${block.type}`);
@@ -188,13 +189,27 @@ class BlockNoteToNotionConverter {
     };
   }
 
+  convertPageMention(item) {
+    return {
+      type: 'mention',
+      mention: {
+        type: 'page',
+        page: {
+          id: item.props.id // O ID da página mencionada
+        }
+      },
+      plain_text: item.props.label, // O texto a ser exibido
+    };
+  }
+
   convertContent(content) {
     return content.flatMap(item => {
       if (item.type === 'link') {
         return this.convertLink(item);
-      } else {
-        return this.convertText(item);
+      } else if (item.type === 'pageMention') {
+        return this.convertPageMention(item); // Novo caso adicionado para pageMention
       }
+      return this.convertText(item);
     });
   }
 
