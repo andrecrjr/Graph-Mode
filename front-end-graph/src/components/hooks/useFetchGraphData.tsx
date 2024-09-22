@@ -43,7 +43,7 @@ export const useFetchGraphData = (pageId: string) => {
     if (authData && state.nodes && state?.nodes?.nodes?.length === 0) {
       fetchGraphData();
     }
-
+    
     if (pageId === "mock" && state.nodes && state?.nodes?.nodes?.length === 0) {
       const data = processGraphData(dataMock, "mock");
       dispatch({ type: "LOADED_GRAPH", payload: false });

@@ -2,33 +2,21 @@ class NotionAPI {
   constructor(apiUrl=process.env.API_URL, apiKey) {
     this.apiUrl = apiUrl || process.env.API_URL;
     this.apiKey = apiKey;
-    this.count=0;
-    this.limitNotionRefresh=process.env.LIMIT_NOTION_REFRESH||null
-    this.rateLimit=false;
-  }
-
-  getRateLimit() {
-    return !this.rateLimit;
   }
 
   async fetchBlockChildren(blockId, nextCursor = null, children=true) {
     try {
-      if(this.limitNotionRefresh && this.count > this.limitNotionRefresh && process.env.NODE_ENV==="development"){
-        this.rateLimit=true;
-        return {id:null, results:[], hasMore:false, rateLimit:true};
-      }else{
-        this.count++
-        const url = `${this.apiUrl}/blocks/${blockId}/${children ? "children?page_size=100" : "?"}${nextCursor ? `&start_cursor=${nextCursor}` : ''}`;
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: this.getHeaders(),
-        });
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch children for block ${blockId}: ${response.statusText}`);
-        }
-        return response.json();
+      const url = `${this.apiUrl}/blocks/${blockId}/${children ? "children?page_size=100" : "?"}${nextCursor ? `&start_cursor=${nextCursor}` : ''}`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.getHeaders(),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch children for block ${blockId}: ${response.statusText}`);
       }
+
+      return response.json();
     } catch (error) {
       console.error('Error accessing the Notion API:', error);
       throw new Error(`Error accessing the Notion API: ${error.message}`);
@@ -48,7 +36,7 @@ class NotionAPI {
       const data = await res.json()
       return data;
     } catch (error) {
-      console.error(error);
+      console.log(error);
       throw new Error("Error to find pages in query")
     }
   }
