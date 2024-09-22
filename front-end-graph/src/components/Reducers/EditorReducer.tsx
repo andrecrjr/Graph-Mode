@@ -1,21 +1,9 @@
 import { BlockNoteEditor } from "@blocknote/core";
 
-// Função para gerar um array de objetos {type: "paragraph"}
-function generateParagraphs(num: number) {
-  const paragraphs = [];
-  for (let i = 0; i < num; i++) {
-    paragraphs.push({ type: "paragraph", content: [] });
-  }
-  return paragraphs;
-}
-
-// Exemplo de uso
-const paragraphsArray = generateParagraphs(25);
 interface EditorState {
   editorDocument?: BlockNoteEditor;
   pageId: string;
   notionKey: string;
-  initialContentDocument: any[];
 }
 
 export interface EditorContextType {
@@ -41,20 +29,12 @@ type Action =
       payload: {
         notionKey: string;
       };
-    }
-  | {
-      type: "RESET_EDITOR_CONTENT";
     };
+
 export const initialState: EditorState = {
   editorDocument: undefined,
   pageId: "",
   notionKey: "",
-  initialContentDocument: [
-    {
-      type: "heading",
-    },
-    ...paragraphsArray,
-  ],
 };
 
 export function editorReducer(state: EditorState, action: Action): EditorState {
@@ -73,11 +53,6 @@ export function editorReducer(state: EditorState, action: Action): EditorState {
       return {
         ...state,
         pageId: action.payload.pageId,
-      };
-    case "RESET_EDITOR_CONTENT":
-      return {
-        ...state,
-        initialContentDocument: state.initialContentDocument,
       };
     default:
       return state;

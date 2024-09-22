@@ -14,6 +14,13 @@ export default async function Page() {
         <h1 className="text-3xl sm:text-5xl mt-10 font-bold text-center mb-4">
           Graph Mode
         </h1>
+        <p className="text-sm text-center mb-6">
+          A Notion Integration to watch in graph way your Notion Workspace/Pages{" "}
+          <a href="https://obsidian.md/" className="underline" target="_blank">
+            like-Obsidian
+          </a>
+          !
+        </p>
         <AuthSection data={data} />
         <DemoSection />
       </section>

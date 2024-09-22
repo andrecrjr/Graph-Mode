@@ -19,20 +19,26 @@ import { getMentionMenuItems } from "./custom/inlinePageMention";
 import { useGraphContextData } from "../Context/GraphContext";
 import { schema } from "./custom/";
 
-
-
 export default function Editor() {
   const {
     state: {
       nodes: { nodes },
     },
   } = useGraphContextData();
-  const { editorDispatch, state } = useEditorContext();
+  const { editorDispatch } = useEditorContext();
 
   const editor = useCreateBlockNote({
     schema,
-    //@ts-ignore
-    initialContent: state.initialContentDocument,
+    initialContent: [
+      {
+        type: "heading",
+        content: "Your Page Title",
+      },
+      {
+        type: "paragraph",
+        content: [],
+      },
+    ],
   });
 
   return (
@@ -47,7 +53,6 @@ export default function Editor() {
           });
         }}
         formattingToolbar={false}
-        theme={"light"}
       >
         <FormattingToolbarController
           formattingToolbar={() => (
