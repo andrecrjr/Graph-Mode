@@ -11,7 +11,6 @@ class BlocknoteToNotionTranslateController {
             const notionData = this.blockNoteToNotion.convert(bodyData.children)
             const pageTitle = getTitleFromHeading(notionData);
             const dataWithoutHeading = removeFirstHeading(notionData);
-            console.log(bodyData.debug)
             if(bodyData.debug){
                 return {dataWithoutHeading, pageTitle}
             }
