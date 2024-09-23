@@ -16,6 +16,7 @@ export const useFetchGraphData = (pageId: string) => {
 
   const fetchGraphData = useCallback(async () => {
     try {
+      console.log(authData);
       if (authData?.user?.tokens.access_token) {
         const data = await fetchAndSaveCacheData(
           pageId,
@@ -37,14 +38,19 @@ export const useFetchGraphData = (pageId: string) => {
       dispatch({ type: "LOADED_GRAPH", payload: false });
     }
   }, [
-    authData?.user?.tokens.access_token,
+    authData,
     pageId,
     processGraphDataMemoized,
     dispatch,
   ]);
 
   useEffect(() => {
-    if (authData && state.nodes && state?.nodes?.nodes?.length === 0) {
+    if (
+      authData &&
+      state.nodes &&
+      state?.nodes?.nodes?.length === 0 &&
+      pageId !== "mock"
+    ) {
       fetchGraphData();
     }
 

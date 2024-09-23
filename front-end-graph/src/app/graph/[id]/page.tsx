@@ -1,3 +1,4 @@
+import AuthButton from "@/components/Buttons";
 import GraphComponent from "@/components/Graph";
 import React from "react";
 

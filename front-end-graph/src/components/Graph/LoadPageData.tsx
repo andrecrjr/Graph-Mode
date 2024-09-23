@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEditorContext } from "../Context/EditorContext";
 import { useGraphContextData } from "../Context/GraphContext";
 import { useToast } from "../hooks/use-toast";
+import AuthButton from "../Buttons";
 
 export function LoadPageData({ children }: { children: React.ReactNode }) {
   document.body.style.overflow = "hidden";
