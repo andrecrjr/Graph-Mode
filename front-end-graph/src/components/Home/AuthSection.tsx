@@ -7,6 +7,7 @@ export function AuthSection({ data }: { data: Session | null }) {
     <section className="w-full mt-auto flex flex-col mb-4 items-center justify-center">
       {!!data ? (
         <>
+          <label>Input your Notion Page URL</label>
           <SearchByUrl />
           <AuthButton />
         </>
