@@ -18,6 +18,7 @@ down:
 
 # Comando para reconstruir os serviços
 build:
+	@$(COMPOSE) down 
 	@$(COMPOSE) build
 
 # Comando para ver logs
