@@ -1,5 +1,4 @@
 import { auth } from "@/components/Auth";
-import AuthButton from "@/components/Buttons";
 import GraphComponent from "@/components/Graph";
 import { redirect } from "next/navigation";
 import React from "react";

@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { useToast } from "./use-toast";
 import { useGraphContextData } from "../Context/GraphContext";
+import { Menu } from "lucide-react";
 
 export default function useToastNotification() {
   const {
-    state: { errorFetchGraph },
+    state: { errorFetchGraph, loadingFetchGraph },
   } = useGraphContextData();
-  
+
   const { toast } = useToast();
 
   useEffect(() => {
@@ -19,6 +20,15 @@ export default function useToastNotification() {
       });
     }
   }, [errorFetchGraph, toast]);
+
+  useEffect(() => {
+    if (!loadingFetchGraph) {
+      toast({
+        title: "Graph Loaded!",
+        description: `You can synchronize with your Notion again in Menu!`,
+      });
+    }
+  }, [loadingFetchGraph, toast]);
 
   return;
 }

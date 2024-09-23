@@ -2,10 +2,13 @@
 import {
   ArrowLeft,
   Coffee,
+  Menu,
+  MenuSquare,
   Pin,
   PinOff,
   RefreshCcw,
   Settings,
+  Settings2,
   X,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
@@ -33,10 +36,10 @@ const Sidebar = () => {
   return (
     <>
       <button
-        className={`fixed top-4 left-4 min-w-12 z-40 p-2 flex justify-center ${isOpen ? "bg-gray-700" : "bg-gray-800"} text-white rounded-full focus:outline-none`}
+        className={`fixed top-4 left-4 z-40 p-2 flex justify-center ${isOpen ? "bg-gray-700" : "bg-gray-800"} text-white rounded-full focus:outline-none`}
         onClick={toggleSidebar}
       >
-        {isOpen ? <X /> : <Settings />}
+        {isOpen ? <X /> : <Menu />}
       </button>
 
       <div
