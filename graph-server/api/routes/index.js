@@ -36,7 +36,8 @@ router.get('/blocks/:blockId', authMiddleware, async (req, res) => {
 router.get("/only/:blockId", authMiddleware, async(req, res)=>{
   try {
     const { blockId } = req.params;
-    const elements = await req.notionAPI.fetchBlockChildren(blockId);
+    const getChildren = req.query.children === "false" ? false : true
+    const elements = await req.notionAPI.fetchBlockChildren(blockId, false, getChildren);
     res.json(elements);
   } catch (error) {
     console.error('Erro ao buscar filhos do bloco:', error);
