@@ -6,17 +6,20 @@ import Sidebar from "../Sidebar";
 import EditorPage from "../EditorPage";
 import GraphSvg from "./GraphSvg";
 import { LoadPageData } from "./LoadPageData";
+import MockPage from "../MockPage";
 
 export const GraphComponent: React.FC = () => {
   return (
-    <LoadPageData>
-      <div className="graph overflow-hidden max-w-screen">
-        <LoadingPlaceholder />
-        <Sidebar />
-        <GraphSvg />
-        <EditorPage />
-      </div>
-    </LoadPageData>
+    <MockPage>
+      <LoadPageData>
+        <div className="graph overflow-hidden max-w-screen">
+          <LoadingPlaceholder />
+          <Sidebar />
+          <GraphSvg />
+          <EditorPage />
+        </div>
+      </LoadPageData>
+    </MockPage>
   );
 };
 

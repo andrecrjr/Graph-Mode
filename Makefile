@@ -1,5 +1,7 @@
 FRONT_END_DIR=front-end-graph
 BACK_END_DIR=graph-server
+IMAGE_PREFIX = graph-mode
+
 
 COMPOSE=docker-compose -f docker-compose.dev.yaml
 
@@ -18,8 +20,19 @@ down:
 
 # Comando para reconstruir os serviços
 build:
-	@$(COMPOSE) down 
-	@$(COMPOSE) build
+	# Derrubando os containers existentes
+	$(COMPOSE) down
+	
+	# Removendo imagens Docker que começam com 'graph-mode', se existirem
+	@if docker images | grep '^$(IMAGE_PREFIX)' > /dev/null; then \
+	    echo "Removendo imagens com prefixo '$(IMAGE_PREFIX)'..."; \
+	    docker images | grep '^$(IMAGE_PREFIX)' | awk '{print $$3}' | xargs docker rmi; \
+	else \
+	    echo "Nenhuma imagem com prefixo '$(IMAGE_PREFIX)' encontrada."; \
+	fi
+	
+	# Fazendo o build dos serviços com docker-compose
+	$(COMPOSE) build
 
 # Comando para ver logs
 logs:
