@@ -28,3 +28,27 @@ export const fetchServer = async <T>(
     throw new Error(`Fetch error: ${error}`);
   }
 };
+
+export const fetchNotionServer = async <T>(
+  url: string,
+  token: string,
+  options: RequestInit = {},
+): Promise<T> => {
+  const fetchMetadata: RequestInit = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Notion-Version": "2022-06-28",
+      "Content-Type": "application/json",
+    },
+    ...options,
+  };
+
+  try {
+    const response = await fetch(`${url}`, fetchMetadata);
+
+    return await response.json();
+  } catch (error) {
+    console.error("Fetch error:", error);
+    throw new Error(`Fetch error: ${error}`);
+  }
+};
