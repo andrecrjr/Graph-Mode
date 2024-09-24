@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import dataMock from "@/components/mock.json";
 import { fetchAndSaveCacheData, processGraphData } from "../utils/graph";
 import { useSession } from "next-auth/react";
@@ -37,12 +37,7 @@ export const useFetchGraphData = (pageId: string) => {
     } finally {
       dispatch({ type: "LOADED_GRAPH", payload: false });
     }
-  }, [
-    authData,
-    pageId,
-    processGraphDataMemoized,
-    dispatch,
-  ]);
+  }, [authData, pageId, processGraphDataMemoized, dispatch]);
 
   useEffect(() => {
     if (
