@@ -13,6 +13,9 @@ const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS.split(",");
 
 app.use(cors({
   origin: function (origin, callback) {
+    if (!origin) {
+      return callback(null, true);
+    }
     if (!allowedOrigins.includes(origin)) {
       const msg = 'A política de CORS não permite acesso deste domínio.';
       return callback(new Error(msg), false);
