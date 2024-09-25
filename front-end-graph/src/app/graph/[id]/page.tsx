@@ -38,7 +38,11 @@ export async function generateMetadata(
   }
 }
 
-const GraphPage = async ({ params }: { params: { id: string } }) => {
+export default async function GraphPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const data = await auth();
   if (params.id === "mock" && data) {
     redirect("/app");
@@ -49,6 +53,4 @@ const GraphPage = async ({ params }: { params: { id: string } }) => {
       <GraphComponent />
     </div>
   );
-};
-
-export default GraphPage;
+}

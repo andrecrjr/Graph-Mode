@@ -11,7 +11,7 @@ import { INotionPage } from "../../../types/notionPage";
 import { useToast } from "@/components/hooks/use-toast";
 
 export default function EditorPage() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const { toast } = useToast();
 
   const {
@@ -25,6 +25,7 @@ export default function EditorPage() {
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+  console.log(editorDocument?.document);
 
   const createOrUpdatePage = async () => {
     try {

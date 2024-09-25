@@ -31,16 +31,7 @@ export default function Editor() {
   const editor = useCreateBlockNote({
     schema,
     //@ts-ignore
-    initialContent: [
-      ...state.initialContentDocument,
-      {
-        type: "codeBlock", // This is the custom block type
-        props: {
-          code: "const a = 10;", // The content of the block (example code)
-          language: "javascript", // Optional if you want to specify the language
-        },
-      },
-    ],
+    initialContent: [...state.initialContentDocument],
   });
 
   return (
