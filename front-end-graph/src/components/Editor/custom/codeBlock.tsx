@@ -157,7 +157,7 @@ export const insertCodeBlock = (editor: BlockNoteEditor) => ({
   onItemClick: () => {
     const currentBlock = editor.getTextCursorPosition().block;
     const codeBlock = {
-      type: "codeBlock", // Use the type registered in the schema
+      type: "codeBlock",
       props: {
         language: "javascript", // Default to JavaScript (you can change this)
         code: "",

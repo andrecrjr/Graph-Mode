@@ -10,7 +10,7 @@ function generateParagraphs(num: number) {
 }
 
 // Exemplo de uso
-const paragraphsArray = generateParagraphs(25);
+const paragraphsArray = generateParagraphs(5);
 interface EditorState {
   editorDocument?: BlockNoteEditor;
   pageId: string;

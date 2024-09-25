@@ -13,10 +13,10 @@ import { useToast } from "@/components/hooks/use-toast";
 export default function EditorPage() {
   const [isOpen, setIsOpen] = useState(true);
   const { toast } = useToast();
-
   const {
     state: { editorDocument, pageId, initialContentDocument },
   } = useEditorContext();
+  console.log(editorDocument?.document);
   const {
     dispatch,
     state: { errorFetchGraph, loadingFetchGraph },
@@ -25,7 +25,6 @@ export default function EditorPage() {
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
-  console.log(editorDocument?.document);
 
   const createOrUpdatePage = async () => {
     try {
@@ -42,10 +41,10 @@ export default function EditorPage() {
             }),
           },
         );
-        dispatch({
-          type: "UPDATE_NODES",
-          payload: createOrUpdateNode(pageId, data),
-        });
+        // dispatch({
+        //   type: "UPDATE_NODES",
+        //   payload: createOrUpdateNode(pageId, data),
+        // });
         setIsOpen(false);
         editorDocument.replaceBlocks(
           editorDocument.document,

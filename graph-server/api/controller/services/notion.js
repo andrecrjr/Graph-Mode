@@ -84,6 +84,7 @@ class NotionAPI {
       return response.json();
     } catch (error) {
       console.error('Error creating page in Notion API:', error);
+      console.log(error)
       throw new Error(`Error creating page: ${error.message}`);
     }
   }

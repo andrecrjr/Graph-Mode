@@ -98,8 +98,9 @@ class BlockNoteToNotionConverter {
         return this.convertNumberedListItem(block);
       case 'bulletListItem':
         return this.convertBulletedListItem(block);
-      case 'code':
-        return this.convertCode(block);
+      case 'code': // existing case for a standard code block
+      case 'codeBlock': // added case for your custom codeBlock
+        return this.convertCode(block); 
       case 'quote':
         return this.convertQuote(block);
       case 'checkListItem':
@@ -167,11 +168,13 @@ class BlockNoteToNotionConverter {
   }
 
   convertCode(block) {
+    console.log("code",block)
     return {
       object: 'block',
       type: 'code',
       code: {
-        rich_text: this.convertContent(block.content),
+        rich_text: this.convertContent([{...block.props, 
+              type:block.type}]),
         language: block.props.language || 'plain_text',
         color: block.props.textColor,
       }
@@ -208,9 +211,20 @@ class BlockNoteToNotionConverter {
         return this.convertLink(item);
       } else if (item.type === 'pageMention') {
         return this.convertPageMention(item); // Novo caso adicionado para pageMention
+      }else if(item.type === "codeBlock"){
+        return this.convertCodeContent(item)
       }
       return this.convertText(item);
     });
+  }
+
+  convertCodeContent(item){
+    return {
+      type: 'text',
+      text: {
+        content: `${item.code}`
+      },
+    };
   }
 
   convertText(item) {
