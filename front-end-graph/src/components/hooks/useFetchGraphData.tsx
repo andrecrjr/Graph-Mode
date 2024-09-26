@@ -16,7 +16,6 @@ export const useFetchGraphData = (pageId: string) => {
 
   const fetchGraphData = useCallback(async () => {
     try {
-      console.log(authData);
       if (authData?.user?.tokens.access_token) {
         const data = await fetchAndSaveCacheData(
           pageId,
