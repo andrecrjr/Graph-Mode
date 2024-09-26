@@ -5,7 +5,10 @@ import { useGraphContextData } from "../Context/GraphContext";
 import { Link, Node } from "../../../types/graph";
 
 export const useGraph = () => {
-  const { dispatch, state } = useGraphContextData();
+  const {
+    dispatch,
+    state: { pageId },
+  } = useGraphContextData();
 
   const WINDOW = {
     MAX_GRAPH_WIDTH: 6000,
@@ -77,10 +80,9 @@ export const useGraph = () => {
         .data(data.nodes)
         .enter()
         .append("a")
-        .attr(
-          "xlink:href",
-          (d) => `https://notion.so/${d.id.replaceAll("-", "")}`,
-        )
+        .attr("xlink:href", (node) => {
+          return `https://notion.so/${(pageId !== "mock" && node.id?.replaceAll("-", "")) || "#"}`;
+        })
         .attr("target", "_blank")
         .append("circle")
         .attr(

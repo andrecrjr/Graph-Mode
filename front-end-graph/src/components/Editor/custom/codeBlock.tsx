@@ -117,7 +117,7 @@ export const codeBlock = createReactBlockSpec(
             defaultValue={props.block.props.language}
           >
             <SelectTrigger className="w-full mb-3">
-              <SelectValue placeholder="Select a fruit" />
+              <SelectValue placeholder="Select a language" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>

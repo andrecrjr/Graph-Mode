@@ -6,7 +6,13 @@ import { Button } from "../ui/button";
 import { useEditorContext } from "../Context/EditorContext";
 import { fetchServer } from "../service/Notion";
 import { useGraphContextData } from "../Context/GraphContext";
-import { createOrUpdateNode, IS_DEVELOPMENT, saveStorage } from "../utils";
+import {
+  createOrUpdateNode,
+  IS_DEVELOPMENT,
+  isMock,
+  mockIdPage,
+  saveStorage,
+} from "../utils";
 import { INotionPage } from "../../../types/notionPage";
 import { useToast } from "@/components/hooks/use-toast";
 
@@ -29,22 +35,45 @@ export default function EditorPage() {
   const createOrUpdatePage = async () => {
     try {
       if (editorDocument?.document && editorDocument.document.length > 0) {
-        const data = await fetchServer<INotionPage>(
-          "/translate/page",
-          saveStorage.get("notionKey", true),
-          {
-            method: "POST",
-            body: JSON.stringify({
-              children: editorDocument.document,
-              parentId: pageId,
-              debug: false,
-            }),
-          },
-        );
-        // dispatch({
-        //   type: "UPDATE_NODES",
-        //   payload: createOrUpdateNode(pageId, data),
-        // });
+        let data: INotionPage;
+        if (!isMock) {
+          data = await fetchServer<INotionPage>(
+            "/translate/page",
+            saveStorage.get("notionKey", true),
+            {
+              method: "POST",
+              body: JSON.stringify({
+                children: editorDocument.document,
+                parentId: pageId,
+                debug: false,
+              }),
+            },
+          );
+        } else {
+          data = {
+            id: `mock-id-${(Math.random() * 8000).toFixed(8)}`,
+            properties: {
+              title: {
+                title: [
+                  {
+                    plain_text: "Mock example",
+                    //@ts-expect-error
+                    annotations: {},
+                    type: "page",
+                  },
+                ],
+              },
+            },
+          };
+        }
+
+        dispatch({
+          type: "UPDATE_NODES",
+          payload: createOrUpdateNode(
+            pageId === "mock" ? mockIdPage : pageId,
+            data,
+          ),
+        });
         setIsOpen(false);
         editorDocument.replaceBlocks(
           editorDocument.document,
@@ -61,12 +90,7 @@ export default function EditorPage() {
     }
   };
 
-  if (
-    pageId !== "mock" &&
-    !loadingFetchGraph &&
-    !errorFetchGraph &&
-    IS_DEVELOPMENT
-  )
+  if (!loadingFetchGraph && !errorFetchGraph && IS_DEVELOPMENT)
     return (
       <>
         <Button

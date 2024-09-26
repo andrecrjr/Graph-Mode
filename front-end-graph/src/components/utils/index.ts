@@ -23,16 +23,28 @@ export const saveStorage = {
 
 export const IS_DEVELOPMENT = process.env.NODE_ENV === "development";
 
-export const uuidFormatted = (originalString: string) =>
-  `${originalString.slice(0, 8)}-${originalString.slice(8, 12)}-${originalString.slice(12, 16)}-${originalString.slice(16, 20)}-${originalString.slice(20)}`;
+export const uuidFormatted = (originalString: string) => {
+  if (!originalString.includes("-")) {
+    return `${originalString.slice(0, 8)}-${originalString.slice(8, 12)}-${originalString.slice(12, 16)}-${originalString.slice(16, 20)}-${originalString.slice(20)}`;
+  }
+  return originalString;
+};
 
 export const isMock = (pageId: string) => pageId === "mock";
+
+export const mockIdPage = "9cd12535-3e60-4493-bc03-b5ace2e01986";
 
 export const createOrUpdateNode = (
   id: string,
   pageItem: INotionPage,
 ): { nodes: Node[]; links: Link[] } => {
-  const existingData = saveStorage.get(localStorageKey(id)) || [];
+  let existingData;
+
+  if (id === mockIdPage) {
+    existingData = saveStorage.get(localStorageKey("mock")) || [];
+  } else {
+    existingData = saveStorage.get(localStorageKey(id)) || [];
+  }
 
   const nodes = {
     nodes: [
@@ -50,8 +62,15 @@ export const createOrUpdateNode = (
       },
     ],
   };
+
+  console.log(existingData);
   const updatedNodes = [...existingData, ...nodes.nodes, ...nodes.links];
-  saveStorage.set(localStorageKey(id), updatedNodes);
+
+  if (id === mockIdPage) {
+    saveStorage.set(localStorageKey("mock"), updatedNodes);
+  } else {
+    saveStorage.set(localStorageKey(id), updatedNodes);
+  }
 
   return nodes;
 };
