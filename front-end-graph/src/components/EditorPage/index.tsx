@@ -34,9 +34,10 @@ export default function EditorPage() {
 
   const createOrUpdatePage = async () => {
     try {
+      console.log(pageId);
       if (editorDocument?.document && editorDocument.document.length > 0) {
         let data: INotionPage;
-        if (!isMock) {
+        if (!isMock(pageId)) {
           data = await fetchServer<INotionPage>(
             "/translate/page",
             saveStorage.get("notionKey", true),
@@ -49,6 +50,7 @@ export default function EditorPage() {
               }),
             },
           );
+          console.log("entrei");
         } else {
           data = {
             id: `mock-id-${(Math.random() * 8000).toFixed(8)}`,

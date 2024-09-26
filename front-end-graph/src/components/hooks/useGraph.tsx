@@ -222,7 +222,7 @@ export const useGraph = () => {
         svg.selectAll("*").remove();
       };
     },
-    [],
+    [pageId],
   );
 
   return { mountGraph };
