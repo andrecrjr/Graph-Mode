@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 import type { Metadata, ResolvingMetadata } from "next";
 import { fetchNotionServer, fetchServer } from "@/components/service/Notion";
+import { isMock } from "@/components/utils";
 
 type Props = {
   params: { id: string };
@@ -16,7 +17,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   try {
     const id = params.id;
-    if (id === "mock") {
+    if (isMock(id)) {
       return {
         title: "Example Graph",
       };

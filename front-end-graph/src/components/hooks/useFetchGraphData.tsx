@@ -53,7 +53,7 @@ export const useFetchGraphData = (pageId: string) => {
       const data = processGraphDataMemoized(dataMock);
       dispatch({ type: "LOADED_GRAPH", payload: false });
       dispatch({ type: "SET_NODES", payload: data });
-      saveStorage.set("data-block-mock", data);
+      saveStorage.set("data-block-mock", dataMock);
     }
   }, [status, authData, state.nodes, pageId, fetchGraphData, dispatch]);
 
