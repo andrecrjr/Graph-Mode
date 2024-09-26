@@ -11,7 +11,7 @@ import { INotionPage } from "../../../types/notionPage";
 import { useToast } from "@/components/hooks/use-toast";
 
 export default function EditorPage() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
   const {
     state: { editorDocument, pageId, initialContentDocument },
