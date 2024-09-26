@@ -3,8 +3,6 @@ import { createReactBlockSpec } from "@blocknote/react";
 
 import { BlockNoteEditor, PartialBlock } from "@blocknote/core";
 import { Code } from "lucide-react";
-import CodeEditor from "@uiw/react-textarea-code-editor";
-import "@uiw/react-textarea-code-editor/dist.css";
 
 import {
   Select,
