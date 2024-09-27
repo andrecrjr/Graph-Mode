@@ -21,7 +21,7 @@ export const GraphContextProvider = ({
 
   return (
     <GraphContext.Provider value={{ state, dispatch }}>
-      <LoadPageData>{children}</LoadPageData>
+      {children}
     </GraphContext.Provider>
   );
 };

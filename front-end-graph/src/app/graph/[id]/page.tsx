@@ -29,7 +29,7 @@ export async function generateMetadata(
       data?.user?.tokens?.access_token!,
     );
     return {
-      title: `${product.child_page.title} Page - Graph Mode`,
+      title: `${product.child_page?.title || null} Page - Graph Mode`,
     };
   } catch (error) {
     console.log("Error Page", error);
