@@ -49,12 +49,14 @@ export const useFetchGraphData = (pageId: string) => {
     }
 
     if (isMock(pageId) && state.nodes && state?.nodes?.nodes?.length === 0) {
+      console.log("entrei");
       const data = processGraphDataMemoized(dataMock);
+      console.log(data);
       dispatch({ type: "LOADED_GRAPH", payload: false });
       dispatch({ type: "SET_NODES", payload: data });
       saveStorage.set("data-block-mock", dataMock);
     }
-  }, [status, authData, state.nodes, pageId, fetchGraphData, dispatch]);
+  }, [status, authData, state.nodes, pageId, fetchGraphData, dispatch, processGraphDataMemoized]);
 
   return { data: state.nodes };
 };

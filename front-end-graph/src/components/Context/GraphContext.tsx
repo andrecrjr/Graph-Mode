@@ -5,6 +5,7 @@ import {
   graphReducer,
   initialState,
 } from "../Reducers/GraphData";
+import { LoadPageData } from "../Graph/LoadPageData";
 
 export const GraphContext = createContext<GraphContextType>({
   state: initialState,
@@ -20,7 +21,7 @@ export const GraphContextProvider = ({
 
   return (
     <GraphContext.Provider value={{ state, dispatch }}>
-      {children}
+      <LoadPageData>{children}</LoadPageData>
     </GraphContext.Provider>
   );
 };

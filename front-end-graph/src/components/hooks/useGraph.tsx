@@ -3,6 +3,7 @@ import React, { useCallback } from "react";
 import * as d3 from "d3";
 import { useGraphContextData } from "../Context/GraphContext";
 import { Link, Node } from "../../../types/graph";
+import { saveStorage } from "../utils";
 
 export const useGraph = () => {
   const {
@@ -170,6 +171,37 @@ export const useGraph = () => {
 
       simulation.on("end", () => {
         console.log("Simulation ended, saving node positions...");
+        // Mapeia as posições dos nós
+        const nodePositions = data.nodes?.map((node) => ({
+          id: node.id,
+          label: node.label, // Mantém o rótulo do nó (se houver)
+          x: node.x, // Usa a posição final de x gerada pela simulação
+          y: node.y, // Usa a posição final de y gerada pela simulação
+        }));
+
+        // Mapeia as posições dos links com as coordenadas corretas
+        const linkPositions = data.links?.map((link) => ({
+          source: {
+            id: link.source?.id,
+            x: link.source?.x,
+            y: link.source?.y,
+          },
+          target: {
+            id: link.target?.id,
+            x: link.target?.x,
+            y: link.target?.y,
+          },
+        }));
+
+        saveStorage.set(`coordinates-${pageId}`, {
+          nodes: nodePositions,
+          links: linkPositions,
+        });
+
+        console.log("Simulation ended, node and link positions dispatched:", {
+          nodes: nodePositions,
+          links: linkPositions,
+        });
       });
 
       const zoomed = (event: d3.D3ZoomEvent<Element, unknown>) => {

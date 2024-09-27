@@ -44,18 +44,18 @@ export default function RootLayout({
         />
       </head>
       <body className={`w-full ${roboto.className}`}>
-        <MainContainer>
-          <GraphContextProvider>
-            <EditorProvider>
-              <AuthProvider>{children}</AuthProvider>
-            </EditorProvider>
-          </GraphContextProvider>
-        </MainContainer>
-        <Toaster />
-        {process.env.NODE_ENV === "production" &&
-          process.env.NEXT_PUBLIC_GA_TAG && (
-            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_TAG} />
-          )}
+        <AuthProvider>
+          <MainContainer>
+            <GraphContextProvider>
+              <EditorProvider>{children}</EditorProvider>
+            </GraphContextProvider>
+          </MainContainer>
+          <Toaster />
+          {process.env.NODE_ENV === "production" &&
+            process.env.NEXT_PUBLIC_GA_TAG && (
+              <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_TAG} />
+            )}
+        </AuthProvider>
       </body>
     </html>
   );

@@ -11,6 +11,8 @@ interface GraphState {
   errorFetchGraph: boolean;
   graphMode: "DRAW" | "WATCH";
   pageId: string;
+  nodePositions: [];
+  linkPositions: [];
 }
 
 export interface GraphContextType {
@@ -45,6 +47,13 @@ type Action =
   | {
       type: "SET_PAGE_ID";
       payload: string;
+    }
+  | {
+      type: "SET_COORDINATES";
+      payload: {
+        nodes: Node[];
+        links: Link[];
+      };
     };
 
 export const initialState: GraphState = {
@@ -56,6 +65,8 @@ export const initialState: GraphState = {
   graphMode: "WATCH",
   loadingFetchGraph: true,
   errorFetchGraph: false,
+  nodePositions: [],
+  linkPositions: [],
 };
 
 export function graphReducer(state: GraphState, action: Action): GraphState {
@@ -93,6 +104,12 @@ export function graphReducer(state: GraphState, action: Action): GraphState {
       return {
         ...state,
         pageId: action.payload,
+      };
+    case "SET_COORDINATES":
+      return {
+        ...state,
+        nodePositions: action.payload.nodes, // Store node positions and labels
+        linkPositions: action.payload.links, // Store link positions
       };
     default:
       return state;

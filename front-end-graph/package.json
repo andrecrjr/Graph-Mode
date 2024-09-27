@@ -13,6 +13,7 @@
     "@blocknote/core": "^0.15.9",
     "@blocknote/mantine": "^0.15.9",
     "@blocknote/react": "^0.15.9",
+    "@excalidraw/excalidraw": "^0.17.6",
     "@next/third-parties": "^14.2.12",
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
