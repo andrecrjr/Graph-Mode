@@ -5,7 +5,6 @@ import {
   graphReducer,
   initialState,
 } from "../Reducers/GraphData";
-import { LoadPageData } from "../Graph/LoadPageData";
 
 export const GraphContext = createContext<GraphContextType>({
   state: initialState,

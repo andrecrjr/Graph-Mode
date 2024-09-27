@@ -171,26 +171,20 @@ export const useGraph = () => {
 
       simulation.on("end", () => {
         console.log("Simulation ended, saving node positions...");
-        // Mapeia as posições dos nós
+        // Getting node positions
         const nodePositions = data.nodes?.map((node) => ({
           id: node.id,
-          label: node.label, // Mantém o rótulo do nó (se houver)
-          x: node.x, // Usa a posição final de x gerada pela simulação
-          y: node.y, // Usa a posição final de y gerada pela simulação
+          label: node.label,
+          x: node.x,
+          y: node.y,
         }));
-
-        // Mapeia as posições dos links com as coordenadas corretas
-        const linkPositions = data.links?.map((link) => ({
-          source: {
-            id: link.source?.id,
-            x: link.source?.x,
-            y: link.source?.y,
-          },
-          target: {
-            id: link.target?.id,
-            x: link.target?.x,
-            y: link.target?.y,
-          },
+        // Getitng
+        console.log(data.links);
+        const linkPositions = data.links?.map((link: Link) => ({
+          //@ts-expect-error
+          source: link.source.id,
+          //@ts-expect-error
+          target: link.target.id,
         }));
 
         saveStorage.set(`coordinates-${pageId}`, {
