@@ -5,7 +5,21 @@ import { Button } from "../ui/button";
 
 const AuthButton = () => {
   const { data: session } = useSession();
-
+  // <Button
+  //   onClick={() => signIn("notion")}
+  //   className="w-fit text-white absolute top-0 right-0 mr-4 font-semibold py-2 px-4 rounded-lg shadow mt-2"
+  // >
+  //   Login with Notion
+  //   <img
+  //     loading="lazy"
+  //     alt="notion site logo"
+  //     className="ml-3"
+  //     height="24"
+  //     width="24"
+  //     id="provider-logo"
+  //     src="https://authjs.dev/img/providers/notion.svg"
+  //   />
+  // </Button>
   return (
     <>
       {session ? (
@@ -17,21 +31,7 @@ const AuthButton = () => {
           Logout
         </Button>
       ) : (
-        <Button
-          onClick={() => signIn("notion")}
-          className="w-fit text-white absolute top-0 right-0 mr-4 font-semibold py-2 px-4 rounded-lg shadow mt-2"
-        >
-          Login with Notion
-          <img
-            loading="lazy"
-            alt="notion site logo"
-            className="ml-3"
-            height="24"
-            width="24"
-            id="provider-logo"
-            src="https://authjs.dev/img/providers/notion.svg"
-          />
-        </Button>
+        <p>Problem with Authentication, come back later!</p>
       )}
     </>
   );
