@@ -51,42 +51,51 @@ export const GraphInExcalidraw: React.FC = () => {
       isSelected: false,
     }));
 
-    // const excalidrawArrows = links
-    //   .map((link) => {
-    //     const sourceNode = nodes.find((node) => node.id === link.source);
-    //     const targetNode = nodes.find((node) => node.id === link.target);
+    const excalidrawArrows = links
+      .map((link) => {
+        const sourceNode = nodes.find((node) => node.id === link.source);
+        const targetNode = nodes.find((node) => node.id === link.target);
 
-    //     if (sourceNode && targetNode) {
-    //       return {
-    //         type: "arrow",
-    //         id: `arrow-${link.source}-${link.target}`,
-    //         x: sourceNode.x + 15,
-    //         y: sourceNode.y,
-    //         strokeColor: "#000",
-    //         startArrowhead: null,
-    //         endArrowhead: "arrow",
-    //         seed: Math.random(),
-    //         start: {
-    //           type: "text",
-    //           id: sourceNode.id,
-    //         },
-    //         end: {
-    //           type: "text",
-    //           id: `label-${targetNode.id}`,
-    //         },
-    //       };
-    //     }
-    //     return null;
-    //   })
-    //   .filter(Boolean);
+        if (sourceNode && targetNode) {
+          const sourceGroupId = `group-${sourceNode.id}`;
+          const targetGroupId = `group-${targetNode.id}`;
 
-    // console.log(excalidrawArrows);
+          const sourceCenterX = sourceNode.x + 15;
+          const sourceCenterY = sourceNode.y + 15;
+
+          const targetCenterX = targetNode.x + 15;
+          const targetCenterY = targetNode.y + 15;
+
+          const arrow = {
+            type: "arrow",
+            id: `arrow-${link.source}-${link.target}`,
+            x: sourceCenterX,
+            y: sourceCenterY,
+            width: targetCenterX - sourceCenterX,
+            height: targetCenterY - sourceCenterY,
+            strokeColor: "#000",
+            startArrowhead: null,
+            endArrowhead: null,
+            seed: Math.random(),
+            points: [
+              [0, 0],
+              [targetCenterX - sourceCenterX, targetCenterY - sourceCenterY],
+            ],
+            boundElementIds: [sourceGroupId, targetGroupId],
+            isSelected: false,
+          };
+
+          return arrow;
+        }
+        return null;
+      })
+      .filter(Boolean);
 
     //@ts-ignore
     return convertToExcalidrawElements([
       ...excalidrawNodes,
       ...excalidrawLabels,
-      // ...excalidrawArrows,
+      ...excalidrawArrows,
     ]);
   };
 
