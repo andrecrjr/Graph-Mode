@@ -1,12 +1,10 @@
-FRONT_END_DIR=front-end-graph
-BACK_END_DIR=graph-server
+FRONT_END_DIR = front-end-graph
+BACK_END_DIR = graph-server
 IMAGE_PREFIX = graph-mode
 
+COMPOSE = docker-compose -f docker-compose.dev.yaml
 
-COMPOSE=docker-compose -f docker-compose.dev.yaml
-
-# -j3 (--jobs) to run parallels in makefile - amazing!
-run-all: install-all-deps run-dev -j3
+setup: install-bun install-all-deps run-dev
 
 install-all-deps: install_deps install_deps_server
 
@@ -38,12 +36,23 @@ build:
 logs:
 	@$(COMPOSE) logs
 
-.PHONY: all run_dev down build logs
+# Verifica se o Bun está instalado, se não estiver, instala
+install-bun:
+	@if ! command -v bun > /dev/null; then \
+		echo "Bun não encontrado. Instalando Bun..."; \
+		curl -fsSL https://bun.sh/install | bash; \
+		echo "Adicionando Bun ao PATH..."; \
+		export PATH="\$$HOME/.bun/bin:\$$PATH"; \
+	else \
+		echo "Bun já está instalado."; \
+	fi
 
-install_deps:
-	@echo "Instalando dependências na pasta $(FRONT_END_DIR)..."
-	cd $(FRONT_END_DIR) && pnpm install
+.PHONY: all run_dev down build logs install-bun install_deps install_deps_server
 
-install_deps_server:
+install_deps: install-bun
 	@echo "Instalando dependências na pasta $(FRONT_END_DIR)..."
-	cd $(BACK_END_DIR) && pnpm install
+	cd $(FRONT_END_DIR) && bun install
+
+install_deps_server: install-bun
+	@echo "Instalando dependências na pasta $(BACK_END_DIR)..."
+	cd $(BACK_END_DIR) && bun install

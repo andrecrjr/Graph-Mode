@@ -2,7 +2,7 @@ services:
   front-app:
     build: 
       context: ./front-end-graph
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.bun
     volumes:
       - ./front-end-graph:/app 
       - /app/node_modules

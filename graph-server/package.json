@@ -6,8 +6,8 @@
   "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "nodemon api/index.js",
-    "start:prod":"node api/index.js"
+    "start:dev": "bun --watch api/index.js",
+    "start:prod":"bun run api/index.js"
   },
   "keywords": [],
   "author": "André Carlos Jr.",
