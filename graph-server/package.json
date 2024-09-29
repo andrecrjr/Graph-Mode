@@ -1,13 +1,14 @@
 {
-  "name": "notion-graph",
+  "name": "translator-graph",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "type":"module",
   "scripts": {
+    "preinstall": "npx only-allow bun",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "nodemon api/index.js",
-    "start:prod":"node api/index.js"
+    "start:dev": "bun --watch api/index.js",
+    "start:prod":"bun run api/index.js"
   },
   "keywords": [],
   "author": "André Carlos Jr.",
