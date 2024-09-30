@@ -11,9 +11,9 @@ export function AuthSection({ data }: { data: Session | null }) {
           <SearchByUrl />
         </>
       ) : (
-        <section className="mx-2">
+        <section className="mx-4">
           <p className="font-bold mx-auto bg-yellow-200">
-            You need to log in to our Notion Integration to continue.
+            Please log in to Notion to continue.
           </p>
         </section>
       )}
