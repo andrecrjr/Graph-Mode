@@ -4,12 +4,11 @@ import { useFetchGraphData } from "../hooks/useFetchGraphData";
 import { useParams, useRouter } from "next/navigation";
 import { useEditorContext } from "../Context/EditorContext";
 import { useGraphContextData } from "../Context/GraphContext";
-import { useToast } from "../hooks/use-toast";
-import AuthButton from "../Buttons";
 import useToastNotification from "../hooks/useToastNotification";
 
 export function LoadPageData({ children }: { children: React.ReactNode }) {
   document.body.style.overflow = "hidden";
+  document.querySelector("header")?.remove();
 
   const { id: pageId } = useParams();
   const pageUID = pageId as string;

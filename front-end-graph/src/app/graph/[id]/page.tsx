@@ -2,8 +2,8 @@ import { auth } from "@/components/Auth";
 import GraphComponent from "@/components/Graph";
 import { redirect } from "next/navigation";
 import React from "react";
-import type { Metadata, ResolvingMetadata } from "next";
-import { fetchNotionServer, fetchServer } from "@/components/service/Notion";
+import type { Metadata } from "next";
+import { fetchNotionServer } from "@/components/service/Notion";
 
 type Props = {
   params: { id: string };
@@ -11,8 +11,7 @@ type Props = {
 };
 
 export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata,
+  { params }: Props,
 ): Promise<Metadata> {
   try {
     const id = params.id;

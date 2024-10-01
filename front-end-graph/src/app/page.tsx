@@ -11,7 +11,6 @@ export default async function Home() {
   return (
     <div className="flex flex-col mt-5 h-full">
       <BGParticle />
-      <AuthButton />
       <Landing />
       <GeneralFooter />
     </div>

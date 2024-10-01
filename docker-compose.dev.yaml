@@ -17,7 +17,7 @@ services:
   server:
     build: 
       context: ./graph-server
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.bun
     volumes:
       - ./graph-server:/server  # Mapeia o código-fonte local para o diretório de trabalho no container
       - /server/node_modules  # Evita sobrescrever node_modules com o volume local
