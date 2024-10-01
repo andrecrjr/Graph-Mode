@@ -8,7 +8,11 @@ export default function MockPage({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      {pageId === "mock" && <AuthButton />}
+      {pageId === "mock" && (
+        <div className="absolute right-3">
+          <AuthButton />
+        </div>
+      )}
       {children}
     </>
   );
