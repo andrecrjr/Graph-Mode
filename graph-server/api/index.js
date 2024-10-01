@@ -10,7 +10,7 @@ import {webhookStriperRouter} from "./routes/webhook.js"
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
-app.use(express.json());
+
 
 const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS.split(",");
 
@@ -27,9 +27,10 @@ app.use(cors({
   }
 }));
 
+app.use("/webhook", webhookStriperRouter)
+app.use(express.json());
 app.use("/", router)
 app.use("/translate", pageRouter)
-app.use("/webhook", webhookStriperRouter)
 
 // Inicializa o servidor Express
 app.listen(PORT, () => {
