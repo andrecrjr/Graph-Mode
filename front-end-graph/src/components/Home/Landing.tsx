@@ -5,6 +5,7 @@ import { PricingTiers } from "./Tier";
 import BuyMeCoffee from "./BuyCoffee";
 import { NotionHome } from "../svg/NotionHome";
 import ImprovedFeatures from "./Features";
+import CreatorSection from "./CreatorSection";
 
 export default function Landing() {
   return (
@@ -39,6 +40,7 @@ export default function Landing() {
         </Link>
       </section>
       <ImprovedFeatures />
+      <CreatorSection />
       <BuyMeCoffee />
       <section className="w-full py-12 md:py-24 lg:py-32 min-h-screen  bg-gray-100 z-10 dark:bg-gray-800 flex items-center justify-center">
         <div className="container px-4 md:px-6">

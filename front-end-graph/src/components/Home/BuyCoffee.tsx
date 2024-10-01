@@ -13,7 +13,7 @@ export default function BuyMeCoffee() {
   return (
     <section
       id="support"
-      className="w-full py-12 md:py-24 z-10 lg:py-32 bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900 dark:to-orange-900"
+      className="w-full flex py-12 min-h-screen items-center md:py-24 z-10 lg:py-32 bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900 dark:to-orange-900"
     >
       <div className="container px-4 md:px-6">
         <Card className="max-w-2xl mx-auto">
