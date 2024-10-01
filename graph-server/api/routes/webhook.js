@@ -4,8 +4,7 @@ import stripe from "stripe"
 const router = Router()
 
 
-router.post('/stripe' , 
-  express.raw({ type: 'application/json' }), async (req, res) => {
+router.post('/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'];
   let event;
   try {

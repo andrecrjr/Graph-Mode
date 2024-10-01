@@ -14,6 +14,8 @@ const PORT = process.env.PORT || 3001;
 
 const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS.split(",");
 
+app.use("/webhook", webhookStriperRouter);
+
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin && process.env.NODE_ENV === "development") {
@@ -27,7 +29,6 @@ app.use(cors({
   }
 }));
 
-app.use("/webhook", webhookStriperRouter)
 app.use(express.json());
 app.use("/", router)
 app.use("/translate", pageRouter)
