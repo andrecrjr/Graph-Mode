@@ -8,6 +8,9 @@ setup: install-bun install-all-deps run-dev
 
 install-all-deps: install_deps install_deps_server
 
+run-all:
+	make run-dev -j 3
+
 # Comando para subir os serviços em modo de desenvolvimento
 run-dev:
 	@$(COMPOSE) up
