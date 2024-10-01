@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Graph Mode",
     short_name: "Graph Mode",
-    description: "Graph Mode is the zettelkaste way to watch Notion Pages",
+    description: "Graph Mode - Zettelkasten Way to watch your Notion Pages",
     theme_color: "#d2d2d2",
     background_color: "#dedede",
     display: "standalone",
