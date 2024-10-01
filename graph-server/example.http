@@ -7,7 +7,7 @@ GET http://localhost:3001/only/ac2f9127-2a35-401c-87cb-2081a8aef1f4
 Authorization: Bearer SECRET INTERNAL TOKEN
 
 ### Search in Notion API
-POST http://localhost:3001/search
+POST http://localhost:3001/webhook/stripe
 Content-Type: application/json
 
 {
