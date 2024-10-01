@@ -4,10 +4,10 @@ import React from "react";
 
 const CreatorSection: React.FC = () => {
   return (
-    <section className="bg-gray-100 z-50 py-20 min-h-screen">
+    <section className="bg-gray-200 flex items-center z-50 py-20 min-h-screen">
       <div className="container mx-auto px-6 lg:px-20">
         <div className="bg-white shadow-md rounded-lg p-10 flex flex-col lg:flex-row items-center">
-          <div className="lg:w-1/3 w-full">
+          <div className="lg:w-1/3 w-full flex justify-center">
             <img
               className="rounded-full mx-auto lg:mx-0 w-48 h-48 object-cover shadow-lg"
               src="/myself.jpg"
@@ -27,34 +27,37 @@ const CreatorSection: React.FC = () => {
               concept of a second brain accessible to everyone using Notion.
             </p>
             <p className="text-lg text-gray-700 mb-6">
-              With a background in software engineering and a focus on
-              user-friendly front-end tools, I strive to turn complex data into
-              actionable insights. "Graph Mode" aims to help users explore and
-              visualize data effectively, taking inspiration from Zettelkasten
-              methods like those seen in Obsidian.
+              With a background in software engineering, I hope "Graph Mode"
+              aims to help users explore and visualize data effectively, taking
+              inspiration from Zettelkasten methods like those seen in Obsidian.
             </p>
             <p className="text-lg text-gray-700 mb-6">
               If you enjoy it, feel free to support or follow me on social
-              networks!
+              networks:
             </p>
-            <a
-              href="https://www.linkedin.com/in/andrecrjr/"
-              className="bg-blue-500 text-white px-6 py-3 rounded-md shadow hover:bg-blue-600 transition-all duration-200"
-            >
-              Linkedin
-            </a>
-            <a
-              href="https://andrecrjr.github.io/"
-              className="bg-gray-500 ml-2 text-white px-6 py-3 rounded-md shadow hover:bg-gray-600 transition-all duration-200"
-            >
-              Portfolio
-            </a>
-            <a
-              href="https://ko-fi.com/andrecrjr"
-              className="bg-gray-500 ml-2 text-white px-6 py-3 rounded-md shadow hover:bg-gray-600 transition-all duration-200"
-            >
-              Ko-fi
-            </a>
+            <section className="w-full flex-col flex md:flex-row py-2">
+              <a
+                href="https://ko-fi.com/andrecrjr"
+                target="_blank"
+                className="bg-yellow-400 ml-2 mt-2 md:mt-0  text-black px-6 py-3 rounded-md shadow hover:bg-yellow-500 transition-all duration-200"
+              >
+                Ko-fi
+              </a>
+              <a
+                href="https://www.linkedin.com/in/andrecrjr/"
+                target="_blank"
+                className="bg-blue-500 ml-2 mt-2 md:mt-0  text-white px-6 py-3 rounded-md shadow hover:bg-blue-600 transition-all duration-200"
+              >
+                Linkedin
+              </a>
+              <a
+                href="https://andrecrjr.github.io/"
+                target="_blank"
+                className="bg-gray-500 ml-2 mt-2 md:mt-0  text-white px-6 py-3 rounded-md shadow hover:bg-gray-600 transition-all duration-200"
+              >
+                Portfolio
+              </a>
+            </section>
           </div>
         </div>
       </div>
