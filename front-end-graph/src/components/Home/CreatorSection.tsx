@@ -11,7 +11,7 @@ const CreatorSection: React.FC = () => {
             <img
               className="rounded-full mx-auto lg:mx-0 w-48 h-48 object-cover shadow-lg"
               src="/myself.jpg"
-              alt="Photo of the Creator"
+              alt="Photo of the Myself AC. Junior"
               loading="lazy"
             />
           </div>
