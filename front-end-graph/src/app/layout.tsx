@@ -8,6 +8,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { EditorProvider } from "@/components/Context/EditorContext";
 import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/Header";
+import ButtonPWA from "@/components/Buttons/InstallPWA";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["100", "300", "400"] });
 export const metadata: Metadata = {
@@ -49,6 +50,7 @@ export default function RootLayout({
           <MainContainer>
             <GraphContextProvider>
               <EditorProvider>{children}</EditorProvider>
+              <ButtonPWA />
             </GraphContextProvider>
           </MainContainer>
           <Toaster />

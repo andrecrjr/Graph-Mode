@@ -5,15 +5,11 @@ import { Button } from "../ui/button";
 
 const AuthButton = () => {
   const { data: session } = useSession();
-  
+
   return (
     <>
       {session ? (
-        <Button
-          onClick={() => signOut()}
-          className="fixed top-0 right-0 mr-4"
-          variant="ghost"
-        >
+        <Button onClick={() => signOut()} variant="ghost">
           Logout
         </Button>
       ) : (
