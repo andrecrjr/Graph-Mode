@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, MouseEvent } from "react";
 import { Button } from "../ui/button";
+import { X } from "lucide-react";
 
 interface DeferredPrompt extends Event {
   prompt: () => void;
@@ -12,16 +13,26 @@ function ButtonPWA() {
     null,
   );
   const [isInstallable, setIsInstallable] = useState<boolean>(false);
+  const [isHidden, setIsHidden] = useState<boolean>(false);
 
   useEffect(() => {
+    const hideDate = localStorage.getItem("hideDate");
+    if (hideDate) {
+      const hideUntil = new Date(hideDate);
+      const now = new Date();
+      if (now < hideUntil) {
+        setIsHidden(true);
+        return;
+      } else {
+        localStorage.removeItem("hideDate");
+      }
+    }
+
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
-      console.log(e);
       setDeferredPrompt(e as DeferredPrompt);
       setIsInstallable(true);
     };
-
-    console.log("estou aqui");
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
@@ -48,18 +59,30 @@ function ButtonPWA() {
     }
   };
 
-  if (isInstallable) {
-    return (
-      <section className="fixed bottom-0 m-4 z-50 bg-transparent">
-        <Button
-          className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full mx-auto"
-          onClick={handleInstallClick}
-        >
-          Add Graph Mode to Home Screen
-        </Button>
-      </section>
-    );
+  const handleClose = () => {
+    setIsHidden(true);
+    const hideDate = new Date();
+    hideDate.setMinutes(hideDate.getMinutes() + 90);
+    localStorage.setItem("hideDate", hideDate.toISOString());
+  };
+
+  if (isHidden || !isInstallable) {
+    return null;
   }
+
+  return (
+    <section className="fixed bottom-0 m-4 z-50 bg-transparent w-auto flex flex-col">
+      <span className="self-end cursor-pointer" onClick={handleClose}>
+        <X />
+      </span>
+      <Button
+        className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full mx-auto"
+        onClick={handleInstallClick}
+      >
+        Add Graph Mode to Home Screen
+      </Button>
+    </section>
+  );
 }
 
 export default ButtonPWA;
