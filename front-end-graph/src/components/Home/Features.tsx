@@ -52,10 +52,11 @@ export default function ImprovedFeatures() {
               Seamless Cloud Integration
             </h3>
             <p className="text-gray-500 dark:text-gray-400">
-              Experience the power of graph visualization, seamlessly integrated
-              with your cloud-based Notion workspace. Log in with your Notion
-              account, paste any page URL, and watch as your content transforms
-              into an interactive, dynamic graph - all data from Notion!
+              Experience the power of graph visualization, seamlessly synced
+              between devices with your cloud-based Notion workspace. Log in
+              with your Notion account, paste any page URL, and watch as your
+              content transforms into an interactive, dynamic graph - accessible
+              anywhere on your smartphone, tablet, or computer.
             </p>
           </div>
           {/* <div className="text-center mb-3 sm:mb-0">
