@@ -25,7 +25,6 @@ export const History = () => {
         <ul>
           {history.slice(0, 4).map((item) => {
             const pageId = item[0].replace("data-block-", "");
-            console.log(item[0]);
             return (
               <li key={item[0]}>
                 <Link href={`/graph/${pageId}`} className="underline pb-2">
