@@ -1,6 +1,6 @@
 import { Link, Node } from "../../../types/graph";
 import { INotionPage } from "../../../types/notionPage";
-
+import Stripe from "stripe";
 export const localStorageKey = (pageId: string) => `data-block-${pageId}`;
 
 export const saveStorage = {
@@ -77,3 +77,5 @@ export const createOrUpdateNode = (
 
   return nodes;
 };
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
