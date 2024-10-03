@@ -14,7 +14,11 @@ const AuthButton = () => {
         </Button>
       ) : (
         <Button
-          onClick={() => signIn("notion")}
+          onClick={() =>
+            signIn("notion", {
+              callbackUrl: "/app",
+            })
+          }
           className="w-fit text-white top-0 right-0 mr-4 font-semibold py-2 px-4 rounded-lg shadow mt-2 z-50"
         >
           Login with Notion
