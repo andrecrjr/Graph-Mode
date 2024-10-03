@@ -9,14 +9,12 @@ export function AuthSection({ data }: { data: Session | null }) {
         <>
           <label>Input your Notion Page URL</label>
           <SearchByUrl />
-          <AuthButton />
         </>
       ) : (
-        <section className="mx-2">
+        <section className="mx-4">
           <p className="font-bold mx-auto bg-yellow-200">
-            You need to log in to our Notion Integration to continue.
+            Please log in to Notion to continue.
           </p>
-          <AuthButton />
         </section>
       )}
     </section>

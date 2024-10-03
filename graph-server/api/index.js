@@ -2,14 +2,19 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import router from './routes/index.js';
+
 import { pageRouter } from './routes/CRUDNotion.js';
+import {webhookStriperRouter} from "./routes/webhook.js"
+
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
-app.use(express.json());
+
 
 const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS.split(",");
+
+app.use("/webhook", webhookStriperRouter);
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -24,6 +29,7 @@ app.use(cors({
   }
 }));
 
+app.use(express.json());
 app.use("/", router)
 app.use("/translate", pageRouter)
 

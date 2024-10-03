@@ -28,7 +28,7 @@ export const useFetchGraphData = (pageId: string) => {
         throw new Error("Problem no data returned from API");
       }
     } catch (error) {
-      const tempData = saveStorage.get(`data-block-temp-${pageId}`);
+      const tempData = saveStorage.get(`temp-data-blocks-${pageId}`);
       const processedGraphData = processGraphDataMemoized(tempData);
       dispatch({ type: "SET_NODES", payload: processedGraphData });
       dispatch({ type: "ERROR_GRAPH", payload: true });

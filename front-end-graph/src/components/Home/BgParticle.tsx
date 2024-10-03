@@ -135,7 +135,7 @@ export const BGParticle = () => {
       retina_detect: true,
       fullScreen: {
         enable: true,
-        zIndex: -5,
+        zIndex: -15,
       },
     }),
     [],

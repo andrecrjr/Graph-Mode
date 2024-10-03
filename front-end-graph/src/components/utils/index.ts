@@ -19,6 +19,9 @@ export const saveStorage = {
     localStorage.removeItem(key);
     return true;
   },
+  getAll: () => {
+    return globalThis.localStorage;
+  },
 };
 
 export const IS_DEVELOPMENT = process.env.NODE_ENV === "development";

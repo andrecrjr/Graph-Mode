@@ -9,17 +9,17 @@ const AuthButton = () => {
   return (
     <>
       {session ? (
-        <Button
-          onClick={() => signOut()}
-          className="absolute top-0 right-0 mr-4"
-          variant="ghost"
-        >
+        <Button onClick={() => signOut()} variant="ghost">
           Logout
         </Button>
       ) : (
         <Button
-          onClick={() => signIn("notion")}
-          className="w-fit text-white absolute top-0 right-0 mr-4 font-semibold py-2 px-4 rounded-lg shadow mt-2"
+          onClick={() =>
+            signIn("notion", {
+              callbackUrl: "/app",
+            })
+          }
+          className="w-fit text-white top-0 right-0 mr-4 font-semibold py-2 px-4 rounded-lg shadow mt-2 z-50"
         >
           Login with Notion
           <img

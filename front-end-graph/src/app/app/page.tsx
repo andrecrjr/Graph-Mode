@@ -4,6 +4,7 @@ import { DemoSection } from "@/components/Home/Demo";
 import { auth } from "@/components/Auth";
 import { GeneralFooter } from "@/components/Footer";
 import { BGParticle } from "@/components/Home/BgParticle";
+import { History } from "@/components/History";
 
 export default async function Page() {
   const data = await auth();
@@ -17,6 +18,7 @@ export default async function Page() {
         </h1>
         <AuthSection data={data} />
         <DemoSection />
+        <History />
       </section>
       <GeneralFooter />
     </section>

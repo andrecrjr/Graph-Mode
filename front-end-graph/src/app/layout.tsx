@@ -7,13 +7,14 @@ import { MainContainer } from "@/components/Layout/MainLayout";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { EditorProvider } from "@/components/Context/EditorContext";
 import { Toaster } from "@/components/ui/toaster";
+import Header from "@/components/Header";
+import ButtonPWA from "@/components/Buttons/InstallPWA";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["100", "300", "400"] });
-
 export const metadata: Metadata = {
   title: "Graph Mode",
   description:
-    "A integration to watch your Notion Pages in a Graph View like-Obsidian",
+    "A integration to watch your Notion Pages in a Graph View like-Zettelkasten and Obsidian",
 };
 
 export default function RootLayout({
@@ -26,7 +27,7 @@ export default function RootLayout({
     "@type": ["WebApplication", "MobileApplication"],
     name: "Notion Graph Mode",
     description:
-      "Transform your Notion pages into an interactive graphic view.",
+      "Transform your Notion pages into an interactive Zettelkasten/Graph view.",
     operatingSystem: "All",
     applicationCategory: "ProductivityApplication",
   };
@@ -44,18 +45,20 @@ export default function RootLayout({
         />
       </head>
       <body className={`w-full ${roboto.className}`}>
-        <MainContainer>
-          <GraphContextProvider>
-            <EditorProvider>
-              <AuthProvider>{children}</AuthProvider>
-            </EditorProvider>
-          </GraphContextProvider>
-        </MainContainer>
-        <Toaster />
-        {process.env.NODE_ENV === "production" &&
-          process.env.NEXT_PUBLIC_GA_TAG && (
-            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_TAG} />
-          )}
+        <AuthProvider>
+          <Header />
+          <MainContainer>
+            <GraphContextProvider>
+              <EditorProvider>{children}</EditorProvider>
+              <ButtonPWA />
+            </GraphContextProvider>
+          </MainContainer>
+          <Toaster />
+          {process.env.NODE_ENV === "production" &&
+            process.env.NEXT_PUBLIC_GA_TAG && (
+              <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_TAG} />
+            )}
+        </AuthProvider>
       </body>
     </html>
   );
