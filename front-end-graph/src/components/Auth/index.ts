@@ -1,5 +1,6 @@
 import Notion from "@auth/core/providers/notion";
 import NextAuth from "next-auth";
+import Stripe from "stripe";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: [
@@ -30,3 +31,5 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   },
   debug: process.env.NODE_ENV === "development",
 });
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);

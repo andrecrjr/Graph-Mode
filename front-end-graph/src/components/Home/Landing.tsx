@@ -6,6 +6,7 @@ import BuyMeCoffee from "./BuyCoffee";
 import { NotionHome } from "../svg/NotionHome";
 import ImprovedFeatures from "./Features";
 import CreatorSection from "./CreatorSection";
+import { ModalCheckout } from "../Stripe/EmbeddedCheckout";
 
 export default function Landing() {
   return (

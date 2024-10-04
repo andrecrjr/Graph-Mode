@@ -1,4 +1,4 @@
-import { stripe } from "@/components/utils";
+import { stripe } from "@/components/Auth";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -11,6 +11,7 @@ export async function POST(request: Request) {
       line_items: [
         {
           price: priceId,
+          quantity: 1,
         },
       ],
       mode: "subscription",
@@ -22,7 +23,7 @@ export async function POST(request: Request) {
       client_secret: session.client_secret,
     });
   } catch (error: any) {
-    console.error(error);
+    console.log(error);
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
