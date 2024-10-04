@@ -10,11 +10,15 @@ import {
   useRef,
   useState,
   forwardRef,
-  Ref,
 } from "react";
-import { Button } from "../ui/button";
+import { X } from "lucide-react";
 
-export const ModalCheckout = () => {
+export interface IModalCheckoutRef {
+  open: () => void;
+  close: () => void;
+}
+
+export const ModalCheckout = forwardRef<IModalCheckoutRef>(({}, ref) => {
   const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
   );
@@ -27,7 +31,9 @@ export const ModalCheckout = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ priceId: "price_1Q5zSuGy0EGoaKU3fFCuS17k" }),
+      body: JSON.stringify({
+        priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
+      }),
     })
       .then((res) => res.json())
       .then((data) => data.client_secret);
@@ -38,7 +44,6 @@ export const ModalCheckout = () => {
   const handleCheckoutClick = () => {
     setShowCheckout(true);
     modalRef.current?.showModal();
-    return showCheckout;
   };
 
   const handleCloseModal = () => {
@@ -46,12 +51,27 @@ export const ModalCheckout = () => {
     modalRef.current?.close();
   };
 
+  useImperativeHandle(ref, () => {
+    return {
+      open: () => {
+        return handleCheckoutClick();
+      },
+      close: () => {
+        return handleCloseModal();
+      },
+    };
+  });
+
   return (
     <div id="checkout" className="my-4">
-      <Button className="btn" onClick={handleCheckoutClick}>
-        Buy
-      </Button>
       <dialog ref={modalRef} className="modal w-8/12">
+        <div className="modal-action">
+          <form method="dialog">
+            <button className="absolute right-0" onClick={handleCloseModal}>
+              <X />
+            </button>
+          </form>
+        </div>
         <div className="modal-box w-100">
           <div className="py-4">
             {showCheckout && (
@@ -63,15 +83,10 @@ export const ModalCheckout = () => {
               </EmbeddedCheckoutProvider>
             )}
           </div>
-          <div className="modal-action">
-            <form method="dialog">
-              <button className="btn" onClick={handleCloseModal}>
-                Close
-              </button>
-            </form>
-          </div>
         </div>
       </dialog>
     </div>
   );
-};
+});
+
+ModalCheckout.displayName = "ModalCheckout";

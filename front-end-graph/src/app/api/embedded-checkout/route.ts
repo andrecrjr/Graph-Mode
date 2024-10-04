@@ -1,8 +1,9 @@
-import { stripe } from "@/components/Auth";
+import { auth, stripe } from "@/components/Auth";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
+    const data = await auth();
     const { priceId } = await request.json();
 
     const session = await stripe.checkout.sessions.create({
@@ -14,6 +15,9 @@ export async function POST(request: Request) {
           quantity: 1,
         },
       ],
+      metadata: {
+        notionUserId: data?.user.id || "",
+      },
       mode: "subscription",
       return_url: `${request.headers.get("origin")}/return?session_id={CHECKOUT_SESSION_ID}`,
     });

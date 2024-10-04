@@ -1,16 +1,17 @@
-import { stripe } from "@/components/utils";
-
+import { stripe } from "@/components/Auth";
 
 async function getSession(sessionId: string) {
   const session = await stripe.checkout.sessions.retrieve(sessionId!);
   return session;
 }
 
-export default async function CheckoutReturn({ searchParams }) {
+export default async function CheckoutReturn({
+  searchParams,
+}: {
+  searchParams: { session_id: string };
+}) {
   const sessionId = searchParams.session_id;
   const session = await getSession(sessionId);
-
-  console.log(session);
 
   if (session?.status === "open") {
     return <p>Payment did not work.</p>;
