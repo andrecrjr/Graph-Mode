@@ -5,16 +5,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "preinstall": "npx only-allow bun",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "bun --watch api/index.js",
-    "start:prod": "bun run api/index.js"
+    "start:dev": "nodemon api/index.js",
+    "start:prod": "node run api/index.js"
   },
   "keywords": [],
   "author": "André Carlos Jr.",
   "license": "ISC",
   "dependencies": {
-    "bun": "latest",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",

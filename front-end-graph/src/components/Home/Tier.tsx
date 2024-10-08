@@ -9,15 +9,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { CheckIcon } from "lucide-react";
-import { IModalCheckoutRef, ModalCheckout } from "../Stripe/EmbeddedCheckout";
-import { useRef } from "react";
 import { useSession, signIn } from "next-auth/react";
-import AuthButton from "../Buttons";
+import { EmbeddedCheckoutButton } from "../Stripe/EmbeddedButton";
 
 export function PricingTiers() {
   const data = useSession();
-  const modalCheckoutRef = useRef<IModalCheckoutRef>(null);
-  console.log(data);
 
   return (
     <section
@@ -63,7 +59,9 @@ export function PricingTiers() {
           <Card>
             <CardHeader>
               <CardTitle>Monthly Tier</CardTitle>
-              <CardDescription>Premium tier, perfector for heavy users and creativete docs</CardDescription>
+              <CardDescription>
+                Premium tier, perfect for heavy users and creative documents
+              </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="text-4xl font-bold">
@@ -72,16 +70,18 @@ export function PricingTiers() {
               <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
-                  Unlimited Notion fetchs to get entire pages inside your page
+                  Unlimited Notion fetches: Retrieve entire pages within your
+                  graph.
                 </li>
 
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
-                  Unlimited Fast Notes creation per day
+                  Unlimited Fast Notes: Create as many notes per day as you
+                  need.
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
-                  Graph Excalidraw Mode
+                  Graph Excalidraw Mode: Visualize your ideas with ease.
                 </li>
               </ul>
             </CardContent>
@@ -107,19 +107,7 @@ export function PricingTiers() {
                   </i>
                 </section>
               )}
-              {!!data.data && (
-                <>
-                  <Button
-                    className="w-full"
-                    onClick={() => {
-                      modalCheckoutRef.current?.open();
-                    }}
-                  >
-                    Subscribe Now
-                  </Button>
-                  <ModalCheckout ref={modalCheckoutRef} />
-                </>
-              )}
+              {!!data.data && <EmbeddedCheckoutButton />}
             </CardFooter>
           </Card>
         </div>
