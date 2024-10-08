@@ -6,6 +6,7 @@ declare module "next-auth" {
       tokens: {
         access_token?: string;
       };
+      subscriptionId?: string | null;
     } & DefaultSession["user"];
   }
 }

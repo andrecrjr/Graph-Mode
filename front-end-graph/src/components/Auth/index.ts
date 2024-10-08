@@ -22,6 +22,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     },
     async session({ session, token, user }) {
       const userData = token.user;
+      // const newData = await fetch("", {
+      //   method: "POST",
+      // });
       session.user = userData as any;
       return session;
     },
