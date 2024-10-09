@@ -8,8 +8,11 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { getSession } from "next-auth/react";
 
-export function SubscriptionSettings() {
+export async function SubscriptionSettings() {
+  const data = await getSession();
+  console.log(data);
   return (
     <Card className="w-6/12 mx-auto mt-4">
       <CardHeader>

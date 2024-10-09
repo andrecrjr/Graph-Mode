@@ -16,7 +16,7 @@ export async function POST(request: Request) {
         },
       ],
       metadata: {
-        notionUserId: data?.user.id || "",
+        notionUserId: data?.user?.email || "",
       },
       mode: "subscription",
       return_url: `${request.headers.get("origin")}/return?session_id={CHECKOUT_SESSION_ID}`,

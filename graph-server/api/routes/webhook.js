@@ -1,5 +1,6 @@
 import express, { Router } from "express";
 import stripe from "stripe"
+import { RedisController } from "../controller/RedisController/index.js";
 
 const router = Router()
 
@@ -12,20 +13,25 @@ router.post('/stripe', express.raw({ type: 'application/json' }), async (req, re
     res.status(400).send(`Webhook Error: ${err.message}`);
     return;
   }
-
-  switch (event.type) {
-    case "checkout.session.completed":
-      if(event.data.object.payment_status==="paid"){
-        console.log("paid", event.data.object)
-      }
-    case "customer.subscription.deleted":
-        console.log(`Usuário saiu da inscrição :( ${event.data.object.status}`)
-        // remover o usuário daqui
-    default:
-      console.log(`Unhandled event type ${event.type}`);
+  const userController = new RedisController()
+  if(event.type === "checkout.session.completed"){
+    if(event.data.object.payment_status==="paid"){
+        const data = await userController.getKey(`notion-${event.data.object.metadata.notionUserId}`)
+        if(!data){
+          await userController.setKey(`notion-${event.data.object.metadata.notionUserId}`, {"subscriptionId": event.data.object.subscription})
+          return res.status(200).send();
+        }
+        await userController.setKey(`notion-${event.data.object.metadata.notionUserId}`,
+            {...data, ...{"subscriptionId": event.data.object.subscription}})
+        return res.status(200).send();
+    }
   }
 
-  res.status(200).send();
+  if(event.type === "customer.subscription.deleted"){
+    console.log("removido", event.data.object)
+  }
+
+  return res.status(200).send();
 });
 
 export {router as webhookStriperRouter};

@@ -14,20 +14,40 @@ services:
       - app-network
     depends_on:
       - server
+      - redis
+
   server:
     build: 
       context: ./graph-server
       dockerfile: Dockerfile.bun
     volumes:
-      - ./graph-server:/server  # Mapeia o código-fonte local para o diretório de trabalho no container
-      - /server/node_modules  # Evita sobrescrever node_modules com o volume local
+      - ./graph-server:/server 
+      - /server/node_modules
     env_file:
-      - ./graph-server/.env  # Caminho para o arquivo .env
+      - ./graph-server/.env
     ports:
       - "3001:3001"
     networks:
       - app-network
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    command: ["redis-server", "--requirepass", "root"]
+    volumes:
+      - redis-data:/data 
+    ports:
+      - "6379:6379" 
+    networks:
+      - app-network
+    environment:
+      - REDIS_PASSWORD=root  # Configurando a senha
 
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  redis-data:
+    driver: local

@@ -1,1 +1,0 @@
-{ "dependencies": { "@stripe/react-stripe-js": "^2.8.0", "@stripe/stripe-js": "^4.6.0", "stripe": "^17.1.0" } }
