@@ -3,93 +3,21 @@ import { Notebook, Send, X } from "lucide-react";
 import React, { useState } from "react";
 import { Editor } from "../Editor";
 import { Button } from "../ui/button";
-import { useEditorContext } from "../Context/EditorContext";
-import { fetchServer } from "../service/Notion";
 import { useGraphContextData } from "../Context/GraphContext";
-import {
-  createOrUpdateNode,
-  IS_DEVELOPMENT,
-  isMock,
-  mockIdPage,
-  saveStorage,
-} from "../utils";
-import { INotionPage } from "../../../types/notionPage";
-import { useToast } from "@/components/hooks/use-toast";
+import { IS_DEVELOPMENT } from "../utils";
+import SelectEditorBar from "./SelectNodeBar";
+import { useEditorActionPage } from "../hooks/useEditorAction";
 
 export default function EditorPage() {
-  const [isOpen, setIsOpen] = useState(false);
-  const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState(true);
+  const { createOrUpdatePage } = useEditorActionPage();
+
   const {
-    state: { editorDocument, pageId, initialContentDocument },
-  } = useEditorContext();
-  console.log(editorDocument?.document);
-  const {
-    dispatch,
     state: { errorFetchGraph, loadingFetchGraph },
   } = useGraphContextData();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
-  };
-
-  const createOrUpdatePage = async () => {
-    try {
-      console.log(pageId);
-      if (editorDocument?.document && editorDocument.document.length > 0) {
-        let data: INotionPage;
-        if (!isMock(pageId)) {
-          data = await fetchServer<INotionPage>(
-            "/translate/page",
-            saveStorage.get("notionKey", true),
-            {
-              method: "POST",
-              body: JSON.stringify({
-                children: editorDocument.document,
-                parentId: pageId,
-                debug: false,
-              }),
-            },
-          );
-          console.log("entrei");
-        } else {
-          data = {
-            id: `mock-id-${(Math.random() * 8000).toFixed(8)}`,
-            properties: {
-              title: {
-                title: [
-                  {
-                    plain_text: "Mock example",
-                    //@ts-expect-error
-                    annotations: {},
-                    type: "page",
-                  },
-                ],
-              },
-            },
-          };
-        }
-
-        dispatch({
-          type: "UPDATE_NODES",
-          payload: createOrUpdateNode(
-            pageId === "mock" ? mockIdPage : pageId,
-            data,
-          ),
-        });
-        setIsOpen(false);
-        editorDocument.replaceBlocks(
-          editorDocument.document,
-          initialContentDocument,
-        );
-      }
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: `Error`,
-        description: "Problem to create your new Page Node, please try again.",
-        className: "bg-red-500 text-white",
-      });
-    }
   };
 
   if (!loadingFetchGraph && !errorFetchGraph && IS_DEVELOPMENT)
@@ -110,13 +38,19 @@ export default function EditorPage() {
           <Send />
         </Button>
         <div
-          className={`fixed top-0 right-0 h-full w-full sm:w-8/12 bg-white overflow-y-scroll dark:bg-gray-800 transform ${
+          className={`fixed top-0 right-0 h-full w-full sm:w-8/12 bg-white overflow-y-scroll dark:bg-gray-800 transform pt-10 ${
             !isOpen ? "translate-x-full" : "translate-x-0"
           } transition-transform duration-200 ease-in-out z-40`}
         >
-          <div className="mt-20">
+          <section>
+            <div className="px-8">
+              <p className="italic text-gray-500">
+                Heading will be your title page in Notion
+              </p>
+              <SelectEditorBar />
+            </div>
             <Editor />
-          </div>
+          </section>
         </div>
       </>
     );
