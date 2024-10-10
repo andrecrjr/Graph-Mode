@@ -9,7 +9,7 @@ import SelectEditorBar from "./SelectNodeBar";
 import { useEditorActionPage } from "../hooks/useEditorAction";
 
 export default function EditorPage() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const { createOrUpdatePage } = useEditorActionPage();
 
   const {

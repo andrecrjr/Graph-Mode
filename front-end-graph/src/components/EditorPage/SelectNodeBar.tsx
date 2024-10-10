@@ -14,7 +14,7 @@ import { useEditorContext } from "../Context/EditorContext";
 
 const SelectEditorBar: React.FC = () => {
   const {
-    state: { nodes, pageId },
+    state: { nodes },
   } = useGraphContextData();
   const { editorDispatch } = useEditorContext();
   if (nodes.nodes)
