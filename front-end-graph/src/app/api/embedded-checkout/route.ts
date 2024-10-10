@@ -5,7 +5,6 @@ export async function POST(request: Request) {
   try {
     const data = await auth();
     const { priceId } = await request.json();
-
     const session = await stripe.checkout.sessions.create({
       ui_mode: "embedded",
       payment_method_types: ["card"],
@@ -16,7 +15,7 @@ export async function POST(request: Request) {
         },
       ],
       metadata: {
-        notionUserId: data?.user?.email || "",
+        notionUserId: data?.user?.person?.email || "",
       },
       mode: "subscription",
       return_url: `${request.headers.get("origin")}/return?session_id={CHECKOUT_SESSION_ID}`,

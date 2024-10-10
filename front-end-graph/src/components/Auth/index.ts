@@ -11,16 +11,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       async profile(profile, tokens) {
         const { access_token, workspace_name, workspace_id } = tokens;
         profile.tokens = { access_token, workspace_name, workspace_id };
-        console.log("perfil", profile);
-        const resp = await fetch(process.env.SERVER_API + "/user", {
-          method: "POST",
-          body: JSON.stringify({ ...profile }),
-          headers: {
-            Authorization: `Bearer ${tokens.access_token}`,
-          },
-        });
-        const data = await resp.json();
-        profile.subData = data;
+
         return profile;
       },
     }),
@@ -32,8 +23,16 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     },
     async session({ session, token, user }) {
       const userData = token.user as NotionProfile;
-
-      session.user = userData as any;
+      const resp = await fetch(process.env.SERVER_API + "/user", {
+        method: "POST",
+        body: JSON.stringify(userData),
+        headers: {
+          Authorization: `Bearer ${userData.tokens.access_token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const subscriptionData = await resp.json();
+      session.user = { ...userData, ...subscriptionData } as any;
       return session;
     },
   },

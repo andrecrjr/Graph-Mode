@@ -7,7 +7,6 @@ export const UserRouter = Router()
 UserRouter.post("/", authMiddleware, async (req, res)=>{
     try {
         const data = req.body;
-        console.log("data", data)
         const redis = new RedisController()
         const userData = await redis.getKey(`notion-${data?.person?.email}`)
         delete data["tokens"]
