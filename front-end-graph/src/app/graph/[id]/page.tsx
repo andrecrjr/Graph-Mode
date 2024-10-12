@@ -1,5 +1,5 @@
 import { auth } from "@/components/Auth";
-import { GraphComponent } from "@/components/Graph";
+import { GraphComponent } from "@/components/Graph/GraphComponent";
 import { redirect } from "next/navigation";
 import React from "react";
 import type { Metadata } from "next";
@@ -29,7 +29,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${product.child_page.title} Page - Graph Mode`,
     };
   } catch (error) {
-    console.log("Error Page", error);
     return {
       title: "Graph Page",
     };
@@ -42,7 +41,7 @@ export default async function GraphPage({
   params: { id: string };
 }) {
   const data = await auth();
-  if (params.id === "mock" && data) {
+  if (isMock(params.id) && data) {
     redirect("/app");
   }
 

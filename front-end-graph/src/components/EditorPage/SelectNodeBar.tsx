@@ -11,17 +11,17 @@ import {
 } from "../ui/select";
 import { useGraphContextData } from "../Context/GraphContext";
 import { useEditorContext } from "../Context/EditorContext";
+import { isMock } from "../utils";
 
 const SelectEditorBar: React.FC = () => {
   const {
-    state: { nodes },
+    state: { nodes, pageId },
   } = useGraphContextData();
   const { editorDispatch } = useEditorContext();
-  if (nodes.nodes)
+  if (nodes.nodes && !isMock(pageId))
     return (
       <Select
         onValueChange={(id) => {
-          console.log(id);
           editorDispatch({
             type: "UPDATE_TEMP_EDITOR_NODE",
             payload: {
@@ -29,7 +29,6 @@ const SelectEditorBar: React.FC = () => {
             },
           });
         }}
-        //   defaultValue={}
       >
         <SelectTrigger className="w-full mb-3">
           <SelectValue

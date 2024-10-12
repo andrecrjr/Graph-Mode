@@ -1,4 +1,5 @@
 import { stripe } from "@/components/Auth";
+import Link from "next/link";
 
 async function getSession(sessionId: string) {
   const session = await stripe.checkout.sessions.retrieve(sessionId!);
@@ -14,14 +15,14 @@ export default async function CheckoutReturn({
   const session = await getSession(sessionId);
 
   if (session?.status === "open") {
-    return <p>Payment did not work.</p>;
+    return <p>Oops, payment did not work.</p>;
   }
 
   if (session?.status === "complete") {
     return (
       <h3>
-        We appreciate your business! Your Stripe customer ID is:
-        {session.customer as string}.
+        We appreciate your business! You can cancel anytime in{" "}
+        <Link href="/billing">Billing</Link> .
       </h3>
     );
   }

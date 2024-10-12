@@ -10,7 +10,10 @@ import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/Header";
 import ButtonPWA from "@/components/Buttons/InstallPWA";
 
-const roboto = Roboto({ subsets: ["latin"], weight: ["100", "300", "400"] });
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["100", "300", "400"],
+});
 export const metadata: Metadata = {
   title: "Graph Mode",
   description:

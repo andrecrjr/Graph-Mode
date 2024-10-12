@@ -18,7 +18,7 @@ export const History = () => {
     }) || {},
   );
 
-  if (!!data && history && history.length > 0) {
+  if (data.status === "authenticated" && history && history.length > 0) {
     return (
       <section className="mx-auto text-center mt-3">
         <h3>Last Graph Pages</h3>

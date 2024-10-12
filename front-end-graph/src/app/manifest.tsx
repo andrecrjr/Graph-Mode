@@ -10,7 +10,7 @@ export default function manifest(): MetadataRoute.Manifest {
     display: "standalone",
     orientation: "any",
     scope: "/app",
-    start_url: "/app",
+    start_url: "/app?utm_source=pwa",
     icons: [
       {
         src: "/images/icons/icon-72x72.png",

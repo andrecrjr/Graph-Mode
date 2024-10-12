@@ -48,7 +48,8 @@ export function PricingTiers() {
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
-                  Up to 10 Fast Notes creation per day
+                  Unlimited Fast Notes: Create as many notes per day as you
+                  need.
                 </li>
               </ul>
             </CardContent>
@@ -73,7 +74,6 @@ export function PricingTiers() {
                   Unlimited Notion fetches: Retrieve entire pages within your
                   graph.
                 </li>
-
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
                   Unlimited Fast Notes: Create as many notes per day as you
