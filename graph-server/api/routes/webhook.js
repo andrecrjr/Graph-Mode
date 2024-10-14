@@ -13,22 +13,53 @@ router.post('/stripe', express.raw({ type: 'application/json' }), async (req, re
     res.status(400).send(`Webhook Error: ${err.message}`);
     return;
   }
+  const eventData = event.data.object;
   const userController = new RedisController()
-  if(event.type === "checkout.session.completed"){
-    if(event.data.object.payment_status==="paid"){
-        const data = await userController.getKey(`notion-${event.data.object.metadata.notionUserId}`)
-        if(!data){
-          await userController.setKey(`notion-${event.data.object.metadata.notionUserId}`, {"subscriptionId": event.data.object.subscription})
-          return res.status(200).send();
-        }
-        await userController.setKey(`notion-${event.data.object.metadata.notionUserId}`,
-            {...data, ...{"subscriptionId": event.data.object.subscription}})
-        return res.status(200).send();
+  if (event.type === "checkout.session.completed" && eventData?.payment_status === "paid") {
+    const notionUserId = eventData.metadata?.notionUserId;
+
+    if (!notionUserId) {
+      console.error("Metadata missing notionUserId in checkout.session.completed");
+      return res.status(400).send({ error: "Invalid event: Missing notionUserId" });
+    }
+
+    try {
+      let userData = await userController.getKey(`notion-${notionUserId}`);
+
+      userData = userData || {};
+      userData.subscriptionId = eventData.subscription;
+
+      await userController.setKey(`notion-${notionUserId}`, userData);
+      console.log(`Subscription updated for user: ${notionUserId}`);
+
+      return res.status(200).send();
+    } catch (err) {
+      console.error(`Error handling checkout session for user ${notionUserId}: ${err.message}`);
+      return res.status(500).send("Internal Server Error");
     }
   }
+  if (event.type === "customer.subscription.deleted") {
+    const notionUserId = eventData.metadata?.notionUserId;
 
-  if(event.type === "customer.subscription.deleted"){
-    console.log("removido", event.data.object)
+    if (!notionUserId) {
+      console.error("Metadata missing notionUserId in customer.subscription.deleted");
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    try {
+      const userData = await userController.getKey(`notion-${notionUserId}`);
+
+      if (userData) {
+        userData.subscriptionId = null;
+        await userController.setKey(`notion-${notionUserId}`, userData);
+        console.log(`Subscription removed for user: ${notionUserId}`);
+      }
+
+      return res.status(200).send();
+    } catch (err) {
+      console.error(`Error handling subscription deletion for user ${notionUserId}: ${err.message}`);
+      return res.status(500).send("Internal Server Error");
+    }
   }
 
   return res.status(200).send();
