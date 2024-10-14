@@ -1,4 +1,5 @@
 import Redis  from 'ioredis'
+import logger from '../../logs/index.js';
 
 export class RedisController {
   constructor() {
@@ -15,9 +16,8 @@ export class RedisController {
       if (expireTime) {
         await this.redis.expire(key, expireTime);
       }
-      console.log(`Chave ${key} definida com sucesso.`);
     } catch (err) {
-      console.error(`Erro ao definir a chave ${key}:`, err);
+      logger.error(`Erro ao definir a chave ${key}:`, err);
     }
   }
 
@@ -25,14 +25,13 @@ export class RedisController {
     try {
       const value = await this.redis.get(key);
       if (value) {
-        console.log(`Valor da chave ${key}: ${value}`);
+        logger.info(`Valor da chave ${key}: ${value}`);
         return JSON.parse(value);
       } else {
-        console.log(`Chave ${key} não encontrada.`);
         return null;
       }
     } catch (err) {
-      console.error(`Erro ao obter a chave ${key}:`, err);
+      logger.error(`Erro ao obter a chave ${key}:`, err);
     }
   }
 
@@ -42,12 +41,10 @@ export class RedisController {
       const exists = await this.redis.exists(key);
       if (exists) {
         await this.setKey(key, value);
-        console.log(`Chave ${key} atualizada com sucesso.`);
-      } else {
-        console.log(`Chave ${key} não existe para ser atualizada.`);
+        logger.info(`Chave ${key} atualizada com sucesso.`);
       }
     } catch (err) {
-      console.error(`Erro ao atualizar a chave ${key}:`, err);
+      logger.error(`Erro ao atualizar a chave ${key}:`, err);
     }
   }
 
@@ -56,12 +53,10 @@ export class RedisController {
     try {
       const result = await this.redis.del(key);
       if (result === 1) {
-        console.log(`Chave ${key} deletada com sucesso.`);
-      } else {
-        console.log(`Chave ${key} não encontrada para deletar.`);
+        logger.info(`Chave ${key} deletada com sucesso.`);
       }
     } catch (err) {
-      console.error(`Erro ao deletar a chave ${key}:`, err);
+      logger.error(`Erro ao deletar a chave ${key}:`, err);
     }
   }
 
@@ -69,9 +64,9 @@ export class RedisController {
   async closeConnection() {
     try {
       await this.redis.quit();
-      console.log('Conexão com o Redis fechada.');
+      logger.warn('Conexão com o Redis fechada.');
     } catch (err) {
-      console.error('Erro ao fechar a conexão com o Redis:', err);
+      logger.error('Erro ao fechar a conexão com o Redis:', err);
     }
   }
 }
