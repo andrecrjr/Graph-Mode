@@ -18,7 +18,7 @@ router.post('/stripe', express.raw({ type: 'application/json' }), async (req, re
   const userController = new RedisController()
 
   switch (event.type) {
-    case "customer.subscription.created":
+    case "customer.subscription.updated":
       if (eventData?.payment_status === "paid") {
         const notionUserId = eventData.metadata?.notionUserId;
         if (!notionUserId) {
@@ -30,6 +30,9 @@ router.post('/stripe', express.raw({ type: 'application/json' }), async (req, re
           userData = userData || {};
           userData.subscriptionId = eventData.subscription;
           userData.lastPaymentDate = eventData.created * 1000;
+          if(eventData){
+            userData.willFinish=true;
+          }
           await userController.setKey(`notion-${notionUserId}`, userData);
           logger.info(`Subscription updated for user: ${notionUserId}`);
           return res.status(200).send();
@@ -58,49 +61,6 @@ router.post('/stripe', express.raw({ type: 'application/json' }), async (req, re
         return res.status(200).send();
       } catch (err) {
         logger.error(`Error handling subscription deletion for user ${notionUserId}: ${err.message}`);
-        return res.status(500).send("Internal Server Error");
-      }
-    
-    case "invoice.payment_succeeded":
-      const succeededNotionUserId = eventData.metadata?.notionUserId;
-      if (!succeededNotionUserId) {
-        logger.error("Metadata missing notionUserId in invoice.payment_succeeded");
-        return res.status(400).send({ error: "Invalid event: Missing notionUserId" });
-      }
-
-      try {
-        // Update user record to reflect successful payment
-        let userData = await userController.getKey(`notion-${succeededNotionUserId}`);
-        if (userData) {
-          userData.lastPaymentDate = eventData.created * 1000;
-          await userController.setKey(`notion-${succeededNotionUserId}`, userData);
-          logger.info(`Payment succeeded for user: ${succeededNotionUserId}`);
-        }
-
-        return res.status(200).send();
-      } catch (err) {
-        logger.error(`Error handling successful payment for user ${succeededNotionUserId}: ${err.message}`);
-        return res.status(500).send("Internal Server Error");
-      }
-    
-    case "invoice.payment_failed":
-      const failedNotionUserId = eventData.metadata?.notionUserId;
-      if (!failedNotionUserId) {
-        logger.error("Metadata missing notionUserId in invoice.payment_failed");
-        return res.status(400).send({ error: "Invalid event: Missing notionUserId" });
-      }
-
-      try {
-        let userData = await userController.getKey(`notion-${failedNotionUserId}`);
-        if (userData) {
-          userData.paymentFailed = true;
-          await userController.setKey(`notion-${failedNotionUserId}`, userData);
-          logger.warn(`Payment failed for user: ${failedNotionUserId}`);
-        }
-
-        return res.status(200).send();
-      } catch (err) {
-        logger.error(`Error handling failed payment for user ${failedNotionUserId}: ${err.message}`);
         return res.status(500).send("Internal Server Error");
       }
 
