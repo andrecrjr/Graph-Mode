@@ -5,6 +5,7 @@ import router from './routes/index.js';
 
 import { pageRouter } from './routes/CRUDNotion.js';
 import {webhookStriperRouter} from "./routes/webhook.js"
+import { UserRouter } from './routes/user.js';
 
 
 dotenv.config();
@@ -31,7 +32,9 @@ app.use(cors({
 
 app.use(express.json());
 app.use("/", router)
+app.use("/user", UserRouter)
 app.use("/translate", pageRouter)
+
 
 // Inicializa o servidor Express
 app.listen(PORT, () => {

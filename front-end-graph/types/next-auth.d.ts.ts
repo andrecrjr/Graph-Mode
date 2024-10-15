@@ -5,7 +5,13 @@ declare module "next-auth" {
     user: {
       tokens: {
         access_token?: string;
+        workspace_name?: string;
+        workspace_id?: string;
       };
+      person?: {
+        email: string;
+      };
+      subscriptionId?: string | null;
     } & DefaultSession["user"];
   }
 }

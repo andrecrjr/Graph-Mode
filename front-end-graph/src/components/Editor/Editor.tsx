@@ -1,4 +1,5 @@
 import "@blocknote/core/fonts/inter.css";
+
 import {
   BasicTextStyleButton,
   BlockTypeSelect,
@@ -17,9 +18,7 @@ import { useEditorContext } from "../Context/EditorContext";
 import { filterSuggestionItems } from "@blocknote/core";
 import { getMentionMenuItems } from "./custom/inlinePageMention";
 import { useGraphContextData } from "../Context/GraphContext";
-import { schema } from "./custom/";
-
-
+import { getCustomSlashMenuItems, schema } from "./custom/";
 
 export default function Editor() {
   const {
@@ -32,7 +31,7 @@ export default function Editor() {
   const editor = useCreateBlockNote({
     schema,
     //@ts-ignore
-    initialContent: state.initialContentDocument,
+    initialContent: [...state.initialContentDocument],
   });
 
   return (
@@ -100,6 +99,13 @@ export default function Editor() {
           getItems={async (query) =>
             //@ts-ignore
             filterSuggestionItems(getMentionMenuItems(editor, nodes), query)
+          }
+        />
+        <SuggestionMenuController
+          triggerCharacter={"/"}
+          getItems={async (query) =>
+            //@ts-ignore
+            filterSuggestionItems(getCustomSlashMenuItems(editor), query)
           }
         />
       </BlockNoteView>

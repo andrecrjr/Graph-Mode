@@ -20,13 +20,14 @@ import {
   syncPage,
 } from "../utils/graph";
 import { useGraphContextData } from "../Context/GraphContext";
+import { useSession } from "next-auth/react";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { state } = useGraphContextData();
   const { nodes } = state;
   const router = useRouter();
-
+  const data = useSession();
   const path = usePathname().replace("/graph/", "");
 
   const toggleSidebar = () => {

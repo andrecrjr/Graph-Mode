@@ -3,7 +3,7 @@ import dataMock from "@/components/mock.json";
 import { fetchAndSaveCacheData, processGraphData } from "../utils/graph";
 import { useSession } from "next-auth/react";
 import { useGraphContextData } from "../Context/GraphContext";
-import { saveStorage } from "../utils";
+import { isMock, saveStorage } from "../utils";
 
 export const useFetchGraphData = (pageId: string) => {
   const { data: authData, status } = useSession();
@@ -16,7 +16,6 @@ export const useFetchGraphData = (pageId: string) => {
 
   const fetchGraphData = useCallback(async () => {
     try {
-      console.log(authData);
       if (authData?.user?.tokens.access_token) {
         const data = await fetchAndSaveCacheData(
           pageId,
@@ -49,10 +48,11 @@ export const useFetchGraphData = (pageId: string) => {
       fetchGraphData();
     }
 
-    if (pageId === "mock" && state.nodes && state?.nodes?.nodes?.length === 0) {
-      const data = processGraphData(dataMock, "mock");
+    if (isMock(pageId) && state.nodes && state?.nodes?.nodes?.length === 0) {
+      const data = processGraphDataMemoized(dataMock);
       dispatch({ type: "LOADED_GRAPH", payload: false });
       dispatch({ type: "SET_NODES", payload: data });
+      saveStorage.set("data-block-mock", dataMock);
     }
   }, [status, authData, state.nodes, pageId, fetchGraphData, dispatch]);
 

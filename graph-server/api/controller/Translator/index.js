@@ -11,13 +11,13 @@ class BlocknoteToNotionTranslateController {
             const notionData = this.blockNoteToNotion.convert(bodyData.children)
             const pageTitle = getTitleFromHeading(notionData);
             const dataWithoutHeading = removeFirstHeading(notionData);
-            console.log(bodyData.debug)
             if(bodyData.debug){
-                return {dataWithoutHeading, pageTitle}
+                console.log(JSON.stringify({dataWithoutHeading, pageTitle}, 0 , 2))
             }
             const data = await req.notionAPI.createPage(bodyData.parentId, pageTitle, dataWithoutHeading)
             return data;
         } catch (error) {
+            console.error(error)
             throw new Error(`Problem to create a new page ${error}`)
         }
     }

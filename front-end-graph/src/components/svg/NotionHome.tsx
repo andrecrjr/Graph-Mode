@@ -1,3 +1,4 @@
+"use clien";
 export function NotionHome() {
   return (
     <svg

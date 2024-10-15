@@ -13,7 +13,7 @@ export default async function Page() {
     <section className="flex flex-col mx-auto sm:px-6 lg:px-8 mt-auto h-screen">
       <BGParticle />
       <section className="mt-auto">
-        <h1 className="text-3xl sm:text-5xl mt-10 font-bold text-center mb-4">
+        <h1 className="text-4xl lg:text-7xl mt-10 font-bold text-center mb-4">
           Graph Mode
         </h1>
         <AuthSection data={data} />

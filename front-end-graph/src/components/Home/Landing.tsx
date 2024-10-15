@@ -13,11 +13,11 @@ export default function Landing() {
       <section className="w-full  md:py-24 h-screen flex flex-col items-center justify-center z-10">
         <div className="container mt-auto px-4 md:px-6">
           <div className="flex flex-col items-center space-y-4 text-center">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+            <div className="space-y-3">
+              <h1 className="text-4xl font-bold sm:text-7xl">
                 Explore Graph Mode
               </h1>
-              <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+              <p className="mx-auto max-w-[700px] text-gray-500 sm:text-xl dark:text-gray-400">
                 Visualize your Notion Pages like never before. Inspired by
                 Zettelkasten/Obsidian, powered by Notion.
               </p>
@@ -26,9 +26,6 @@ export default function Landing() {
               <Link href="/app">
                 <Button>Start to Graph Mode ✨</Button>
               </Link>
-              {/* <Link href={"#why"}>
-                <Button>Getting Started 🚶‍♀️</Button>
-              </Link> */}
               <Link href="/graph/mock">
                 <Button>View Example Graph 👀</Button>
               </Link>
@@ -42,6 +39,7 @@ export default function Landing() {
       <ImprovedFeatures />
       <CreatorSection />
       <BuyMeCoffee />
+      {/* <PricingTiers /> */}
       <section className="w-full py-12 md:py-24 lg:py-32 min-h-screen  bg-gray-100 z-10 dark:bg-gray-800 flex items-center justify-center">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between">

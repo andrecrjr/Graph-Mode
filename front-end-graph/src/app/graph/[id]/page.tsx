@@ -1,21 +1,20 @@
 import { auth } from "@/components/Auth";
-import GraphComponent from "@/components/Graph";
+import { GraphComponent } from "@/components/Graph/GraphComponent";
 import { redirect } from "next/navigation";
 import React from "react";
 import type { Metadata } from "next";
 import { fetchNotionServer } from "@/components/service/Notion";
+import { isMock } from "@/components/utils";
 
 type Props = {
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata(
-  { params }: Props,
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const id = params.id;
-    if (id === "mock") {
+    if (isMock(id)) {
       return {
         title: "Example Graph",
       };
@@ -30,16 +29,19 @@ export async function generateMetadata(
       title: `${product.child_page.title} Page - Graph Mode`,
     };
   } catch (error) {
-    console.log("Error Page", error);
     return {
       title: "Graph Page",
     };
   }
 }
 
-const GraphPage = async ({ params }: { params: { id: string } }) => {
+export default async function GraphPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const data = await auth();
-  if (params.id === "mock" && data) {
+  if (isMock(params.id) && data) {
     redirect("/app");
   }
 
@@ -48,6 +50,4 @@ const GraphPage = async ({ params }: { params: { id: string } }) => {
       <GraphComponent />
     </div>
   );
-};
-
-export default GraphPage;
+}

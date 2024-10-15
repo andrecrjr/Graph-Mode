@@ -18,14 +18,13 @@ export const History = () => {
     }) || {},
   );
 
-  if (!!data && history && history.length > 0) {
+  if (data.status === "authenticated" && history && history.length > 0) {
     return (
       <section className="mx-auto text-center mt-3">
         <h3>Last Graph Pages</h3>
         <ul>
           {history.slice(0, 4).map((item) => {
             const pageId = item[0].replace("data-block-", "");
-            console.log(item[0]);
             return (
               <li key={item[0]}>
                 <Link href={`/graph/${pageId}`} className="underline pb-2">
