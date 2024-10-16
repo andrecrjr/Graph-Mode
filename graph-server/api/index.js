@@ -19,9 +19,6 @@ app.use("/webhook", webhookStriperRouter);
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin && process.env.NODE_ENV === "development") {
-      return callback(null, true);
-    }
     if (!allowedOrigins.includes(origin)) {
       const msg = 'A política de CORS não permite acesso deste domínio.';
       return callback(new Error(msg), false);
