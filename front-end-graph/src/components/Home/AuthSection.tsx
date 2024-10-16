@@ -1,5 +1,3 @@
-import { Session } from "next-auth";
-import AuthButton from "../Buttons";
 import { SearchByUrl } from "../SearchInput/SearchByUrl";
 import { auth } from "../Auth";
 

@@ -1,4 +1,4 @@
-FROM oven/bun:1
+FROM oven/bun:latest
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ RUN bun install
 
 # Copy the rest of the application
 COPY . .
-USER bun
+
 EXPOSE 3000
 # Start app in development mode
 CMD ["bun", "run", "dev"]

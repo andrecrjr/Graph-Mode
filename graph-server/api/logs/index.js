@@ -3,7 +3,7 @@ const { combine, timestamp, printf, errors, json } = format;
 
 // Define custom log format
 const logFormat = printf(({ level, message, timestamp, stack }) => {
-  return `${timestamp} ${level}: ${stack || message}`;
+  return `${timestamp} ${level}: ${stack || message} ${process.env.NODE_ENV === 'development' && ":: dev-mode"}`;
 });
 
 // Create logger
@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'development') {
   logger.add(new transports.Console({
     format: combine(
       timestamp(),
-      logFormat // Use the custom format in dev mode
+      logFormat,
     )
   }));
 }

@@ -51,7 +51,7 @@ const CreatorSection: React.FC = () => {
                 Linkedin
               </a>
               <a
-                href="https://andrecrjr.github.io/"
+                href="https://andrecrjr.github.io/?utm_source=graphmode"
                 target="_blank"
                 className="bg-gray-500 ml-2 mt-2 md:mt-0  text-white px-6 py-3 rounded-md shadow hover:bg-gray-600 transition-all duration-200"
               >
