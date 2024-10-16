@@ -1,4 +1,4 @@
-import AppPage from "@/Pages/AppPage";
+import AppPage from "@/pages/AppPage";
 import React from "react";
 
 export default async function Page() {

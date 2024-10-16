@@ -3,10 +3,10 @@ import React from "react";
 
 import LoadingPlaceholder from "./Loading";
 import Sidebar from "../Sidebar";
-import EditorPage from "../EditorPage";
+import EditorPage from "@/pages/EditorPage";
 import GraphSvg from "./GraphSvg";
 import { LoadPageData } from "./LoadPageData";
-import MockPage from "../MockPage";
+import MockPage from "@/pages/MockPage";
 
 export const GraphComponent: React.FC = () => {
   return (

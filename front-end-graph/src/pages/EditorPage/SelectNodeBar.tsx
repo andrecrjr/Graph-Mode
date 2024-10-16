@@ -8,10 +8,10 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
-import { useGraphContextData } from "../Context/GraphContext";
-import { useEditorContext } from "../Context/EditorContext";
-import { isMock } from "../utils";
+} from "../../components/ui/select";
+import { useGraphContextData } from "../../components/Context/GraphContext";
+import { useEditorContext } from "../../components/Context/EditorContext";
+import { isMock } from "../../components/utils";
 
 const SelectEditorBar: React.FC = () => {
   const {
