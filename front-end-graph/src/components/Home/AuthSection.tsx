@@ -1,8 +1,10 @@
 import { Session } from "next-auth";
 import AuthButton from "../Buttons";
 import { SearchByUrl } from "../SearchInput/SearchByUrl";
+import { auth } from "../Auth";
 
-export function AuthSection({ data }: { data: Session | null }) {
+export async function AuthSection() {
+  const data = await auth();
   return (
     <section className="w-full mt-auto flex flex-col mb-4 items-center justify-center">
       {!!data ? (

@@ -14,7 +14,7 @@ export default function Landing() {
         <div className="container mt-auto px-4 md:px-6">
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-3">
-              <h1 className="text-4xl font-bold sm:text-7xl">
+              <h1 className="text-4xl font-bold sm:text-8xl tracking-tight">
                 Explore Graph Mode
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-500 sm:text-xl dark:text-gray-400">
