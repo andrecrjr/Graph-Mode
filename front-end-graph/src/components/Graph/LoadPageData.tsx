@@ -6,11 +6,10 @@ import { useEditorContext } from "../Context/EditorContext";
 import { useGraphContextData } from "../Context/GraphContext";
 import useToastNotification from "../hooks/useToastNotification";
 import { saveStorage } from "../utils";
+import dynamic from "next/dynamic";
 
 export function LoadPageData({ children }: { children: React.ReactNode }) {
-  globalThis.document.body.style.overflow = "hidden";
-  globalThis.document.querySelector("header")?.remove();
-
+  document.body.style.overflow = "hidden";
   const { id: pageId } = useParams();
   const pageUID = pageId as string;
   const router = useRouter();
