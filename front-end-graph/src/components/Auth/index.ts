@@ -32,7 +32,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         },
       });
       const subscriptionData = await resp.json();
-      session.user = { ...userData } as any;
+      session.user = { ...userData, ...subscriptionData } as any;
       return session;
     },
   },
