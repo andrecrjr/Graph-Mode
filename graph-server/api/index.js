@@ -19,7 +19,7 @@ app.use("/webhook", webhookStriperRouter);
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin && process.env.NODE_ENV === "development") {
+    if(!origin){
       return callback(null, true);
     }
     if (!allowedOrigins.includes(origin)) {

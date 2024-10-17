@@ -5,7 +5,6 @@ import React from "react";
 
 const Settings: React.FC = async () => {
   const data = await auth();
-  console.log(data);
   if (!data) {
     redirect("/");
   }

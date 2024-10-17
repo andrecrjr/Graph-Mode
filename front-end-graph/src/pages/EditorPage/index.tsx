@@ -1,12 +1,12 @@
 "use client";
 import { Notebook, Send, X } from "lucide-react";
 import React, { useState } from "react";
-import { Editor } from "../Editor";
-import { Button } from "../ui/button";
-import { useGraphContextData } from "../Context/GraphContext";
-import { IS_DEVELOPMENT } from "../utils";
+import { Editor } from "@/components/Editor";
+import { Button } from "@/components/ui/button";
+import { useGraphContextData } from "@/components/Context/GraphContext";
+import { IS_DEVELOPMENT } from "@/components/utils";
 import SelectEditorBar from "./SelectNodeBar";
-import { useEditorActionPage } from "../hooks/useEditorAction";
+import { useEditorActionPage } from "@/components/hooks/useEditorAction";
 
 export default function EditorPage() {
   const [isOpen, setIsOpen] = useState(false);

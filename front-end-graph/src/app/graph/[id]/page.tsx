@@ -1,5 +1,5 @@
 import { auth } from "@/components/Auth";
-import { GraphComponent } from "@/components/Graph/GraphComponent";
+import { GraphComponent } from "@/components/Graph";
 import { redirect } from "next/navigation";
 import React from "react";
 import type { Metadata } from "next";

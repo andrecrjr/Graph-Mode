@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 
 export function SubscriptionSettings() {

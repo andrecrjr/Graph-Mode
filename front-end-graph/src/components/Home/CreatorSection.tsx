@@ -17,7 +17,7 @@ const CreatorSection: React.FC = () => {
           </div>
           <div className="lg:w-2/3 w-full lg:pl-10 mt-8 lg:mt-0">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              Who created Graph-Mode?
+              Who created Graph Mode?
             </h2>
             <p className="text-lg text-gray-700 mb-6">
               Hi! I'm <span className="font-bold">AC. Junior</span>, the
@@ -51,7 +51,7 @@ const CreatorSection: React.FC = () => {
                 Linkedin
               </a>
               <a
-                href="https://andrecrjr.github.io/"
+                href="https://andrecrjr.github.io/?utm_source=graphmode"
                 target="_blank"
                 className="bg-gray-500 ml-2 mt-2 md:mt-0  text-white px-6 py-3 rounded-md shadow hover:bg-gray-600 transition-all duration-200"
               >
