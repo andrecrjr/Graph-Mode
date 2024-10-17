@@ -11,7 +11,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       async profile(profile, tokens) {
         const { access_token, workspace_name, workspace_id } = tokens;
         profile.tokens = { access_token, workspace_name, workspace_id };
-
         return profile;
       },
     }),
@@ -33,7 +32,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           },
         });
         const subscriptionData = await resp.json();
-        session.user = { ...userData, ...subscriptionData } as any;
+        session.user = { ...userData } as any;
+        session.user.subscriptionId = subscriptionData.subscriptionId as string;
+        return session;
       }
       session.user = { ...userData } as any;
       return session;
