@@ -56,6 +56,6 @@ install_deps: install-bun
 	@echo "Instalando dependências na pasta $(FRONT_END_DIR)..."
 	cd $(FRONT_END_DIR) && bun install
 
-install_deps_server: install-bun
+install_deps_server:
 	@echo "Instalando dependências na pasta $(BACK_END_DIR)..."
-	cd $(BACK_END_DIR) && bun install
+	cd $(BACK_END_DIR) && pnpm install
