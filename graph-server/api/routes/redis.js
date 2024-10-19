@@ -8,7 +8,7 @@ redisRouter.get("/healthcheck", async (req, res)=>{
     const redis = new RedisController()
     try {
         const ok = await redis.healthcheckRedis()
-        res.json({redis_service: ok})
+        return res.json({redis_service: ok})
     } catch (error) {
         logger.error(`Error no redis healthcheck ${error}`)
     }
