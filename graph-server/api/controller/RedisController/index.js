@@ -10,6 +10,16 @@ export class RedisController {
     });
   }
 
+  async healthcheckRedis(){
+    try {
+      const value = await this.redis.keys("*")
+      logger.info(value)
+    } catch (error) {
+      logger.error(`erro na request para pegar o redis ${error}`)
+      return false
+    }
+  }
+
   async setKey(key, value, expireTime = null) {
     try {
       await this.redis.set(key, JSON.stringify(value));

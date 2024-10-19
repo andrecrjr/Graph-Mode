@@ -14,3 +14,6 @@ Content-Type: application/json
   "query": "Web Devel"
 }
 
+### Get REDIS healthcheck
+GET http://localhost:3001/redis/healthcheck
+

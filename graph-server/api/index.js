@@ -6,6 +6,7 @@ import router from './routes/index.js';
 import { pageRouter } from './routes/CRUDNotion.js';
 import {webhookStriperRouter} from "./routes/webhook.js"
 import { UserRouter } from './routes/user.js';
+import { redisRouter } from './routes/redis.js';
 
 
 dotenv.config();
@@ -34,6 +35,7 @@ app.use(express.json());
 app.use("/", router)
 app.use("/user", UserRouter)
 app.use("/translate", pageRouter)
+app.use("/redis", redisRouter)
 
 
 // Inicializa o servidor Express
