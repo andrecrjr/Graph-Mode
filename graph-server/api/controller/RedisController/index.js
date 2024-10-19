@@ -14,6 +14,7 @@ export class RedisController {
     try {
       const value = await this.redis.keys("*")
       logger.info(value)
+      return true
     } catch (error) {
       logger.error(`erro na request para pegar o redis ${error}`)
       return false
