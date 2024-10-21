@@ -23,7 +23,6 @@ export const ModalCheckout = forwardRef<IModalCheckoutRef, { priceId: string }>(
     const stripePromise = loadStripe(
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
     );
-    console.log(priceId);
     const [showCheckout, setShowCheckout] = useState(false);
     const modalRef = useRef<HTMLDialogElement>(null);
 
