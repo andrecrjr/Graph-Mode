@@ -5,12 +5,16 @@ export async function POST(request: Request) {
   try {
     const data = await auth();
     const { priceId } = await request.json();
+    let price;
+    if (priceId === "month") {
+      price = process.env.PRICE_ID;
+    }
     const session = await stripe.checkout.sessions.create({
       ui_mode: "embedded",
       payment_method_types: ["card"],
       line_items: [
         {
-          price: priceId,
+          price,
           quantity: 1,
         },
       ],
@@ -26,6 +30,7 @@ export async function POST(request: Request) {
       client_secret: session.client_secret,
     });
   } catch (error: any) {
+    console.log(error);
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

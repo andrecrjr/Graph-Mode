@@ -39,7 +39,7 @@ export default function Landing() {
       <ImprovedFeatures />
       <CreatorSection />
       <BuyMeCoffee />
-      {/* <PricingTiers /> */}
+      <PricingTiers />
       <section className="w-full py-12 md:py-24 lg:py-32 min-h-screen  bg-gray-100 z-10 dark:bg-gray-800 flex items-center justify-center">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between">

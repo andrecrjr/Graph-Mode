@@ -19,7 +19,7 @@ export function EmbeddedCheckoutButton({
       >
         {buttonLabel ? buttonLabel : "Subscribe Now!"}
       </Button>
-      <ModalCheckout ref={modalCheckoutRef} />
+      <ModalCheckout ref={modalCheckoutRef} priceId="month" />
     </>
   );
 }
