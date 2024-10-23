@@ -1,74 +1,38 @@
 import express, { Router } from "express";
-import stripe from "stripe"
-import { RedisController } from "../controller/RedisController/index.js";
-import logger from "../logs/index.js";
+import stripe from "stripe";
+import {
+	handleSubscriptionDeleted,
+	handleSubscriptionUpdated,
+} from "../controller/Stripe/index.js";
 
-const router = Router()
+const router = Router();
 
-router.post('/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
-  const sig = req.headers['stripe-signature'] || req.headers['Stripe-Signature'];
-  let event;
-  try {
-    event = await stripe.webhooks.constructEventAsync(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
-  } catch (err) {
-    res.status(400).send(`Webhook Error: ${err.message}`);
-    return;
-  }
-  const eventData = event.data.object;
-  const userController = new RedisController()
+router.post(
+	"/stripe",
+	express.raw({ type: "application/json" }),
+	async (req, res) => {
+		const sig =
+			req.headers["stripe-signature"] || req.headers["Stripe-Signature"];
+		let event;
+		try {
+			event = await stripe.webhooks.constructEventAsync(
+				req.body,
+				sig,
+				process.env.STRIPE_WEBHOOK_SECRET,
+			);
+		} catch (err) {
+			res.status(400).send(`Webhook Error: ${err.message}`);
+			return;
+		}
 
-  switch (event.type) {
-    case "customer.subscription.updated":
-      if (eventData?.payment_status === "paid") {
-        const notionUserId = eventData.metadata?.notionUserId;
-        if (!notionUserId) {
-          logger.error("Metadata missing notionUserId in checkout.session.completed");
-          return res.status(400).send({ error: "Invalid event: Missing notionUserId" });
-        }
-        try {
-          let userData = await userController.getKey(`notion-${notionUserId}`);
-          userData = userData || {};
-          userData.subscriptionId = eventData.subscription;
-          userData.lastPaymentDate = eventData.created * 1000;
-          if(eventData){
-            userData.willFinish=true;
-          }
-          await userController.setKey(`notion-${notionUserId}`, userData);
-          logger.info(`Subscription updated for user: ${notionUserId}`);
-          return res.status(200).send();
-        } catch (err) {
-          logger.error(`Error handling checkout session for user ${notionUserId}: ${err.message}`);
-          return res.status(500).send("Internal Server Error");
-        }
-      }
-      break;
+		if (event.type === "checkout.session.completed")
+			return await handleSubscriptionUpdated(event, res);
 
-    case "customer.subscription.deleted":
-      const notionUserId = eventData.metadata?.notionUserId;
-      if (!notionUserId) {
-        logger.error("Metadata missing notionUserId in customer.subscription.deleted");
-        return res.status(404).send({ error: "User not found" });
-      }
+		if (event.type === "customer.subscription.deleted")
+			return await handleSubscriptionDeleted(event, res);
+		console.log("events: ", event.type);
+		return res.status(200).send();
+	},
+);
 
-      try {
-        const userData = await userController.getKey(`notion-${notionUserId}`);
-        if (userData) {
-          userData.subscriptionId = null;
-          await userController.setKey(`notion-${notionUserId}`, userData);
-          logger.info(`Subscription removed for user: ${notionUserId}`);
-        }
-
-        return res.status(200).send();
-      } catch (err) {
-        logger.error(`Error handling subscription deletion for user ${notionUserId}: ${err.message}`);
-        return res.status(500).send("Internal Server Error");
-      }
-
-    default:
-      return res.status(200).send();
-  }
-
-  return res.status(200).send();
-});
-
-export {router as webhookStriperRouter};
+export { router as webhookStriperRouter };
