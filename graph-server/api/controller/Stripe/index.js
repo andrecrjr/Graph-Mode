@@ -52,7 +52,7 @@ export async function handleSubscriptionDeleted(event, res) {
 	const eventData = event.data.object;
 
 	try {
-
+		
 		if(!eventData.metadata.notionUserId){
 			logger.error(`Metadata missing notionUserId in ${event.type}`);
 			return res.status(400).send({ error: "Invalid event: Missing notionUserId" });
@@ -75,8 +75,6 @@ export async function handleSubscriptionDeleted(event, res) {
 
 export async function handlePaymentSucceeded(event, res) {
     const eventData = event.data.object;
-
-	console.log(eventData)
 
     if (!eventData) {
         logger.error("Event data is missing");
