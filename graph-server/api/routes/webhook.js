@@ -1,8 +1,9 @@
 import express, { Router } from "express";
 import stripe from "stripe";
 import {
+  handleSubscriptionCreated,
+  handlePaymentSucceeded,
 	handleSubscriptionDeleted,
-	handleSubscriptionUpdated,
 } from "../controller/Stripe/index.js";
 
 const router = Router();
@@ -26,8 +27,9 @@ router.post(
 		}
 
 		if (event.type === "checkout.session.completed")
-			return await handleSubscriptionUpdated(event, res);
-
+			return await handleSubscriptionCreated(event, res);
+    if (event.type==="invoice.payment_succeeded")
+      return await handlePaymentSucceeded(event, res);
 		if (event.type === "customer.subscription.deleted")
 			return await handleSubscriptionDeleted(event, res);
 		console.log("events: ", event.type);

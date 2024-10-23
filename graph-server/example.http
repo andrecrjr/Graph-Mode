@@ -17,3 +17,6 @@ Content-Type: application/json
 ### Get REDIS healthcheck
 GET http://localhost:3001/redis/healthcheck
 
+### Get USER in Redis
+GET http://localhost:3001/redis/notion-user-key/id
+

@@ -1,21 +1,20 @@
+import Stripe from "stripe";
 import logger from "../../logs/index.js";
 import { RedisController } from "../RedisController/index.js";
 
 const userController = new RedisController();
 
-// Função para lidar com eventos de atualização de assinatura
-export async function handleSubscriptionUpdated(event, res) {
-	console.log("INICIANDO", event);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+export async function handleSubscriptionCreated(event, res) {
 	const eventData = event.data.object;
 
-	// Verifique se o status de pagamento é inválido
 	if (eventData?.payment_status !== "paid") {
 		return res.status(400).send({ error: "Invalid payment status" });
 	}
 
 	const notionUserId = eventData.metadata?.notionUserId;
 
-	// Validação do notionUserId
 	if (!notionUserId) {
 		logger.error(`Metadata missing notionUserId in ${event.type}`);
 		return res
@@ -24,6 +23,13 @@ export async function handleSubscriptionUpdated(event, res) {
 	}
 
 	try {
+		await stripe.subscriptions.update(eventData.subscription,{
+			metadata:{
+				notionUserId
+			}
+		})
+		logger.info(`Updated subscription with metadata: ${update}`)
+
 		let userData = await userController.getKey(`notion-${notionUserId}`);
 		userData = userData || {};
 
@@ -31,10 +37,6 @@ export async function handleSubscriptionUpdated(event, res) {
 		userData.lastPaymentDate = eventData.created * 1000;
 
 		await userController.setKey(`notion-${notionUserId}`, userData);
-		await userController.setKey(
-			`notion-sub-${userData.subscriptionId}`,
-			userData,
-		);
 
 		logger.info(`Subscription updated for user: ${notionUserId}`);
 		return res.status(200).send();
@@ -50,25 +52,18 @@ export async function handleSubscriptionDeleted(event, res) {
 	const eventData = event.data.object;
 
 	try {
-		const userSub = await userController.getKey(`notion-sub-${eventData.id}`);
 
-		if (!userSub) {
-			logger.error(
-				`Subscription not found for ${eventData.id} in ${event.type}`,
-			);
-			return res.status(404).send({ error: "Subscription not found" });
+		if(!eventData.metadata.notionUserId){
+			logger.error(`Metadata missing notionUserId in ${event.type}`);
+			return res.status(400).send({ error: "Invalid event: Missing notionUserId" });
 		}
+		const userSub = await userController.getKey(`notion-${eventData.metadata.notionUserId}`);
 
-		const userData = await userController.getKey(
-			`notion-${userSub.person.email}`,
-		);
-
-		if (userData) {
-			userData.subscriptionId = null;
-			await userController.setKey(`notion-${userSub.person.email}`, userData);
-			logger.info(`Subscription removed for user: ${userSub.person.email}`);
+		if (userSub) {
+			userSub.subscriptionId = null;
+			await userController.setKey(`notion-${userSub[userSub["type"]].email}`, userSub);
+			logger.info(`Subscription removed for user: ${userSub[userSub["type"]].email}`);
 		}
-
 		return res.status(200).send();
 	} catch (err) {
 		logger.error(
@@ -76,4 +71,46 @@ export async function handleSubscriptionDeleted(event, res) {
 		);
 		return res.status(500).send("Internal Server Error");
 	}
+}
+
+export async function handlePaymentSucceeded(event, res) {
+    const eventData = event.data.object;
+
+	console.log(eventData)
+
+    if (!eventData) {
+        logger.error("Event data is missing");
+        return res.status(400).send({ error: "Invalid event data" });
+    }
+
+    if (!eventData.subscription) {
+        logger.warn("Payment succeeded event is not related to a subscription");
+        return res.status(400).send({ error: "Payment is not related to a subscription" });
+    }
+
+    try {
+        const subscription = await stripe.subscriptions.retrieve(eventData.subscription);
+		const notionUserId = subscription.metadata.notionUserId
+		
+		if (!notionUserId) {
+			logger.error(`Metadata missing notionUserId in ${event.type}`);
+			return res.status(400).send({ error: "Invalid event: Missing notionUserId" });
+		}
+
+        let userData = await userController.getKey(`notion-${notionUserId}`);
+        userData = userData || {};
+
+        userData.subscriptionId = subscription.id;
+        userData.lastPaymentDate = eventData.created * 1000;
+        userData.nextPaymentDate = subscription.current_period_end * 1000;
+
+        await userController.setKey(`notion-${notionUserId}`, userData);
+
+        logger.info(`Payment succeeded for user: ${notionUserId}, subscription updated`);
+
+        return res.status(200).send();
+    } catch (err) {
+        logger.error(`Error handling payment succeeded for user ${notionUserId}: ${err.message}`, err);
+        return res.status(500).send("Internal Server Error");
+    }
 }
