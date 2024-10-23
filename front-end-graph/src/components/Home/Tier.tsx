@@ -33,7 +33,7 @@ export function PricingTiers() {
             </p>
           </div>
         </div>
-        <div className="grid md:grid-cols-2 gap-6 mt-8">
+        <div className="grid md:grid-cols-3 gap-6 mt-8">
           <Card>
             <CardHeader>
               <CardTitle>Free Tier</CardTitle>
@@ -44,7 +44,7 @@ export function PricingTiers() {
               <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
-                  Up to 50 Notion fetchs to get some pages
+                  Up to 30 Notion requests to get some few pages
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
@@ -55,6 +55,64 @@ export function PricingTiers() {
             </CardContent>
             <CardFooter>
               <Button className="w-full">Get Started</Button>
+            </CardFooter>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Lifetime PRO</CardTitle>
+              <CardDescription>
+                {"It's yours forever (or at least til we go alive)"}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+              <div className="text-4xl font-bold">
+                $60<span className="text-sm font-normal">/forever</span>
+              </div>
+              <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li className="flex items-center">
+                  <CheckIcon className="mr-2 h-4 w-4" />
+                  Unlimited Notion requests: Retrieve entire pages within your
+                  graph.
+                </li>
+                <li className="flex items-center">
+                  <CheckIcon className="mr-2 h-4 w-4" />
+                  Unlimited Fast Notes: Create as many notes per day as you
+                  need.
+                </li>
+                <li className="flex items-center">
+                  <CheckIcon className="mr-2 h-4 w-4" />
+                  Get all updates for free forever
+                </li>
+              </ul>
+            </CardContent>
+            <CardFooter>
+              {!data.data && (
+                <section className="flex flex-col w-full">
+                  <Button
+                    className="w-full mb-2"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      signIn("notion", {
+                        callbackUrl: "/#pricing",
+                      });
+                    }}
+                    disabled={data.status === "loading"}
+                  >
+                    {data.status === "loading"
+                      ? "Getting your Notion Account"
+                      : "Login with Notion"}
+                  </Button>
+                  <i className="block text-sm text-center">
+                    Login with Notion first to subscribe.
+                  </i>
+                </section>
+              )}
+              {!!data.data && (
+                <EmbeddedCheckoutButton
+                  buttonLabel="Buy Now"
+                  priceId={"lifetime"}
+                />
+              )}
             </CardFooter>
           </Card>
           <Card>
@@ -71,7 +129,7 @@ export function PricingTiers() {
               <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
-                  Unlimited Notion fetches: Retrieve entire pages within your
+                  Unlimited Notion requests: Retrieve entire pages within your
                   graph.
                 </li>
                 <li className="flex items-center">
@@ -107,7 +165,7 @@ export function PricingTiers() {
                   </i>
                 </section>
               )}
-              {!!data.data && <EmbeddedCheckoutButton />}
+              {!!data.data && <EmbeddedCheckoutButton priceId={"month"} />}
             </CardFooter>
           </Card>
         </div>

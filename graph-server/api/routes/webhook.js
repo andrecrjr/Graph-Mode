@@ -32,7 +32,7 @@ router.post(
 			return await handlePaymentSucceeded(event, res);
 		if (event.type === "customer.subscription.deleted")
 			return await handleSubscriptionDeleted(event, res);
-		console.log("events: ", event.type);
+
 		return res.status(200).send();
 	},
 );

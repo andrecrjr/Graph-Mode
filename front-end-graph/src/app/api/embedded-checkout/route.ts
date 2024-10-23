@@ -6,9 +6,10 @@ export async function POST(request: Request) {
     const data = await auth();
     const { priceId } = await request.json();
     let price;
-    if (priceId === "month") {
-      price = process.env.PRICE_ID;
-    }
+    const prices = process.env.PRICE_IDS?.split(",")!;
+    if (priceId === "month") price = prices[1];
+    if (priceId === "lifetime") price = prices[3];
+
     const session = await stripe.checkout.sessions.create({
       ui_mode: "embedded",
       payment_method_types: ["card"],
@@ -21,7 +22,7 @@ export async function POST(request: Request) {
       metadata: {
         notionUserId: data?.user?.person?.email || "",
       },
-      mode: "subscription",
+      mode: priceId === "lifetime" ? "payment" : "subscription",
       return_url: `${request.headers.get("origin")}/return?session_id={CHECKOUT_SESSION_ID}`,
     });
 

@@ -5,8 +5,10 @@ import { IModalCheckoutRef, ModalCheckout } from "./EmbeddedCheckout";
 
 export function EmbeddedCheckoutButton({
   buttonLabel,
+  priceId = "month",
 }: {
   buttonLabel?: string;
+  priceId: string;
 }) {
   const modalCheckoutRef = useRef<IModalCheckoutRef>(null);
   return (
@@ -19,7 +21,7 @@ export function EmbeddedCheckoutButton({
       >
         {buttonLabel ? buttonLabel : "Subscribe Now!"}
       </Button>
-      <ModalCheckout ref={modalCheckoutRef} priceId="month" />
+      <ModalCheckout ref={modalCheckoutRef} priceId={priceId} />
     </>
   );
 }
