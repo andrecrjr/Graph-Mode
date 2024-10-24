@@ -16,4 +16,16 @@ redisRouter.get("/healthcheck", async (req, res)=>{
 
 })
 
+redisRouter.get("/notion-user-key/:id", async (req, res)=>{
+    try {
+        const redis = new RedisController()
+        const user = await redis.getKey(`notion-${req.params.id}`)
+        return res.status(200).json({user})
+    } catch (error) {
+        logger.error(`Error no redis healthcheck ${error}`)
+        return res.status(200).json({"redis_service": error})
+    }
+
+})
+
 export {redisRouter}

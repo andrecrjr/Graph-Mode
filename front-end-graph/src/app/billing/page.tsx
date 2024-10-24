@@ -10,9 +10,9 @@ const Settings: React.FC = async () => {
   }
 
   return (
-    <div>
+    <>
       <SubscriptionSettings />
-    </div>
+    </>
   );
 };
 
