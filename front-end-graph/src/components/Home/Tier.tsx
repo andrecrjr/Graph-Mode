@@ -59,6 +59,59 @@ export function PricingTiers() {
           </Card>
           <Card>
             <CardHeader>
+              <CardTitle>Monthly Tier</CardTitle>
+              <CardDescription>
+                Premium tier, perfect for heavy users and creative documents
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+              <div className="text-4xl font-bold">
+                $3<span className="text-sm font-normal">/month</span>
+              </div>
+              <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <li className="flex items-center">
+                  <CheckIcon className="mr-2 h-4 w-4" />
+                  Unlimited Notion requests: Retrieve entire pages within your
+                  graph.
+                </li>
+                <li className="flex items-center">
+                  <CheckIcon className="mr-2 h-4 w-4" />
+                  Unlimited Fast Notes: Create as many notes per day as you
+                  need.
+                </li>
+                <li className="flex items-center">
+                  <CheckIcon className="mr-2 h-4 w-4" />
+                  Graph Excalidraw Mode: Visualize your ideas with ease.
+                </li>
+              </ul>
+            </CardContent>
+            <CardFooter>
+              {!data.data && (
+                <section className="flex flex-col w-full">
+                  <Button
+                    className="w-full mb-2"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      signIn("notion", {
+                        callbackUrl: "/#pricing",
+                      });
+                    }}
+                    disabled={data.status === "loading"}
+                  >
+                    {data.status === "loading"
+                      ? "Getting your Notion Account"
+                      : "Login with Notion"}
+                  </Button>
+                  <i className="block text-sm text-center">
+                    Login with Notion first to subscribe.
+                  </i>
+                </section>
+              )}
+              {!!data.data && <EmbeddedCheckoutButton priceId={"month"} />}
+            </CardFooter>
+          </Card>
+          <Card>
+            <CardHeader>
               <CardTitle>Lifetime PRO</CardTitle>
               <CardDescription>
                 {"It's yours forever (or at least til we go alive)"}
@@ -113,59 +166,6 @@ export function PricingTiers() {
                   priceId={"lifetime"}
                 />
               )}
-            </CardFooter>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Monthly Tier</CardTitle>
-              <CardDescription>
-                Premium tier, perfect for heavy users and creative documents
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div className="text-4xl font-bold">
-                $3<span className="text-sm font-normal">/month</span>
-              </div>
-              <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
-                <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" />
-                  Unlimited Notion requests: Retrieve entire pages within your
-                  graph.
-                </li>
-                <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" />
-                  Unlimited Fast Notes: Create as many notes per day as you
-                  need.
-                </li>
-                <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" />
-                  Graph Excalidraw Mode: Visualize your ideas with ease.
-                </li>
-              </ul>
-            </CardContent>
-            <CardFooter>
-              {!data.data && (
-                <section className="flex flex-col w-full">
-                  <Button
-                    className="w-full mb-2"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      signIn("notion", {
-                        callbackUrl: "/#pricing",
-                      });
-                    }}
-                    disabled={data.status === "loading"}
-                  >
-                    {data.status === "loading"
-                      ? "Getting your Notion Account"
-                      : "Login with Notion"}
-                  </Button>
-                  <i className="block text-sm text-center">
-                    Login with Notion first to subscribe.
-                  </i>
-                </section>
-              )}
-              {!!data.data && <EmbeddedCheckoutButton priceId={"month"} />}
             </CardFooter>
           </Card>
         </div>
