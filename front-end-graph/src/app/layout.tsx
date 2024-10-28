@@ -17,7 +17,7 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: "Graph Mode",
   description:
-    "A integration to watch your Notion Pages in a Graph View like-Zettelkasten and Obsidian",
+    "Transform your Notion pages into an interactive Zettelkasten/Graph view, with the power of Graph Mode!",
 };
 
 export default function RootLayout({
@@ -28,18 +28,20 @@ export default function RootLayout({
   const ldJSON = {
     "@context": "https://schema.org",
     "@type": ["WebApplication", "MobileApplication"],
-    name: "Notion Graph Mode",
+    name: "Graph Mode",
     description:
-      "Transform your Notion pages into an interactive Zettelkasten/Graph view.",
+      "Transform your Notion pages into an interactive Zettelkasten/Graph view, with the power of Graph Mode!",
     operatingSystem: "All",
     applicationCategory: "ProductivityApplication",
   };
   return (
     <html lang="en">
       <head>
+        <link rel="canonical" href={`/`} />
         <link
-          rel="canonical"
-          href={`${process.env.NEXT_PUBLIC_FRONT_USER_URL}`}
+          rel="icon"
+          type="image/x-icon"
+          href="/images/icons/icon-72x72.png"
         />
 
         <script

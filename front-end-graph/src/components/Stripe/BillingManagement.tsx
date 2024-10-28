@@ -21,7 +21,7 @@ export function SubscriptionSettings() {
   return (
     <Card className="w-6/12 mx-auto mt-10">
       <CardHeader>
-        <CardTitle>Billing Management</CardTitle>
+        <CardTitle>Subscription Management</CardTitle>
         <CardDescription>
           Cancel your subscription easily at any time, no hassle required.
         </CardDescription>
