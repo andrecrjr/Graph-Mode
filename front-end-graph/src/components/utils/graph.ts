@@ -77,6 +77,5 @@ export const clearNodePositions = (pageId: string) => {
 };
 
 export const syncPage = (pageId: string) => {
-  saveStorage.delete(`nodePositions-${pageId}`);
   saveStorage.delete(`data-block-${pageId}`);
 };

@@ -22,7 +22,7 @@ class BlockNoteToNotionConverter {
     };
   }
 
-  convertDivider(block) {
+  convertDivider() {
     return {
       object: 'block',
       type: 'divider',
@@ -88,6 +88,28 @@ class BlockNoteToNotionConverter {
     return blockNoteBlocks.map(block => this.convertBlock(block));
   }
 
+  convertTable(block) {
+  const tableRows = block.content.rows.map((row) => ({
+    object: 'block',
+    type: 'table_row',
+    table_row: {
+      cells: row.cells.map(cell => this.convertContent(cell))
+    }
+  }));
+
+  return {
+    object: 'block',
+    type: 'table',
+    table: {
+      table_width: block.content.rows[0].cells.length,
+      has_column_header: block.props.hasHeader || false, 
+      has_row_header: block.props.hasRowHeader || false,
+      children: tableRows
+    }
+  };
+}
+
+
   convertBlock(block) {
     switch (block.type) {
       case 'heading':
@@ -117,6 +139,8 @@ class BlockNoteToNotionConverter {
         return this.convertVideo(block);
       case 'file': 
         return this.convertFile(block);
+      case 'table':
+        return this.convertTable(block)
       default:
         throw new Error(`Unsupported block type: ${block.type}`);
     }
