@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import {RedisController} from "../controller/RedisController/index.js";
+import logger from "../logs/index.js";
 
 export const UserRouter = Router()
 const redis = new RedisController();
@@ -19,15 +20,11 @@ UserRouter.post("/", authMiddleware, async (req, res) => {
         delete data["tokens"];
 
         if (!userData) {
-            const updateDataWithSubscription = { ...data, subscriptionId: null };
-
-            const userType = data?.type || 'person';
-            await redis.setKey(`notion-${data[userType].email}`, updateDataWithSubscription);
-
-            return res.status(200).json(updateDataWithSubscription);
+            logger.info("User has no subscription")
+            return res.status(200).json({subscriptionId: null});
         }
 
-        return res.status(200).json({ subscriptionId: userData.subscriptionId, ...data });
+        return res.status(200).json({ ...userData, ...data });
     } catch (error) {
         console.error("Error occurred while processing request:", error);
 

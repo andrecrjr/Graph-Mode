@@ -35,8 +35,7 @@ export async function handleSubscriptionCreated(event, res) {
             
             logger.info(`Updated subscription with metadata: ${JSON.stringify(updatedSubscription.metadata)}`);
 
-            let userData = await userController.getKey(`notion-${notionUserId}`);
-            userData = userData || {};
+            let userData = (await userController.getKey(`notion-${notionUserId}`)||{});
             userData.subscriptionId = eventData.subscription;
             userData.lastPaymentDate = eventData.created * 1000;
 
@@ -45,8 +44,7 @@ export async function handleSubscriptionCreated(event, res) {
             logger.info(`Subscription successfully updated for user: ${notionUserId}`);
         }
         else if (eventData.payment_intent) {
-            let userData = await userController.getKey(`notion-${notionUserId}`);
-            userData = userData || {};
+            let userData = (await userController.getKey(`notion-${notionUserId}`)||{});
             userData.lastPaymentId = eventData.payment_intent;
             userData.lastPaymentDate = eventData.created * 1000;
 
@@ -75,9 +73,8 @@ export async function handleSubscriptionDeleted(event, res) {
 		const userSub = await userController.getKey(`notion-${eventData.metadata.notionUserId}`);
 
 		if (userSub) {
-			userSub.subscriptionId = null;
-			await userController.setKey(`notion-${userSub[userSub["type"]].email}`, userSub);
-			logger.info(`Subscription removed for user: ${userSub[userSub["type"]].email}`);
+			await userController.deleteKey(`notion-${eventData.metadata.notionUserId}`);
+			logger.info(`Subscription removed for user: ${eventData.metadata.notionUserId}`);
 		}
 		return res.status(200).send();
 	} catch (err) {
