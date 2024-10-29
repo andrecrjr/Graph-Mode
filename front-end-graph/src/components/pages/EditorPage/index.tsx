@@ -74,10 +74,10 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
     <section className="w-full h-full flex flex-col justify-center items-center">
       <p className="font-bold">Soon with Graph Mode PRO Only!</p>
       <p>
-        You can test this function in our{" "}
-        <Link href="/graph/mock" className="underline">
-          DEMO
-        </Link>
+        You can test this editor in our{" "}
+        <Link href="/" className="underline">
+          Example Graph
+        </Link>{" "}
       </p>
     </section>
   );
