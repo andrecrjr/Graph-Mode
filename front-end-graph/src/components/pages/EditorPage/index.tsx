@@ -47,7 +47,7 @@ export default function EditorPage() {
               <p className="italic text-gray-500">
                 Heading will be your title page in Notion
               </p>
-              <SelectEditorBar />
+              {<SelectEditorBar />}
             </div>
             <Editor />
           </section>

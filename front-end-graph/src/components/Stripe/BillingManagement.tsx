@@ -36,7 +36,9 @@ export function SubscriptionSettings() {
           </p>
           <p className="text-sm text-muted-foreground">
             Your next invoice is scheduled for{" "}
-            {convertDateToIntl(data.data?.user.nextPaymentDate || "")}
+            {(data.data?.user.nextPaymentDate &&
+              convertDateToIntl(data.data?.user.nextPaymentDate || "")) ||
+              "Wait..."}
           </p>
         </div>
         {/* <Button variant="outline">Atualizar Método de Pagamento</Button> */}

@@ -41,41 +41,26 @@ export const createOrUpdateNode = (
   id: string,
   pageItem: INotionPage,
 ): { nodes: Node[]; links: Link[] } => {
-  let existingData;
+  const localStorageKey = id === mockIdPage ? "mock" : id;
+  const existingData = saveStorage.get(localStorageKey) || [];
 
-  if (id === mockIdPage) {
-    existingData = saveStorage.get(localStorageKey("mock")) || [];
-  } else {
-    existingData = saveStorage.get(localStorageKey(id)) || [];
-  }
-
-  const nodes = {
-    nodes: [
-      {
-        id: pageItem.id,
-        label: pageItem.properties?.title.title[0].plain_text,
-        type: "page",
-      },
-    ],
-    links: [
-      {
-        source: pageItem.id,
-        target: uuidFormatted(id),
-        type: "node",
-      },
-    ],
+  const newNode: Node = {
+    id: pageItem.id,
+    label: pageItem.properties?.title.title[0].plain_text,
+    type: "page",
   };
 
-  console.log(existingData);
-  const updatedNodes = [...existingData, ...nodes.nodes, ...nodes.links];
+  const newLink: Link = {
+    source: pageItem.id,
+    target: uuidFormatted(id),
+    type: "node",
+  };
 
-  if (id === mockIdPage) {
-    saveStorage.set(localStorageKey("mock"), updatedNodes);
-  } else {
-    saveStorage.set(localStorageKey(id), updatedNodes);
-  }
+  const updatedData = [...existingData, newNode, newLink];
 
-  return nodes;
+  saveStorage.set(localStorageKey, updatedData);
+
+  return { nodes: [newNode], links: [newLink] };
 };
 
 export const convertDateToIntl = (data: string) => {

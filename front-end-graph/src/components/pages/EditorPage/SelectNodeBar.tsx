@@ -18,7 +18,10 @@ const SelectEditorBar: React.FC = () => {
     state: { nodes, pageId },
   } = useGraphContextData();
   const { editorDispatch } = useEditorContext();
-  if (nodes.nodes && !isMock(pageId))
+  if (!nodes) {
+    return <p>Problem to load it</p>;
+  }
+  if (!!nodes.nodes && nodes.nodes.length > 0 && !isMock(pageId))
     return (
       <Select
         onValueChange={(id) => {
@@ -31,11 +34,14 @@ const SelectEditorBar: React.FC = () => {
         }}
       >
         <SelectTrigger className="w-full mb-3">
-          <SelectValue
-            placeholder={
-              (nodes.nodes && nodes.nodes[0].label) || "Choose Page Node father"
-            }
-          />
+          {nodes.nodes && (
+            <SelectValue
+              placeholder={
+                (nodes.nodes && nodes.nodes[0].label) ||
+                "Choose Page Node father"
+              }
+            />
+          )}
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
