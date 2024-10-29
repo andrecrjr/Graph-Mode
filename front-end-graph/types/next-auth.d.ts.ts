@@ -12,6 +12,7 @@ declare module "next-auth" {
         email: string;
       };
       subscriptionId?: string | null;
+      nextPaymentDate?: string;
     } & DefaultSession["user"];
   }
 }

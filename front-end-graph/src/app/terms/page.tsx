@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function page() {
+export default function TermPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="bg-white p-8 rounded-lg shadow-md">
@@ -45,13 +45,14 @@ export default function page() {
             4. Contact
           </h2>
           <p className="text-gray-700 leading-relaxed">
-            For any questions, please reach us via our support email:{" "}
+            For any questions, please reach us via{" "}
             <a
-              href="mailto:andreandreuchiha@gmail.com"
-              className="text-blue-600 hover:underline"
+              href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
+              className="font-bold underline"
             >
-              andreandreuchiha@gmail.com
+              support form
             </a>
+            .
           </p>
         </section>
       </div>

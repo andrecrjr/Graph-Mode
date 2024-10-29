@@ -34,6 +34,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         const subscriptionData = await resp.json();
         session.user = { ...userData } as any;
         session.user.subscriptionId = subscriptionData.subscriptionId as string;
+        session.user.nextPaymentDate =
+          subscriptionData.nextPaymentDate as string;
         return session;
       }
       session.user = { ...userData } as any;

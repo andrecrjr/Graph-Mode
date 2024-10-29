@@ -17,7 +17,13 @@ export const GeneralFooter = () => {
         This project is currently in its BETA stage, initially developed as an
         MVP. While we strive for a smooth experience, some features may still
         have minor bugs. If you encounter any issues, feel free to{" "}
-        <a href="mailto:andreandreuchiha@gmail.com">contact me via email</a>.
+        <a
+          href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
+          className="bold"
+        >
+          contact me via Contact Support Form
+        </a>
+        .
       </p>
     </footer>
   );

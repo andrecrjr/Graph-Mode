@@ -10,6 +10,7 @@ import {
 } from "../ui/card";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { convertDateToIntl } from "../utils";
 
 export function SubscriptionSettings() {
   const data = useSession();
@@ -17,11 +18,12 @@ export function SubscriptionSettings() {
   if (data.status === "authenticated" && !data.data?.user.subscriptionId) {
     redirect("/#pricing");
   }
+  console.log(data.data?.user);
 
   return (
-    <Card className="w-6/12 mx-auto mt-10">
+    <Card className="w-11/12 md:w-5/12 mx-auto mt-12">
       <CardHeader>
-        <CardTitle>Subscription Management</CardTitle>
+        <CardTitle>Subscription Dashboard</CardTitle>
         <CardDescription>
           Cancel your subscription easily at any time, no hassle required.
         </CardDescription>
@@ -34,7 +36,8 @@ export function SubscriptionSettings() {
               "Free"}
           </p>
           <p className="text-sm text-muted-foreground">
-            Your next invoice is scheduled for 15/05/2023
+            Your next invoice is scheduled for{" "}
+            {convertDateToIntl(data.data?.user.nextPaymentDate || "")}
           </p>
         </div>
         {/* <Button variant="outline">Atualizar Método de Pagamento</Button> */}
