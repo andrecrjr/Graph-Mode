@@ -1,11 +1,10 @@
 import { SearchByUrl } from "../SearchInput/SearchByUrl";
-import { auth } from "../Auth";
+import { Session } from "@auth/core/types";
 
-export async function AuthSection() {
-  const data = await auth();
+export async function AuthSection({ session }: { session: Session | null }) {
   return (
     <section className="w-full mt-auto flex flex-col mb-4 items-center justify-center">
-      {!!data ? (
+      {!!session ? (
         <>
           <label>Input your Notion Page URL</label>
           <SearchByUrl />

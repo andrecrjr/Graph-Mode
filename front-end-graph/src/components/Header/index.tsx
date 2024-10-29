@@ -5,7 +5,6 @@ import AuthButton from "../Buttons";
 import { usePathname } from "next/navigation";
 
 export default function Header() {
-  //Force redirect
   useEffect(() => {
     if (window.location.href.includes("graph-mode.vercel.app")) {
       window.location.href = "https://graph-mode.com";

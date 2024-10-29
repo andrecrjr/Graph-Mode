@@ -5,9 +5,10 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Trash } from "lucide-react";
 import { Button } from "../ui/button";
+import { useUserSession } from "../Context/UserSessionContext";
 
 const History = () => {
-  const data = useSession();
+  const { status } = useUserSession();
 
   const [history, _] = useState(
     Object.entries(saveStorage.getAll()).filter((item) => {
@@ -20,7 +21,7 @@ const History = () => {
     }) || {},
   );
 
-  if (data.status === "authenticated" && history && history.length > 0) {
+  if (status === "authenticated" && history && history.length > 0) {
     return (
       <section className="mx-auto text-center mt-3">
         <h3>Last Graph Pages</h3>
