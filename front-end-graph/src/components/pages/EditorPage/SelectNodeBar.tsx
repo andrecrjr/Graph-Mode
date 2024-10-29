@@ -15,13 +15,11 @@ import { isMock } from "../../utils";
 
 const SelectEditorBar: React.FC = () => {
   const {
-    state: { nodes, pageId },
+    state: { nodes },
   } = useGraphContextData();
   const { editorDispatch } = useEditorContext();
-  if (!nodes) {
-    return <p>Problem to load it</p>;
-  }
-  if (!!nodes.nodes && nodes.nodes.length > 0 && !isMock(pageId))
+
+  if (!!nodes.nodes && nodes.nodes.length > 0)
     return (
       <Select
         onValueChange={(id) => {
@@ -47,7 +45,7 @@ const SelectEditorBar: React.FC = () => {
           <SelectGroup>
             <SelectLabel>Choose Page Node father</SelectLabel>
             {nodes.nodes &&
-              nodes.nodes.map((item, index) => (
+              nodes.nodes.map((item) => (
                 <SelectItem key={item.id} value={item.id}>
                   {item.label}
                 </SelectItem>
@@ -56,6 +54,7 @@ const SelectEditorBar: React.FC = () => {
         </SelectContent>
       </Select>
     );
+  return null;
 };
 
 export default SelectEditorBar;

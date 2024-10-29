@@ -4,7 +4,7 @@ import { useToast } from "../hooks/use-toast";
 
 const LoadingPlaceholder: React.FC = () => {
   const {
-    state: { loadingFetchGraph, errorFetchGraph },
+    state: { loadingFetchGraph },
   } = useGraphContextData();
 
   if (loadingFetchGraph)

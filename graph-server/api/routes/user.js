@@ -14,13 +14,13 @@ UserRouter.post("/", authMiddleware, async (req, res) => {
             return res.status(400).json({ error: "Invalid request: 'email' is required" });
         }
 
-        const email = data.person.email;
+        const email = data[data["type"]]["email"];
         const userData = await redis.getKey(`notion-${email}`);
 
         delete data["tokens"];
 
         if (!userData) {
-            logger.info("User has no subscription")
+            logger.info(`User ${email} has no subscription`)
             return res.status(200).json({subscriptionId: null});
         }
 

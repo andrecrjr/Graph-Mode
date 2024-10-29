@@ -35,16 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function GraphPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const data = await auth();
-  if (isMock(params.id) && data) {
-    redirect("/app");
-  }
-
+export default async function GraphPage() {
   return (
     <div className="overflow-hidden max-w-screen">
       <GraphComponent />

@@ -23,7 +23,10 @@ export const useEditorActionPage = () => {
       title: {
         title: [
           {
-            plain_text: "Mock example",
+            plain_text:
+              editorDocument?.document.filter(
+                (item) => item.type === "heading", //@ts-ignore
+              )[0].content[0].text || "Mocked Page",
             //@ts-ignore
             annotations: {},
             type: "page",
@@ -35,11 +38,9 @@ export const useEditorActionPage = () => {
 
   const savePageData = (data: INotionPage) => {
     if (editorDocument?.document && editorDocument.document.length > 0) {
-      const nodeId =
-        pageId === "mock" ? mockIdPage : tempNodeChoiceEditorId || pageId;
       dispatch({
         type: "UPDATE_NODES",
-        payload: createOrUpdateNode(nodeId, data),
+        payload: createOrUpdateNode(tempNodeChoiceEditorId, data, pageId),
       });
       editorDocument.replaceBlocks(
         editorDocument.document,
