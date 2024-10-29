@@ -18,7 +18,6 @@ export function SubscriptionSettings() {
   if (data.status === "authenticated" && !data.data?.user.subscriptionId) {
     redirect("/#pricing");
   }
-  console.log(data.data?.user);
 
   return (
     <Card className="w-11/12 md:w-5/12 mx-auto mt-12">
