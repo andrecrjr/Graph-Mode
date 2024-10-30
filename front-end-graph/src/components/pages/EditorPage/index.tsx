@@ -59,6 +59,9 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
         </Button>
         <section>
           <div className="px-8">
+            <p className="text-center text-gray-500 font-bold">
+              Fast Notes - BETA
+            </p>
             <p className="italic text-gray-500 text-sm">
               Graph Convention: First heading in editor sets the page title.
             </p>
@@ -71,7 +74,7 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
 
   return (
     <section className="w-full h-full flex flex-col justify-center items-center">
-      <p className="font-bold">BETA soon with Graph Mode PRO Only!</p>
+      <p className="font-bold">Fast Notes soon with Graph Mode PRO Only!</p>
       <p>
         You can test this editor in our{" "}
         <Link href="/graph/mock" className="underline" target="_blank">
