@@ -47,7 +47,7 @@ export const createOrUpdateNode = (
   } else {
     existingData = saveStorage.get(localStorageKey(pageId)) || [];
   }
-
+  console.log(id);
   const nodes = {
     nodes: [
       {
@@ -59,7 +59,7 @@ export const createOrUpdateNode = (
     links: [
       {
         source: pageItem.id,
-        target: id.includes("-") ? uuidFormatted(id) : id,
+        target: id.includes("-") ? id : uuidFormatted(id),
         type: "node",
       },
     ],

@@ -17,6 +17,7 @@ interface EditorState {
   notionKey: string;
   initialContentDocument: any[];
   tempNodeChoiceEditorId: string;
+  sidebarOpen: boolean;
 }
 
 export interface EditorContextType {
@@ -51,6 +52,12 @@ type Action =
       payload: {
         tempNodeChoiceEditorId: string;
       };
+    }
+  | {
+      type: "OPEN_SIDEBAR";
+      payload: {
+        sidebarOpen: boolean;
+      };
     };
 
 export const initialState: EditorState = {
@@ -64,6 +71,7 @@ export const initialState: EditorState = {
     },
     ...paragraphsArray,
   ],
+  sidebarOpen: false,
 };
 
 export function editorReducer(state: EditorState, action: Action): EditorState {
@@ -93,6 +101,8 @@ export function editorReducer(state: EditorState, action: Action): EditorState {
         ...state,
         tempNodeChoiceEditorId: action.payload.tempNodeChoiceEditorId,
       };
+    case "OPEN_SIDEBAR":
+      return { ...state, sidebarOpen: action.payload.sidebarOpen };
     default:
       return state;
   }

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -18,6 +18,19 @@ const SelectEditorBar: React.FC = () => {
     state: { nodes },
   } = useGraphContextData();
   const { editorDispatch } = useEditorContext();
+
+  useEffect(() => {
+    if (nodes.nodes) {
+      editorDispatch({
+        type: "UPDATE_TEMP_EDITOR_NODE",
+        payload: {
+          tempNodeChoiceEditorId: nodes.nodes[0].id,
+        },
+      });
+    }
+    console.log("nodes", nodes.nodes);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!!nodes.nodes && nodes.nodes.length > 0)
     return (
