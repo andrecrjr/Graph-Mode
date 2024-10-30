@@ -1,14 +1,14 @@
 "use client";
-import { Notebook, Send, X } from "lucide-react";
+import { Notebook, PenIcon, SendHorizonal, X } from "lucide-react";
 import React, { useState } from "react";
 import { Editor } from "@/components/Editor";
 import { Button } from "@/components/ui/button";
 import { useGraphContextData } from "@/components/Context/GraphContext";
 import SelectEditorBar from "./SelectNodeBar";
 import { useEditorActionPage } from "@/components/hooks/useEditorAction";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { Session } from "next-auth";
+import { useUserSession } from "@/components/Context/UserSessionContext";
+import { isMock } from "@/components/utils";
 
 export default function EditorPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,19 +44,18 @@ export default function EditorPage() {
 }
 
 const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
-  const { data } = useSession();
-  const { createOrUpdatePage } = useEditorActionPage();
-
-  if (data?.user.subscriptionId)
+  const { session: data } = useUserSession();
+  const { createOrUpdatePage, pageId } = useEditorActionPage();
+  if (data?.user.subscriptionId || isMock(pageId))
     return (
       <>
         <Button
-          className={`fixed bottom-20 right-8 min-w-16 sm:min-w-12 z-50 p-2 hidden justify-center
+          className={`fixed bottom-20 right-4 min-w-16 sm:min-w-12 z-50 p-2 hidden justify-center
            bg-green-600 hover:bg-green-700 text-white rounded-full focus:outline-none
             ${isOpen && "flex"}`}
           onClick={createOrUpdatePage}
         >
-          <Send />
+          <PenIcon />
         </Button>
         <section>
           <div className="px-8">
@@ -72,10 +71,10 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
 
   return (
     <section className="w-full h-full flex flex-col justify-center items-center">
-      <p className="font-bold">Soon with Graph Mode PRO Only!</p>
+      <p className="font-bold">BETA soon with Graph Mode PRO Only!</p>
       <p>
         You can test this editor in our{" "}
-        <Link href="/" className="underline">
+        <Link href="/graph/mock" className="underline" target="_blank">
           Example Graph
         </Link>{" "}
       </p>

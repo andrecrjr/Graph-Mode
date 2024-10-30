@@ -83,5 +83,5 @@ export const useEditorActionPage = () => {
     }
   };
 
-  return { createOrUpdatePage };
+  return { createOrUpdatePage, pageId };
 };
