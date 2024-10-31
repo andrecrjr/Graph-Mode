@@ -44,21 +44,24 @@ export function SubscriptionSettings({ data }: { data: Session | null }) {
           )}
         </div>
         {/* <Button variant="outline">Atualizar Método de Pagamento</Button> */}
-        <Button
-          variant="destructive"
-          onClick={() => {
-            fetch(
-              `/api/update-checkout?subscriptionId=${data?.user.subscriptionId}`,
-              {
-                method: "DELETE",
-              },
-            ).then((res) => {
-              console.log(res);
-            });
-          }}
-        >
-          Cancelar Assinatura
-        </Button>
+        {!data?.user.lifetimePaymentId && (
+          <Button
+            variant="destructive"
+            onClick={() => {
+              fetch(
+                `/api/update-checkout?subscriptionId=${data?.user.subscriptionId}`,
+                {
+                  method: "DELETE",
+                },
+              ).then((res) => {
+                console.log(res);
+              });
+            }}
+          >
+            Cancelar Assinatura
+          </Button>
+        )}
+        {data?.user.lifetimePaymentId && <p>{"Thanks for your support!"}</p>}
       </CardContent>
     </Card>
   );
