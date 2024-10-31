@@ -7,8 +7,6 @@ export async function AuthSection({ session }: { session: Session | null }) {
     <section className="w-full mt-auto flex flex-col mb-4 items-center justify-center">
       {!!session ? (
         <>
-          <label>Input your Notion Page URL</label>
-          <SearchByUrl />
           <SearchInput />
         </>
       ) : (

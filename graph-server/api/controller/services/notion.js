@@ -42,7 +42,7 @@ class NotionAPI {
         headers: {
             ...this.getHeaders(),
         },
-        body: `{"query":"${query}","filter":{"value":"page","property":"object"},"sort":{"direction":"ascending","timestamp":"last_edited_time"}}`
+        body: `{"query":"${query}","filter":{"value":"page","property":"object"}}`
       };
       const res = await fetch(`${this.apiUrl}/search`, options)
       const data = await res.json()
