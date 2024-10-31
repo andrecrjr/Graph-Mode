@@ -45,7 +45,7 @@ export async function handleSubscriptionCreated(event, res) {
         }
         else if (eventData.payment_intent) {
             let userData = (await userController.getKey(`notion-${notionUserId}`)||{});
-            userData.lastPaymentId = eventData.payment_intent;
+            userData.lifetimePaymentId = eventData.payment_intent;
             userData.lastPaymentDate = eventData.created * 1000;
 
             await userController.setKey(`notion-${notionUserId}`, userData);

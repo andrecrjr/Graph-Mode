@@ -5,13 +5,14 @@ import React from "react";
 
 const Settings: React.FC = async () => {
   const data = await auth();
-  if (!data) {
-    redirect("/");
+
+  if (!data?.user.subscriptionId && !data?.user.lifetimePaymentId) {
+    return redirect("/#pricing");
   }
 
   return (
     <>
-      <SubscriptionSettings />
+      <SubscriptionSettings data={data} />
     </>
   );
 };

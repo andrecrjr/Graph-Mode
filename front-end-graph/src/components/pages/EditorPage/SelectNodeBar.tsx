@@ -28,7 +28,6 @@ const SelectEditorBar: React.FC = () => {
         },
       });
     }
-    console.log("nodes", nodes.nodes);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

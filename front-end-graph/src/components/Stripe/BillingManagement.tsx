@@ -8,45 +8,47 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
 import { convertDateToIntl } from "../utils";
+import { Session } from "@auth/core/types";
 
-export function SubscriptionSettings() {
-  const data = useSession();
-
-  if (data.status === "authenticated" && !data.data?.user.subscriptionId) {
-    redirect("/#pricing");
-  }
-
+export function SubscriptionSettings({ data }: { data: Session | null }) {
   return (
     <Card className="w-11/12 md:w-5/12 mx-auto mt-12">
       <CardHeader>
         <CardTitle>Subscription Dashboard</CardTitle>
-        <CardDescription>
-          Cancel your subscription easily at any time, no hassle required.
-        </CardDescription>
+        {data?.user.subscriptionId && !data.user.lifetimePaymentId && (
+          <CardDescription>
+            Cancel your subscription easily at any time, no hassle required.
+          </CardDescription>
+        )}
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <p className="font-medium">
+          <p className="font-bold text-green-800">
             Current Plan:{" "}
-            {(data.data?.user.subscriptionId !== "" && "Monthly Premium") ||
+            {data?.user.subscriptionId &&
+              !data.user.lifetimePaymentId &&
+              "Monthly Premium"}
+            {data?.user.lifetimePaymentId && "Lifetime Project 🥇"}
+            {!data?.user.lifetimePaymentId &&
+              !data?.user.subscriptionId &&
               "Free"}
           </p>
-          <p className="text-sm text-muted-foreground">
-            Your next invoice is scheduled for{" "}
-            {(data.data?.user.nextPaymentDate &&
-              convertDateToIntl(data.data?.user.nextPaymentDate || "")) ||
-              "Wait..."}
-          </p>
+          {!data?.user.lifetimePaymentId && (
+            <p className="text-sm text-muted-foreground">
+              Your next invoice is scheduled for{" "}
+              {(data?.user.nextPaymentDate &&
+                convertDateToIntl(data?.user.nextPaymentDate || "")) ||
+                "Wait..."}
+            </p>
+          )}
         </div>
         {/* <Button variant="outline">Atualizar Método de Pagamento</Button> */}
         <Button
           variant="destructive"
           onClick={() => {
             fetch(
-              `/api/update-checkout?subscriptionId=${data.data?.user.subscriptionId}`,
+              `/api/update-checkout?subscriptionId=${data?.user.subscriptionId}`,
               {
                 method: "DELETE",
               },
