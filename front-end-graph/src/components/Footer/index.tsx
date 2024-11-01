@@ -1,6 +1,7 @@
 import React from "react";
 import { IS_DEVELOPMENT } from "../utils";
 import { NotionHome } from "../svg/NotionHome";
+import Link from "next/link";
 
 export const GeneralFooter = () => {
   return (
@@ -8,6 +9,12 @@ export const GeneralFooter = () => {
       <div className="pb-2">
         <NotionHome />
       </div>
+      <Link
+        className="text-sm font-medium underline underline-offset-4 strong"
+        href="/terms"
+      >
+        Privacy Terms
+      </Link>
       {IS_DEVELOPMENT && (
         <p className="text-center text-sm w-auto mb-2">
           You are using <strong>localhost/development env</strong>
