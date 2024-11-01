@@ -3,7 +3,7 @@ import { useEditorContext } from "../Context/EditorContext";
 import { useGraphContextData } from "../Context/GraphContext";
 import { fetchServer } from "../service/Notion";
 import { useToast } from "@/components/hooks/use-toast";
-import { createOrUpdateNode, isMock, mockIdPage, saveStorage } from "../utils";
+import { createOrUpdateNode, isMock, saveStorage } from "../utils";
 
 export const useEditorActionPage = () => {
   const { toast } = useToast();
@@ -13,8 +13,11 @@ export const useEditorActionPage = () => {
       pageId,
       initialContentDocument,
       tempNodeChoiceEditorId,
+      sidebarOpen,
     },
+    editorDispatch,
   } = useEditorContext();
+
   const { dispatch } = useGraphContextData();
 
   const createMockPage = (): INotionPage => ({
@@ -23,7 +26,10 @@ export const useEditorActionPage = () => {
       title: {
         title: [
           {
-            plain_text: "Mock example",
+            plain_text:
+              editorDocument?.document.filter(
+                (item) => item.type === "heading", //@ts-ignore
+              )[0].content[0].text || "Mocked Page",
             //@ts-ignore
             annotations: {},
             type: "page",
@@ -34,17 +40,32 @@ export const useEditorActionPage = () => {
   });
 
   const savePageData = (data: INotionPage) => {
-    if (editorDocument?.document && editorDocument.document.length > 0) {
-      const nodeId =
-        pageId === "mock" ? mockIdPage : tempNodeChoiceEditorId || pageId;
+    if (
+      editorDocument?.document &&
+      editorDocument.document.length > 0 &&
+      !!tempNodeChoiceEditorId
+    ) {
       dispatch({
         type: "UPDATE_NODES",
-        payload: createOrUpdateNode(nodeId, data),
+        payload: createOrUpdateNode(tempNodeChoiceEditorId, data, pageId),
       });
       editorDocument.replaceBlocks(
         editorDocument.document,
         initialContentDocument,
       );
+      toast({
+        title: `Page created with success!`,
+        className: "bg-green-600 text-white",
+      });
+      editorDispatch({
+        type: "OPEN_SIDEBAR",
+        payload: { sidebarOpen: !sidebarOpen },
+      });
+    } else {
+      toast({
+        title: `Problem to get the save the selected page!`,
+        className: "bg-green-600 text-white",
+      });
     }
   };
 
@@ -82,5 +103,5 @@ export const useEditorActionPage = () => {
     }
   };
 
-  return { createOrUpdatePage };
+  return { createOrUpdatePage, pageId };
 };

@@ -3,16 +3,13 @@ import {
   ArrowLeft,
   Coffee,
   Menu,
-  MenuSquare,
   Pin,
   PinOff,
   RefreshCcw,
-  Settings,
-  Settings2,
   X,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { isMock, saveStorage } from "../utils";
 import {
   clearNodePositions,

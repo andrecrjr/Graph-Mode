@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -15,10 +15,23 @@ import { isMock } from "../../utils";
 
 const SelectEditorBar: React.FC = () => {
   const {
-    state: { nodes, pageId },
+    state: { nodes },
   } = useGraphContextData();
   const { editorDispatch } = useEditorContext();
-  if (nodes.nodes && !isMock(pageId))
+
+  useEffect(() => {
+    if (nodes.nodes) {
+      editorDispatch({
+        type: "UPDATE_TEMP_EDITOR_NODE",
+        payload: {
+          tempNodeChoiceEditorId: nodes.nodes[0].id,
+        },
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!!nodes.nodes && nodes.nodes.length > 0)
     return (
       <Select
         onValueChange={(id) => {
@@ -31,17 +44,20 @@ const SelectEditorBar: React.FC = () => {
         }}
       >
         <SelectTrigger className="w-full mb-3">
-          <SelectValue
-            placeholder={
-              (nodes.nodes && nodes.nodes[0].label) || "Choose Page Node father"
-            }
-          />
+          {nodes.nodes && (
+            <SelectValue
+              placeholder={
+                (nodes.nodes && nodes.nodes[0].label) ||
+                "Choose Page Node father"
+              }
+            />
+          )}
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Choose Page Node father</SelectLabel>
             {nodes.nodes &&
-              nodes.nodes.map((item, index) => (
+              nodes.nodes.map((item) => (
                 <SelectItem key={item.id} value={item.id}>
                   {item.label}
                 </SelectItem>
@@ -50,6 +66,7 @@ const SelectEditorBar: React.FC = () => {
         </SelectContent>
       </Select>
     );
+  return null;
 };
 
 export default SelectEditorBar;

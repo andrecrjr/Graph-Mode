@@ -65,10 +65,13 @@ export const ModalCheckout = forwardRef<IModalCheckoutRef, { priceId: string }>(
 
     return (
       <div id="checkout" className="my-4">
-        <dialog ref={modalRef} className="modal w-8/12">
+        <dialog ref={modalRef} className="w-11/12 py-6 sm:w-9/12">
           <div className="modal-action">
             <form method="dialog">
-              <button className="absolute right-0" onClick={handleCloseModal}>
+              <button
+                className="absolute right-0 p-6"
+                onClick={handleCloseModal}
+              >
                 <X />
               </button>
             </form>

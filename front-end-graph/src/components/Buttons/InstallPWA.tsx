@@ -2,6 +2,7 @@
 import { useEffect, useState, MouseEvent } from "react";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
+import Link from "next/link";
 
 interface DeferredPrompt extends Event {
   prompt: () => void;
@@ -62,7 +63,7 @@ function ButtonPWA() {
   const handleClose = () => {
     setIsHidden(true);
     const hideDate = new Date();
-    hideDate.setMinutes(hideDate.getMinutes() + 90);
+    hideDate.setDate(hideDate.getDate() + 2); // two days
     localStorage.setItem("hideDate", hideDate.toISOString());
   };
 
@@ -75,6 +76,13 @@ function ButtonPWA() {
       <span className="self-end cursor-pointer" onClick={handleClose}>
         <X />
       </span>
+      <Link
+        className="font-bold text-sm underline pb-3"
+        target="_blank"
+        href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105&utm_source=click-float"
+      >
+        Send feedbacks in our Contact form!
+      </Link>
       <Button
         className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full mx-auto"
         onClick={handleInstallClick}

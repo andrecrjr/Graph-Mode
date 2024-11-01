@@ -1,6 +1,5 @@
 import { Link, Node } from "../../../types/graph";
 import { INotionPage } from "../../../types/notionPage";
-import Stripe from "stripe";
 export const localStorageKey = (pageId: string) => `data-block-${pageId}`;
 
 export const saveStorage = {
@@ -40,15 +39,15 @@ export const mockIdPage = "9cd12535-3e60-4493-bc03-b5ace2e01986";
 export const createOrUpdateNode = (
   id: string,
   pageItem: INotionPage,
+  pageId: string,
 ): { nodes: Node[]; links: Link[] } => {
   let existingData;
-
-  if (id === mockIdPage) {
+  if (pageId === mockIdPage) {
     existingData = saveStorage.get(localStorageKey("mock")) || [];
   } else {
-    existingData = saveStorage.get(localStorageKey(id)) || [];
+    existingData = saveStorage.get(localStorageKey(pageId)) || [];
   }
-
+  console.log(id);
   const nodes = {
     nodes: [
       {
@@ -60,20 +59,23 @@ export const createOrUpdateNode = (
     links: [
       {
         source: pageItem.id,
-        target: uuidFormatted(id),
+        target: id.includes("-") ? id : uuidFormatted(id),
         type: "node",
       },
     ],
   };
 
-  console.log(existingData);
   const updatedNodes = [...existingData, ...nodes.nodes, ...nodes.links];
 
-  if (id === mockIdPage) {
+  if (pageId === mockIdPage) {
     saveStorage.set(localStorageKey("mock"), updatedNodes);
   } else {
-    saveStorage.set(localStorageKey(id), updatedNodes);
+    saveStorage.set(localStorageKey(pageId), updatedNodes);
   }
 
   return nodes;
+};
+
+export const convertDateToIntl = (data: string) => {
+  return new Intl.DateTimeFormat().format(new Date(data));
 };

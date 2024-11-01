@@ -5,7 +5,6 @@ import AuthButton from "../Buttons";
 import { usePathname } from "next/navigation";
 
 export default function Header() {
-  //Force redirect
   useEffect(() => {
     if (window.location.href.includes("graph-mode.vercel.app")) {
       window.location.href = "https://graph-mode.com";
@@ -33,20 +32,14 @@ export default function Header() {
             className="text-sm font-medium hover:underline underline-offset-4"
             href="/#support"
           >
-            Buy me a ☕
-          </Link>
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="/terms"
-          >
-            Privacy
+            ☕
           </Link>
           <Link
             className="text-sm font-medium hover:underline underline-offset-4"
             href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
             target="_blank"
           >
-            Tech Support & Feedback
+            Contact
           </Link>
         </nav>
         <div className="absolute l-0 top-12 ml-auto sm:static">

@@ -13,7 +13,6 @@ redisRouter.get("/healthcheck", async (req, res)=>{
         logger.error(`Error no redis healthcheck ${error}`)
         return res.status(200).json({"redis_service": error})
     }
-
 })
 
 redisRouter.get("/notion-user-key/:id", async (req, res)=>{
