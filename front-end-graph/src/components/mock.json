@@ -1,10 +1,5 @@
 [
   {
-    "id": "d3df87fd-0612-42d3-8671-a8e6dd615e9c",
-    "label": "Google Search Central - 2023",
-    "type": "page"
-  },
-  {
     "id": "9cd12535-3e60-4493-bc03-b5ace2e01986",
     "label": "SEO Optimizations",
     "type": "page"
@@ -18,11 +13,6 @@
     "source": "b7744720-2cfc-4742-9c16-57c944078c34",
     "target": "9cd12535-3e60-4493-bc03-b5ace2e01986",
     "type": "node"
-  },
-  {
-    "id": "eeb786b5-6469-42d5-ac6f-fdc41d09000a",
-    "label": "Web Performance",
-    "type": "page"
   },
   {
     "source": "30ea9115-0150-463a-8160-6c9e8ec3a548",
@@ -48,11 +38,6 @@
     "source": "b7744720-2cfc-4742-9c16-57c944078c34",
     "target": "f8ccc03b-44f9-4483-891d-6d4782434309",
     "type": "node"
-  },
-  {
-    "id": "f7d1dd97-9d93-4653-9bfc-71dece77e3fa",
-    "label": "Google Ranking Factors",
-    "type": "page"
   },
   {
     "source": "3b065527-b5c2-45c0-9a1d-fbd5d734872c",
