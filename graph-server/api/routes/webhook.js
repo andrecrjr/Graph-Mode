@@ -27,11 +27,11 @@ router.post(
 		}
 
 		if (event.type === "checkout.session.completed")
-			await handleSubscriptionCreated(event, res);
+			return await handleSubscriptionCreated(event, res);
 		if (event.type==="invoice.payment_succeeded")
-			await handlePaymentSucceeded(event, res);
+			return await handlePaymentSucceeded(event, res);
 		if (event.type === "customer.subscription.deleted")
-			await handleSubscriptionDeleted(event, res);
+			return await handleSubscriptionDeleted(event, res);
 
 		return res.status(200).send();
 	},

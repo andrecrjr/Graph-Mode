@@ -52,12 +52,12 @@ export async function handleSubscriptionCreated(event, res) {
 
             logger.info(`One-time payment successfully processed for user: ${notionUserId}`);
         }
-
+        return res.status(200).send(`One-time payment successfully processed for user: : ${notionUserId}`);
 	} catch (err) {
 		logger.error(
 			`Error handling subscription update for user ${notionUserId}: ${err.message}`,
 		);
-		return res.status(500).send("Internal Server Error");
+		return res.status(500).send(`Internal Server Error for ${notionUserId}`);
 	}
 }
 
@@ -76,7 +76,7 @@ export async function handleSubscriptionDeleted(event, res) {
 			await userController.deleteKey(`notion-${eventData.metadata.notionUserId}`);
 			logger.info(`Subscription removed for user: ${eventData.metadata.notionUserId}`);
 		}
-		return res.status(200).send();
+		return res.status(200).send(`Removed subscription successfully processed for user: : ${notionUserId}`);
 	} catch (err) {
 		logger.error(
 			`Error handling subscription deletion for subscription ${eventData.id}: ${err.message}`,
@@ -118,7 +118,7 @@ export async function handlePaymentSucceeded(event, res) {
 
         logger.info(`Payment succeeded for user: ${notionUserId}, subscription updated`);
 
-        return res.status(200).send();
+        return res.status(200).send(`Payment succeeded for user: ${notionUserId}, subscription updated`);
     } catch (err) {
         logger.error(`Error handling payment succeeded for user ${notionUserId}: ${err.message}`, err);
         return res.status(500).send("Internal Server Error");
