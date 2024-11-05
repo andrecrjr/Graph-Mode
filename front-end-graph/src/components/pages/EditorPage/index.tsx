@@ -53,7 +53,7 @@ export default function EditorPage() {
 const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
   const { session: data } = useUserSession();
   const { createOrUpdatePage, pageId } = useEditorActionPage();
-  console.log(data);
+
   if (
     data?.user.subscriptionId ||
     data?.user.lifetimePaymentId ||
