@@ -20,7 +20,6 @@ export const UserSessionProvider = ({
   children: React.ReactNode;
 }) => {
   const { data: session, status } = useSession();
-
   return (
     <UserSessionContext.Provider value={{ session, status }}>
       {children}
