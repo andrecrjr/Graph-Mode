@@ -22,11 +22,6 @@ export const metadata: Metadata = {
     "Transform your Notion pages into an interactive Zettelkasten/Graph view, with the power of Graph Mode!",
 };
 
-const cachedData = cache(async () => {
-  const session = await auth();
-  return session;
-});
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -41,7 +36,8 @@ export default async function RootLayout({
     operatingSystem: "All",
     applicationCategory: "ProductivityApplication",
   };
-  const dataSession = await cachedData();
+  const dataSession = await auth();
+  console.log("batendo aqui");
   return (
     <html lang="en">
       <head>

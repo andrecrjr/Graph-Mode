@@ -13,7 +13,7 @@ export default function AuthProvider({
   return (
     <SessionProvider
       session={session}
-      refetchInterval={10 * 60}
+      refetchInterval={60 * 60}
       refetchOnWindowFocus={false}
       refetchWhenOffline={false}
     >
