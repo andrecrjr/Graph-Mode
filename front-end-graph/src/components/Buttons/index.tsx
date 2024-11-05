@@ -2,9 +2,10 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "../ui/button";
+import { useUserSession } from "../Context/UserSessionContext";
 
 const AuthButton = () => {
-  const { data: session } = useSession();
+  const { session } = useUserSession();
 
   return (
     <>

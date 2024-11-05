@@ -9,6 +9,8 @@ import { EditorProvider } from "@/components/Context/EditorContext";
 import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/Header";
 import ButtonPWA from "@/components/Buttons/InstallPWA";
+import { auth } from "@/components/Auth";
+import { cache } from "react";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -20,7 +22,7 @@ export const metadata: Metadata = {
     "Transform your Notion pages into an interactive Zettelkasten/Graph view, with the power of Graph Mode!",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -34,6 +36,8 @@ export default function RootLayout({
     operatingSystem: "All",
     applicationCategory: "ProductivityApplication",
   };
+  const dataSession = await auth();
+  console.log("batendo aqui");
   return (
     <html lang="en">
       <head>
@@ -50,7 +54,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`w-full ${roboto.className}`}>
-        <AuthProvider>
+        <AuthProvider session={dataSession}>
           <Header />
           <MainContainer>
             <GraphContextProvider>
