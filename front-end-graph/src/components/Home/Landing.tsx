@@ -6,6 +6,7 @@ import BuyMeCoffee from "./BuyCoffee";
 import { NotionHome } from "../svg/NotionHome";
 import ImprovedFeatures from "./Features";
 import CreatorSection from "./CreatorSection";
+import { LandingAuthButton } from "../Buttons/LandingAuth";
 
 export default function Landing() {
   return (
@@ -23,9 +24,7 @@ export default function Landing() {
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-              <Link href="/app">
-                <Button>Start to Graph Mode ✨</Button>
-              </Link>
+              <LandingAuthButton />
               <Link href="/graph/mock">
                 <Button>View Example Graph 👀</Button>
               </Link>

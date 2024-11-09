@@ -40,10 +40,14 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         return session;
       }
     },
+    async redirect({ baseUrl }) {
+      return baseUrl + "/app";
+    },
   },
   session: {
     strategy: "jwt",
   },
+
   debug: process.env.NODE_ENV === "development",
 });
 

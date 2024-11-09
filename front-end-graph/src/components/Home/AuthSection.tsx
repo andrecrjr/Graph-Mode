@@ -1,5 +1,4 @@
 import SearchInput from "../SearchInput";
-import { SearchByUrl } from "../SearchInput/SearchByUrl";
 import { Session } from "@auth/core/types";
 
 export async function AuthSection({ session }: { session: Session | null }) {
