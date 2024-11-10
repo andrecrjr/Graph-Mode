@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { auth } from "../Auth";
 import { KofiDonate } from "../Donate";
+import { Session } from "@auth/core/types";
 
 // DemoSection.js
-export async function DemoSection() {
-  const data = await auth();
-
+export async function DemoSection({ data }: { data: Session | null }) {
   return (
     <section className="flex justify-center items-center">
       <KofiDonate />

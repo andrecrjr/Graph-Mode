@@ -48,7 +48,7 @@ router.get("/only/:blockId", authMiddleware, async(req, res)=>{
 
 router.post("/search", authMiddleware, async (req, res)=>{
    try {
-    const elements = await req.notionAPI.fetchSearch(req.headers.authorization, req.body.query);
+    const elements = await req.notionAPI.fetchSearch(req.body.query);
     res.json(elements);
   } catch (error) {
     console.error('Erro ao buscar filhos do bloco:', error);

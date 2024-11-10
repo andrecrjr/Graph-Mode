@@ -9,7 +9,7 @@ export const loadNodePositions = (blockId: string) => {
 
 export const fetchAndSaveCacheData = async (pageId: string, token: string) => {
   const localStorageKey = `data-block-${pageId}`;
-  const tempStorageKey = `data-block-temp-${pageId}`;
+  const tempStorageKey = `temp-data-blocks-${pageId}`;
   const cachedData = saveStorage.get(localStorageKey);
   saveStorage.set("notionKey", token);
 
@@ -77,6 +77,5 @@ export const clearNodePositions = (pageId: string) => {
 };
 
 export const syncPage = (pageId: string) => {
-  saveStorage.delete(`nodePositions-${pageId}`);
   saveStorage.delete(`data-block-${pageId}`);
 };

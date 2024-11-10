@@ -4,7 +4,9 @@ import Link from "next/link";
 import { PricingTiers } from "./Tier";
 import BuyMeCoffee from "./BuyCoffee";
 import { NotionHome } from "../svg/NotionHome";
-import { BGParticle } from "./BgParticle";
+import ImprovedFeatures from "./Features";
+import CreatorSection from "./CreatorSection";
+import { LandingAuthButton } from "../Buttons/LandingAuth";
 
 export default function Landing() {
   return (
@@ -12,24 +14,19 @@ export default function Landing() {
       <section className="w-full  md:py-24 h-screen flex flex-col items-center justify-center z-10">
         <div className="container mt-auto px-4 md:px-6">
           <div className="flex flex-col items-center space-y-4 text-center">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+            <div className="space-y-3">
+              <h1 className="text-4xl font-bold sm:text-8xl tracking-tight">
                 Explore Graph Mode
               </h1>
-              <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+              <p className="mx-auto max-w-[700px] text-gray-500 sm:text-xl dark:text-gray-400">
                 Visualize your Notion Pages like never before. Inspired by
-                Obsidian, powered by Notion.
+                Zettelkasten/Obsidian, powered by Notion.
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
+              <LandingAuthButton />
               <Link href="/graph/mock">
                 <Button>View Example Graph 👀</Button>
-              </Link>
-              <Link href={"#why"}>
-                <Button variant="outline">Why Graph Mode? 🤔</Button>
-              </Link>
-              <Link href="/app" className="mt-4 sm:mt-0">
-                <Button>Go to Graph Mode ✨</Button>
               </Link>
             </div>
           </div>
@@ -38,51 +35,10 @@ export default function Landing() {
           <NotionHome />
         </Link>
       </section>
-
-      <section
-        className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800 min-h-screen z-10 flex items-center justify-center"
-        id="why"
-      >
-        <div className="container px-4 md:px-6">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">
-            Why Choose Graph Mode?
-          </h2>
-          <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-3 mt-20">
-            <div className="flex flex-col items-center text-center">
-              <NetworkIcon className="h-12 w-12 mb-4 text-primary" />
-              <h3 className="text-lg font-bold">Visualize Connections</h3>
-              <p className="text-gray-500 dark:text-gray-400">
-                Easily map out how your notes and ideas are interwoven with a
-                dynamic, interactive graph. Get a bird’s-eye view of a Notion
-                page that you chose, revealing the structure and relationships
-                within your content like never before.
-              </p>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <SearchIcon className="h-12 w-12 mb-4 text-primary" />
-              <h3 className="text-lg font-bold">Enhanced Discovery</h3>
-              <p className="text-gray-500 dark:text-gray-400">
-                Uncover hidden patterns, connections, and insights buried deep
-                within your Notion pages. Transform the way you explore,
-                navigate, and make sense of your information, enhancing your
-                workflow and understanding.
-              </p>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <LayersIcon className="h-12 w-12 mb-4 text-primary" />
-              <h3 className="text-lg font-bold">Seamless Workflow</h3>
-              <p className="text-gray-500 dark:text-gray-400">
-                Experience the power of graph visualization, seamlessly
-                integrated with your Notion workspace. Log in with your Notion
-                account to get started. After logging in, simply paste the URL
-                of the Notion page you want to visualize, and watch as your
-                content transforms into an interactive, dynamic graph!
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ImprovedFeatures />
+      <CreatorSection />
       <BuyMeCoffee />
+      {/* <PricingTiers /> */}
       <section className="w-full py-12 md:py-24 lg:py-32 min-h-screen  bg-gray-100 z-10 dark:bg-gray-800 flex items-center justify-center">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between">
@@ -174,8 +130,6 @@ export function MindMapIcon(props: any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"

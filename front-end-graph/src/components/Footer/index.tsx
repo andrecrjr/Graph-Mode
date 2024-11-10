@@ -1,6 +1,7 @@
 import React from "react";
 import { IS_DEVELOPMENT } from "../utils";
 import { NotionHome } from "../svg/NotionHome";
+import Link from "next/link";
 
 export const GeneralFooter = () => {
   return (
@@ -8,6 +9,12 @@ export const GeneralFooter = () => {
       <div className="pb-2">
         <NotionHome />
       </div>
+      <Link
+        className="text-sm font-medium underline underline-offset-4 strong"
+        href="/terms"
+      >
+        Privacy Terms
+      </Link>
       {IS_DEVELOPMENT && (
         <p className="text-center text-sm w-auto mb-2">
           You are using <strong>localhost/development env</strong>
@@ -17,7 +24,13 @@ export const GeneralFooter = () => {
         This project is currently in its BETA stage, initially developed as an
         MVP. While we strive for a smooth experience, some features may still
         have minor bugs. If you encounter any issues, feel free to{" "}
-        <a href="mailto:andreandreuchiha@gmail.com">contact me via email</a>.
+        <a
+          href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
+          className="bold"
+        >
+          contact me via Contact Support Form
+        </a>
+        .
       </p>
     </footer>
   );

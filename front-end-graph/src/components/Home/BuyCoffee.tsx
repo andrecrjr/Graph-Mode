@@ -11,7 +11,10 @@ import { KofiDonate } from "../Donate";
 
 export default function BuyMeCoffee() {
   return (
-    <section className="w-full py-12 md:py-24 z-10 lg:py-32 bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900 dark:to-orange-900">
+    <section
+      id="support"
+      className="w-full flex py-12 min-h-screen items-center md:py-24 z-10 lg:py-32 bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900 dark:to-orange-900"
+    >
       <div className="container px-4 md:px-6">
         <Card className="max-w-2xl mx-auto">
           <CardHeader>
@@ -27,8 +30,8 @@ export default function BuyMeCoffee() {
               <Coffee className="h-12 w-12 text-amber-500" />
             </div>
             <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-              Your support helps us develop new features and improve Notion
-              Graph Mode. Every coffee counts!
+              Your support helps us develop new features and improve Graph Mode.
+              Every coffee counts!
             </p>
             <div className="flex justify-center space-x-2">
               <KofiDonate />

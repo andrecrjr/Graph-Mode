@@ -1,12 +1,12 @@
 import { useEffect, useCallback } from "react";
 import dataMock from "@/components/mock.json";
 import { fetchAndSaveCacheData, processGraphData } from "../utils/graph";
-import { useSession } from "next-auth/react";
 import { useGraphContextData } from "../Context/GraphContext";
 import { isMock, saveStorage } from "../utils";
+import { useUserSession } from "../Context/UserSessionContext";
 
 export const useFetchGraphData = (pageId: string) => {
-  const { data: authData, status } = useSession();
+  const { session: authData, status } = useUserSession();
   const { dispatch, state } = useGraphContextData();
 
   const processGraphDataMemoized = useCallback(
@@ -28,7 +28,7 @@ export const useFetchGraphData = (pageId: string) => {
         throw new Error("Problem no data returned from API");
       }
     } catch (error) {
-      const tempData = saveStorage.get(`data-block-temp-${pageId}`);
+      const tempData = saveStorage.get(`temp-data-blocks-${pageId}`);
       const processedGraphData = processGraphDataMemoized(tempData);
       dispatch({ type: "SET_NODES", payload: processedGraphData });
       dispatch({ type: "ERROR_GRAPH", payload: true });

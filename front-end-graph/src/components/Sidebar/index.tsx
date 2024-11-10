@@ -3,16 +3,13 @@ import {
   ArrowLeft,
   Coffee,
   Menu,
-  MenuSquare,
   Pin,
   PinOff,
   RefreshCcw,
-  Settings,
-  Settings2,
   X,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { isMock, saveStorage } from "../utils";
 import {
   clearNodePositions,
@@ -20,13 +17,14 @@ import {
   syncPage,
 } from "../utils/graph";
 import { useGraphContextData } from "../Context/GraphContext";
+import { useSession } from "next-auth/react";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { state } = useGraphContextData();
   const { nodes } = state;
   const router = useRouter();
-
+  const data = useSession();
   const path = usePathname().replace("/graph/", "");
 
   const toggleSidebar = () => {

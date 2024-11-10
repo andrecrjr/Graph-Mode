@@ -1,9 +1,9 @@
 import { auth } from "@/components/Auth";
-import GraphComponent from "@/components/Graph";
+import { GraphComponent } from "@/components/Graph";
 import { redirect } from "next/navigation";
 import React from "react";
-import type { Metadata, ResolvingMetadata } from "next";
-import { fetchNotionServer, fetchServer } from "@/components/service/Notion";
+import type { Metadata } from "next";
+import { fetchNotionServer } from "@/components/service/Notion";
 import { isMock } from "@/components/utils";
 
 type Props = {
@@ -11,10 +11,7 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const id = params.id;
     if (isMock(id)) {
@@ -32,7 +29,6 @@ export async function generateMetadata(
       title: `${product.child_page?.title || null} Page - Graph Mode`,
     };
   } catch (error) {
-    console.log("Error Page", error);
     return {
       title: "Graph Page",
     };
@@ -44,10 +40,10 @@ export default async function GraphPage({
 }: {
   params: { id: string };
 }) {
-  const data = await auth();
-  if (params.id === "mock" && data) {
-    redirect("/app");
-  }
+  // const data = await auth();
+  // if (isMock(params.id) && data) {
+  //   redirect("/app");
+  // }
 
   return (
     <div className="overflow-hidden max-w-screen">

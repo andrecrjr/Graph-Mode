@@ -4,7 +4,7 @@ import { useToast } from "../hooks/use-toast";
 
 const LoadingPlaceholder: React.FC = () => {
   const {
-    state: { loadingFetchGraph, errorFetchGraph },
+    state: { loadingFetchGraph },
   } = useGraphContextData();
 
   if (loadingFetchGraph)
@@ -14,7 +14,7 @@ const LoadingPlaceholder: React.FC = () => {
         <p className="ml-4 text-lg text-gray-700">
           Loading Graph Data from Notion...
         </p>
-        <p className="text-xs italic">Can be a bit slow, wait a minute!</p>
+        <p className="text-xs italic">Wait a little second!</p>
       </div>
     );
 };

@@ -1,8 +1,6 @@
-// 'use client'
-// import React from "react";
+import dynamic from "next/dynamic";
 
-// type Props = {};
-
-// export const History = (props: Props) => {
-//   return <div>index</div>;
-// };
+export const LazyHistory = dynamic(() => import("./History"), {
+  loading: () => <p className="w-full text-center">Loading</p>,
+  ssr: false,
+});

@@ -1,22 +1,18 @@
-import { Session } from "next-auth";
-import AuthButton from "../Buttons";
-import { SearchByUrl } from "../SearchInput/SearchByUrl";
+import SearchInput from "../SearchInput";
+import { Session } from "@auth/core/types";
 
-export function AuthSection({ data }: { data: Session | null }) {
+export async function AuthSection({ session }: { session: Session | null }) {
   return (
     <section className="w-full mt-auto flex flex-col mb-4 items-center justify-center">
-      {!!data ? (
+      {!!session ? (
         <>
-          <label>Input your Notion Page URL</label>
-          <SearchByUrl />
-          <AuthButton />
+          <SearchInput />
         </>
       ) : (
-        <section className="mx-2">
+        <section className="mx-4">
           <p className="font-bold mx-auto bg-yellow-200">
-            You need to log in to our Notion Integration to continue.
+            Please log in to Notion to continue.
           </p>
-          <AuthButton />
         </section>
       )}
     </section>

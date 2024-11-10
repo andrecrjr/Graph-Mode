@@ -2,24 +2,33 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "../ui/button";
+import { useUserSession } from "../Context/UserSessionContext";
 
 const AuthButton = () => {
-  const { data: session } = useSession();
+  const { session } = useUserSession();
 
   return (
     <>
       {session ? (
-        <Button
-          onClick={() => signOut()}
-          className="absolute top-0 right-0 mr-4"
-          variant="ghost"
-        >
+        <Button onClick={() => signOut()} variant="ghost">
           Logout
         </Button>
       ) : (
         <Button
-          onClick={() => signIn("notion")}
-          className="w-fit text-white absolute top-0 right-0 mr-4 font-semibold py-2 px-4 rounded-lg shadow mt-2"
+          onClick={() => {
+            if (!!window.dataLayer) {
+              window.dataLayer.push({
+                event: "login with notion with AuthButton",
+                category: "authenticated user",
+                label: "login_init",
+                usuario_logado: true,
+              });
+            }
+            signIn("notion", {
+              callbackUrl: "/app",
+            });
+          }}
+          className="w-fit text-white top-0 right-0 mr-4 font-semibold py-2 px-4 rounded-lg shadow mt-2 z-50"
         >
           Login with Notion
           <img

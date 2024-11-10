@@ -10,12 +10,14 @@ function generateParagraphs(num: number) {
 }
 
 // Exemplo de uso
-const paragraphsArray = generateParagraphs(5);
+const paragraphsArray = generateParagraphs(3);
 interface EditorState {
   editorDocument?: BlockNoteEditor;
   pageId: string;
   notionKey: string;
   initialContentDocument: any[];
+  tempNodeChoiceEditorId: string;
+  sidebarOpen: boolean;
 }
 
 export interface EditorContextType {
@@ -44,17 +46,32 @@ type Action =
     }
   | {
       type: "RESET_EDITOR_CONTENT";
+    }
+  | {
+      type: "UPDATE_TEMP_EDITOR_NODE";
+      payload: {
+        tempNodeChoiceEditorId: string;
+      };
+    }
+  | {
+      type: "OPEN_SIDEBAR";
+      payload: {
+        sidebarOpen: boolean;
+      };
     };
+
 export const initialState: EditorState = {
   editorDocument: undefined,
   pageId: "",
   notionKey: "",
+  tempNodeChoiceEditorId: "",
   initialContentDocument: [
     {
       type: "heading",
     },
     ...paragraphsArray,
   ],
+  sidebarOpen: false,
 };
 
 export function editorReducer(state: EditorState, action: Action): EditorState {
@@ -79,6 +96,13 @@ export function editorReducer(state: EditorState, action: Action): EditorState {
         ...state,
         initialContentDocument: state.initialContentDocument,
       };
+    case "UPDATE_TEMP_EDITOR_NODE":
+      return {
+        ...state,
+        tempNodeChoiceEditorId: action.payload.tempNodeChoiceEditorId,
+      };
+    case "OPEN_SIDEBAR":
+      return { ...state, sidebarOpen: action.payload.sidebarOpen };
     default:
       return state;
   }

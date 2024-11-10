@@ -7,16 +7,22 @@ import { MainContainer } from "@/components/Layout/MainLayout";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { EditorProvider } from "@/components/Context/EditorContext";
 import { Toaster } from "@/components/ui/toaster";
+import Header from "@/components/Header";
+import ButtonPWA from "@/components/Buttons/InstallPWA";
+import { auth } from "@/components/Auth";
+import { cache } from "react";
 
-const roboto = Roboto({ subsets: ["latin"], weight: ["100", "300", "400"] });
-
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["100", "300", "400"],
+});
 export const metadata: Metadata = {
   title: "Graph Mode",
   description:
-    "A integration to watch your Notion Pages in a Graph View like-Obsidian",
+    "Transform your Notion pages into an interactive Zettelkasten/Graph view, with the power of Graph Mode!",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -24,18 +30,22 @@ export default function RootLayout({
   const ldJSON = {
     "@context": "https://schema.org",
     "@type": ["WebApplication", "MobileApplication"],
-    name: "Notion Graph Mode",
+    name: "Graph Mode",
     description:
-      "Transform your Notion pages into an interactive graphic view.",
+      "Transform your Notion pages into an interactive Zettelkasten/Graph view, with the power of Graph Mode!",
     operatingSystem: "All",
     applicationCategory: "ProductivityApplication",
   };
+  const dataSession = await auth();
+
   return (
     <html lang="en">
       <head>
+        <link rel="canonical" href={`/`} />
         <link
-          rel="canonical"
-          href={`${process.env.NEXT_PUBLIC_FRONT_USER_URL}`}
+          rel="icon"
+          type="image/x-icon"
+          href="/images/icons/icon-72x72.png"
         />
 
         <script
@@ -44,10 +54,12 @@ export default function RootLayout({
         />
       </head>
       <body className={`w-full ${roboto.className}`}>
-        <AuthProvider>
+        <AuthProvider session={dataSession}>
+          <Header />
           <MainContainer>
             <GraphContextProvider>
               <EditorProvider>{children}</EditorProvider>
+              <ButtonPWA />
             </GraphContextProvider>
           </MainContainer>
           <Toaster />

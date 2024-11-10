@@ -1,15 +1,16 @@
-FROM node:22.8.0-alpine
+FROM oven/bun:latest
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+# Copy package.json and package-lock.json (if exists)
+COPY package*.json ./
 
-RUN npm install -g pnpm
+# Install dependencies
+RUN bun install
 
-RUN pnpm install --frozen-lockfile
-
+# Copy the rest of the application
 COPY . .
 
 EXPOSE 3000
-
-CMD ["pnpm", "dev"]
+# Start app in development mode
+CMD ["bun", "run", "dev"]

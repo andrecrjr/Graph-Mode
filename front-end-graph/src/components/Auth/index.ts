@@ -1,5 +1,6 @@
-import Notion from "@auth/core/providers/notion";
+import Notion, { NotionProfile } from "@auth/core/providers/notion";
 import NextAuth from "next-auth";
+import Stripe from "stripe";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: [
@@ -20,15 +21,34 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return token;
     },
     async session({ session, token, user }) {
-      const userData = token.user;
-      session.user = userData as any;
-      return session;
+      const userData = token.user as NotionProfile;
+      try {
+        const resp = await fetch(process.env.SERVER_API + "/user", {
+          method: "POST",
+          body: JSON.stringify(userData),
+          headers: {
+            Authorization: `Bearer ${userData.tokens.access_token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const subscriptionData = await resp.json();
+        session.user = { ...userData, ...subscriptionData } as any;
+        return session;
+      } catch (error) {
+        console.error(error);
+        session.user = { ...userData } as any;
+        return session;
+      }
+    },
+    async redirect({ baseUrl }) {
+      return baseUrl + "/app";
     },
   },
   session: {
     strategy: "jwt",
   },
-  debug: process.env.NODE_ENV === "development",
 
-  
+  debug: process.env.NODE_ENV === "development",
 });
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
