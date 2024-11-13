@@ -15,12 +15,11 @@ export default function Landing() {
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-3">
               <h1 className="text-4xl font-bold sm:text-8xl tracking-tight">
-                Explore Graph Mode
+                Unlock Graph Mode
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-500 sm:text-xl dark:text-gray-400">
                 Transform your Notion pages into an interactive graph inspired
-                by Zettelkasten/Obsidian. Start exploring connections today with
-                us.
+                by Zettelkasten/Obsidian. Start exploring connections today.
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
@@ -29,9 +28,9 @@ export default function Landing() {
                   Get Started Free <ArrowRight className="ml-1" />
                 </Button>
               </Link>
-              <Link href="/#pricing">
-                <Button>
-                  See the Demo <LucideChartNetwork className="ml-1" />
+              <Link href="/graph/mock">
+                <Button variant={"secondary"}>
+                  See a Example <LucideChartNetwork className="ml-1" />
                 </Button>
               </Link>
             </div>

@@ -25,7 +25,7 @@ export function PricingTiers() {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl flex">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
               Choose Your Plan
             </h2>
             <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
@@ -80,6 +80,10 @@ export function PricingTiers() {
                   Unlimited Fast Notes: Create as many notes per day as you
                   need.
                 </li>
+                <li className="flex items-center">
+                  <CheckIcon className="mr-2 h-4 w-4" />
+                  History of last pages.
+                </li>
               </ul>
             </CardContent>
             <CardFooter>
@@ -116,7 +120,7 @@ export function PricingTiers() {
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="text-4xl font-bold">
-                $60<span className="text-sm font-normal">/forever</span>
+                $60<span className="text-sm font-normal">/lifetime</span>
               </div>
               <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-center">
@@ -130,8 +134,7 @@ export function PricingTiers() {
                   need.
                 </li>
                 <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" />
-                  Get all updates for free forever
+                  <CheckIcon className="mr-2 h-4 w-4" /> History of last pages.
                 </li>
               </ul>
             </CardContent>

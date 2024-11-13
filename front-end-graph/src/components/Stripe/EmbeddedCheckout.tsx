@@ -12,6 +12,7 @@ import {
   forwardRef,
 } from "react";
 import { X } from "lucide-react";
+import Link from "next/link";
 
 export interface IModalCheckoutRef {
   open: () => void;
@@ -77,6 +78,13 @@ export const ModalCheckout = forwardRef<IModalCheckoutRef, { priceId: string }>(
             </form>
           </div>
           <div className="modal-box w-100">
+            <p className="text-center">
+              You can read our terms before buying our subscription{" "}
+              <Link href={"/terms"} className="underline">
+                here
+              </Link>
+              .
+            </p>
             <div className="py-4">
               {showCheckout && (
                 <EmbeddedCheckoutProvider
