@@ -41,9 +41,9 @@ export default async function CheckoutReturn({
             className="font-bold underline"
           >
             Contact form
-          </a>
-          detailing the problem then {"you'll"} be assisted as soon as possible
-          .
+          </a>{" "}
+          with your <strong>Notion e-mail</strong> detailing the problem then{" "}
+          {"you'll"} be assisted as soon as possible .
         </p>
       </section>
     );

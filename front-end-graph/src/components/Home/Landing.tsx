@@ -5,8 +5,7 @@ import { PricingTiers } from "./Tier";
 import BuyMeCoffee from "./BuyCoffee";
 import { NotionHome } from "../svg/NotionHome";
 import ImprovedFeatures from "./Features";
-import CreatorSection from "./CreatorSection";
-import { LandingAuthButton } from "../Buttons/LandingAuth";
+import { ArrowRight, LucideChartNetwork } from "lucide-react";
 
 export default function Landing() {
   return (
@@ -19,14 +18,21 @@ export default function Landing() {
                 Explore Graph Mode
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-500 sm:text-xl dark:text-gray-400">
-                Visualize your Notion Pages like never before. Inspired by
-                Zettelkasten/Obsidian, powered by Notion.
+                Transform your Notion pages into an interactive graph inspired
+                by Zettelkasten/Obsidian. Start exploring connections today with
+                us.
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-              <LandingAuthButton />
-              <Link href="/graph/mock">
-                <Button>View Example Graph 👀</Button>
+              <Link href="/#pricing">
+                <Button>
+                  Get Started Free <ArrowRight className="ml-1" />
+                </Button>
+              </Link>
+              <Link href="/#pricing">
+                <Button>
+                  See the Demo <LucideChartNetwork className="ml-1" />
+                </Button>
               </Link>
             </div>
           </div>
@@ -36,9 +42,8 @@ export default function Landing() {
         </Link>
       </section>
       <ImprovedFeatures />
-      <CreatorSection />
+      <PricingTiers />
       <BuyMeCoffee />
-      {/* <PricingTiers /> */}
       <section className="w-full py-12 md:py-24 lg:py-32 min-h-screen  bg-gray-100 z-10 dark:bg-gray-800 flex items-center justify-center">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between">

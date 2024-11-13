@@ -21,7 +21,7 @@ export default function Header() {
         >
           <h1>Graph Mode</h1>
         </Link>
-        <nav className="flex gap-4 sm:gap-6">
+        <nav className="flex gap-4 ml-auto sm:gap-6">
           <Link
             className="text-sm font-medium hover:underline underline-offset-4"
             href="/#features"
@@ -30,9 +30,9 @@ export default function Header() {
           </Link>
           <Link
             className="text-sm font-medium hover:underline underline-offset-4"
-            href="/#support"
+            href="/#pricing"
           >
-            ☕
+            Pricing
           </Link>
           <Link
             className="text-sm font-medium hover:underline underline-offset-4"

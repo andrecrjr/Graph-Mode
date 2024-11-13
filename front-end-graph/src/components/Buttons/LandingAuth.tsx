@@ -14,17 +14,17 @@ export const LandingAuthButton = () => {
   };
   if (session) {
     return (
-      <Link href="/app">
-        <Button>Go to Graph Mode 🎇</Button>
+      <Link href="/app" className="w-full">
+        <Button className="w-full">Go to Graph Mode 🎇</Button>
       </Link>
     );
   }
   return (
-    <Button onClick={_onClick}>
-      Login with Notion{" "}
+    <Button onClick={_onClick} className="w-full">
+      Get Started Free with{" "}
       <img
         loading="lazy"
-        alt="notion site logo"
+        alt="Notion logo"
         className="ml-3"
         height="24"
         width="24"

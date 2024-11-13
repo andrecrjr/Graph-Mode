@@ -11,6 +11,7 @@ import {
 import { CheckIcon } from "lucide-react";
 import { useSession, signIn } from "next-auth/react";
 import { EmbeddedCheckoutButton } from "../Stripe/EmbeddedButton";
+import { LandingAuthButton } from "../Buttons/LandingAuth";
 
 export function PricingTiers() {
   const data = useSession();
@@ -24,7 +25,7 @@ export function PricingTiers() {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl flex">
               Choose Your Plan
             </h2>
             <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
@@ -54,7 +55,7 @@ export function PricingTiers() {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full">Get Started</Button>
+              <LandingAuthButton />
             </CardFooter>
           </Card>
           <Card>
@@ -78,10 +79,6 @@ export function PricingTiers() {
                   <CheckIcon className="mr-2 h-4 w-4" />
                   Unlimited Fast Notes: Create as many notes per day as you
                   need.
-                </li>
-                <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" />
-                  Graph Excalidraw Mode: Visualize your ideas with ease.
                 </li>
               </ul>
             </CardContent>
@@ -114,7 +111,7 @@ export function PricingTiers() {
             <CardHeader>
               <CardTitle>Lifetime PRO</CardTitle>
               <CardDescription>
-                {"It's yours forever (or at least til we go alive)"}
+                {"It's yours at least while we are alive"}
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">

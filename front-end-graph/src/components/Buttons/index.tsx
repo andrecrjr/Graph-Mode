@@ -4,7 +4,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "../ui/button";
 import { useUserSession } from "../Context/UserSessionContext";
 
-const AuthButton = () => {
+const AuthButton = ({ label = "Login with Notion" }: { label?: string }) => {
   const { session } = useUserSession();
 
   return (
@@ -30,7 +30,7 @@ const AuthButton = () => {
           }}
           className="w-fit text-white top-0 right-0 mr-4 font-semibold py-2 px-4 rounded-lg shadow mt-2 z-50"
         >
-          Login with Notion
+          {label}
           <img
             loading="lazy"
             alt="notion site logo"
