@@ -4,6 +4,7 @@ import {
   handleSubscriptionCreated,
   handlePaymentSucceeded,
 	handleSubscriptionDeleted,
+	handleCancelAtEnd,
 } from "../controller/Stripe/index.js";
 
 const router = Router();
@@ -32,7 +33,9 @@ router.post(
 			return await handlePaymentSucceeded(event, res);
 		if (event.type === "customer.subscription.deleted")
 			return await handleSubscriptionDeleted(event, res);
-
+		if (event.type === "customer.subscription.updated") {
+			return await handleCancelAtEnd(event, res);
+		}
 		return res.status(200).send();
 	},
 );

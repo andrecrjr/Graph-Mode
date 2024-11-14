@@ -5,10 +5,9 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Trash } from "lucide-react";
 import { Button } from "../ui/button";
-import { useUserSession } from "../Context/UserSessionContext";
 
 const History = () => {
-  const { status, session } = useUserSession();
+  const { status, data: session } = useSession();
 
   const [history, _] = useState(
     Object.entries(saveStorage.getAll()).filter((item) => {
@@ -20,6 +19,11 @@ const History = () => {
         return item[1];
     }) || {},
   );
+
+  if (!session) {
+    return null;
+  }
+
   if (!session?.user.lifetimePaymentId || !session?.user.subscriptionId) {
     return (
       <p className="text-center pt-5">

@@ -9,9 +9,10 @@ import {
   CardTitle,
 } from "../ui/card";
 import { convertDateToIntl } from "../utils";
-import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 
-export function SubscriptionSettings({ data }: { data: Session | null }) {
+export function SubscriptionSettings() {
+  const { data } = useSession();
   if (data?.user)
     return (
       <Card className="w-11/12 md:w-5/12 mx-auto mt-12">
@@ -44,8 +45,7 @@ export function SubscriptionSettings({ data }: { data: Session | null }) {
               </p>
             )}
           </div>
-          {/* <Button variant="outline">Atualizar Método de Pagamento</Button> */}
-          {!data?.user.lifetimePaymentId && (
+          {!data?.user.lifetimePaymentId && !data.user.cancelAt && (
             <Button
               variant="destructive"
               onClick={() => {
@@ -59,10 +59,16 @@ export function SubscriptionSettings({ data }: { data: Session | null }) {
                 });
               }}
             >
-              Cancelar Assinatura
+              Cancel Subscription
             </Button>
           )}
           {data?.user.lifetimePaymentId && <p>{"Thanks for your support!"}</p>}
+          {data.user.cancelAt && (
+            <p className="text-sm text-muted-foreground">
+              This will be your final scheduled invoice, ending your
+              subscription on the date above.
+            </p>
+          )}
         </CardContent>
       </Card>
     );

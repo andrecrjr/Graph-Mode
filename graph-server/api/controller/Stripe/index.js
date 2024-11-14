@@ -124,3 +124,39 @@ export async function handlePaymentSucceeded(event, res) {
         return res.status(500).send("Internal Server Error");
     }
 }
+
+export async function handleCancelAtEnd(event, res) {
+	const eventData = event.data.object;
+
+	if (!eventData.metadata || !eventData.metadata.notionUserId) {
+		logger.error(`Metadata missing notionUserId in ${event.type}`);
+		return res.status(400).send({ error: "Invalid event: Missing notionUserId" });
+	}
+
+	const notionUserId = eventData.metadata.notionUserId;
+
+	try {
+		if (eventData.cancel_at_period_end) {
+			const cancelAt = eventData.current_period_end * 1000;
+			let userData = await userController.getKey(`notion-${notionUserId}`);
+			userData = userData || {};
+
+			userData.cancelAtPeriodEnd = true;
+			userData.cancelAt = cancelAt;
+
+			await userController.setKey(`notion-${notionUserId}`, userData);
+
+			logger.info(`Subscription for user ${notionUserId} set to cancel at ${new Date(cancelAt)}`);
+		} else {
+			logger.info(`Subscription for user ${notionUserId} is not set to cancel at the end of the period`);
+		}
+
+		return res.status(200).send(`Cancellation status updated for user: ${notionUserId}`);
+	} catch (err) {
+		logger.error(
+			`Error handling cancel at end for subscription ${eventData.id} for user ${notionUserId}: ${err.message}`,
+			err
+		);
+		return res.status(500).send("Internal Server Error");
+	}
+}

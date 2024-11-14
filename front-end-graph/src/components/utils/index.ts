@@ -77,5 +77,6 @@ export const createOrUpdateNode = (
 };
 
 export const convertDateToIntl = (data: string) => {
+  console.log(data);
   return new Intl.DateTimeFormat().format(new Date(data));
 };
