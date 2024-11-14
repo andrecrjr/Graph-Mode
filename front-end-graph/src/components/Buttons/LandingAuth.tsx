@@ -8,9 +8,19 @@ import Link from "next/link";
 export const LandingAuthButton = () => {
   const { session } = useUserSession();
   const _onClick = () => {
-    signIn("notion", {
-      callbackUrl: "/app?landing=true",
-    });
+    if (!!window.dataLayer) {
+      window.dataLayer.push({
+        event: "login with notion in landing page",
+        category: "authenticated user",
+        label: "login_init_landing",
+        usuario_logado: true,
+      });
+    }
+    setTimeout(() => {
+      signIn("notion", {
+        callbackUrl: "/app?landing=true",
+      });
+    }, 100);
   };
   if (session) {
     return (

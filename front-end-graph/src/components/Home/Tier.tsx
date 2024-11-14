@@ -47,11 +47,6 @@ export function PricingTiers() {
                   <CheckIcon className="mr-2 h-4 w-4" />
                   Up to 30 Notion requests to get some few pages
                 </li>
-                <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" />
-                  Unlimited Fast Notes: Create as many notes per day as you
-                  need.
-                </li>
               </ul>
             </CardContent>
             <CardFooter>
@@ -62,7 +57,7 @@ export function PricingTiers() {
             <CardHeader>
               <CardTitle>Monthly Tier</CardTitle>
               <CardDescription>
-                Premium tier, perfect for heavy users and creative documents
+                Premium tier, perfect for heavy users
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
@@ -82,7 +77,7 @@ export function PricingTiers() {
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
-                  History of last pages.
+                  Page History: Quickly revisit your recently viewed pages.
                 </li>
               </ul>
             </CardContent>
@@ -115,7 +110,7 @@ export function PricingTiers() {
             <CardHeader>
               <CardTitle>Lifetime PRO</CardTitle>
               <CardDescription>
-                {"It's yours at least while we are alive"}
+                Unlock a Lifetime of Productivity
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
@@ -134,7 +129,8 @@ export function PricingTiers() {
                   need.
                 </li>
                 <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" /> History of last pages.
+                  <CheckIcon className="mr-2 h-4 w-4" /> Page History: Quickly
+                  revisit your recently viewed pages.
                 </li>
               </ul>
             </CardContent>

@@ -23,10 +23,11 @@ router.get('/blocks/:blockId', authMiddleware, async (req, res) => {
   const { blockId } = req.params;
   try {
     const elementProcessor = new ElementProcessor();
+    
     const firstParent = await req.notionAPI.fetchBlockChildren(blockId, false, false);
     elementProcessor.processParent(firstParent)
     const elements = await fetchBlockChildrenRecursively(blockId, req.notionAPI, elementProcessor, firstParent.id);
-    res.json([...elements,{rateLimit:!req.notionAPI.getRateLimit()}]);
+    res.json([...elements,{rateLimit:req.notionAPI.getRateLimit()}]);
   } catch (error) {
     console.log(error)
     res.status(404).json({ error: `Erro ao buscar filhos do bloco: ${error.message}` });

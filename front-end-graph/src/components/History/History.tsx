@@ -23,7 +23,7 @@ const History = () => {
   if (!session?.user.lifetimePaymentId || !session.user.subscriptionId) {
     return (
       <p className="text-center pt-5">
-        History of last pages only being{" "}
+        Access your latest history with{" "}
         <Link href="/pricing" className="underline">
           PRO
         </Link>

@@ -6,7 +6,7 @@ dotenv.config();
 async function fetchBlockChildrenRecursively(blockId, notionAPI, elementProcessor, parentId = null) {
   let hasMore = true;
   let nextCursor = null;
-  while (notionAPI.getRateLimit() && hasMore) {
+  while (hasMore) {
     const data = await notionAPI.fetchBlockChildren(blockId, nextCursor);
     nextCursor = data.next_cursor;
     hasMore = data.has_more;

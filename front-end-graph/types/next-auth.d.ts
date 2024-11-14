@@ -14,6 +14,7 @@ declare module "next-auth" {
       subscriptionId?: string | null;
       lifetimePaymentId?: string | null;
       nextPaymentDate?: string;
+      type: string;
     } & DefaultSession["user"];
   }
 }

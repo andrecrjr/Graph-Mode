@@ -37,7 +37,6 @@ export default async function RootLayout({
     applicationCategory: "ProductivityApplication",
   };
   const dataSession = await auth();
-  console.log("batendo aqui");
   return (
     <html lang="en">
       <head>

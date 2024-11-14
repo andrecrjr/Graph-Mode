@@ -23,20 +23,23 @@ export default function Landing() {
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-              <Link href="/#pricing">
+              <Link href="/app">
                 <Button>
-                  Get Started Free <ArrowRight className="ml-1" />
+                  Try it for free <ArrowRight className="ml-1" />
                 </Button>
               </Link>
               <Link href="/graph/mock">
                 <Button variant={"secondary"}>
-                  See a Example <LucideChartNetwork className="ml-1" />
+                  View Demo Now <LucideChartNetwork className="ml-1" />
                 </Button>
               </Link>
             </div>
           </div>
         </div>
-        <Link href="https://notion.so" className="mt-auto pb-8">
+        <Link
+          href="https://notion.so?utm_source=graph-mode"
+          className="mt-auto pb-8"
+        >
           <NotionHome />
         </Link>
       </section>

@@ -6,26 +6,34 @@ export const fetchServer = async <T>(
   options: RequestInit = {},
   isBackend = false,
 ): Promise<T> => {
+  const DEFAULT_HEADERS = {
+    "Content-Type": "application/json",
+  };
+
   const fetchMetadata: RequestInit = {
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+      ...DEFAULT_HEADERS,
+      ...options.headers,
     },
     ...options,
   };
+  const API_ENDPOINT =
+    IS_DEVELOPMENT && isBackend
+      ? process.env.SERVER_API
+      : process.env.NEXT_PUBLIC_SERVER_API;
 
   try {
-    let endpoint =
-      IS_DEVELOPMENT && isBackend
-        ? process.env.SERVER_API
-        : process.env.NEXT_PUBLIC_SERVER_API;
-    let endpointServer = endpoint + url;
-    const response = await fetch(`${endpointServer}`, fetchMetadata);
+    const response = await fetch(`${API_ENDPOINT}${url}`, fetchMetadata);
+
+    if (!response.ok) {
+      throw new Error(`Erro ${response.status}: ${response.statusText}`);
+    }
 
     return await response.json();
   } catch (error) {
-    console.error("Fetch error:", error);
-    throw new Error(`Fetch error: ${error}`);
+    console.error("Erro ao fazer requisição:", error);
+    throw error;
   }
 };
 

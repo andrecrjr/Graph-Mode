@@ -17,9 +17,11 @@ export const useFetchGraphData = (pageId: string) => {
   const fetchGraphData = useCallback(async () => {
     try {
       if (authData?.user?.tokens.access_token) {
+        console.log(authData.user.type);
         const data = await fetchAndSaveCacheData(
           pageId,
           authData?.user?.tokens?.access_token || "",
+          authData?.user[authData?.user?.type as "person"]?.email || "",
         );
         const processedGraphData = processGraphDataMemoized(data);
         dispatch({ type: "SET_NODES", payload: processedGraphData });

@@ -18,7 +18,7 @@ const AuthButton = ({ label = "Login with Notion" }: { label?: string }) => {
           onClick={() => {
             if (!!window.dataLayer) {
               window.dataLayer.push({
-                event: "login with notion with AuthButton",
+                event: "login with notion with header AuthButton",
                 category: "authenticated user",
                 label: "login_init",
                 usuario_logado: true,
