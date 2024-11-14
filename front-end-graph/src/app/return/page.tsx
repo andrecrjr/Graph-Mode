@@ -71,8 +71,15 @@ export default async function CheckoutReturn({
             .
           </p>
           <p className="pt-4 font-bold text-center">
-            You now have full access to all premium features. Start exploring
-            Graph Mode!
+            You now have full access to all premium features.
+          </p>
+          <p className="text-center">
+            <Link
+              href="/app"
+              className="underline text-green-700 self-center font-bold "
+            >
+              Explore Graph Mode
+            </Link>
           </p>
         </CardContent>
       </Card>

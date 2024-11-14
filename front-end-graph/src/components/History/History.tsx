@@ -20,7 +20,7 @@ const History = () => {
         return item[1];
     }) || {},
   );
-  if (!session?.user.lifetimePaymentId || !session.user.subscriptionId) {
+  if (!session?.user.lifetimePaymentId || !session?.user.subscriptionId) {
     return (
       <p className="text-center pt-5">
         Access your latest history with{" "}

@@ -8,8 +8,9 @@ import SelectEditorBar from "./SelectNodeBar";
 import { useEditorActionPage } from "@/components/hooks/useEditorAction";
 import Link from "next/link";
 import { useUserSession } from "@/components/Context/UserSessionContext";
-import { IS_DEVELOPMENT, isMock } from "@/components/utils";
+import { isMock } from "@/components/utils";
 import { useEditorContext } from "@/components/Context/EditorContext";
+import { EmbeddedCheckoutButton } from "@/components/Stripe/EmbeddedButton";
 
 export default function EditorPage() {
   const {
@@ -86,20 +87,21 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
 
   return (
     <section className="w-full h-full flex flex-col justify-center items-center">
-      <p className="font-bold">
-        Fast Notes: Coming Soon with Graph Mode (PRO Only)!
-      </p>
-      <p>
-        {
-          "You'll can create seamless connections to Notion directly from here being PRO!"
-        }
-      </p>
+      <p className="font-bold">Fast Notes with Graph Mode PRO Only!</p>
+      <p>{"Seamlessly connect to Notion with a PRO subscription."}</p>
       <p>
         Try out Fast Notes in our{" "}
         <Link href="/graph/mock" className="underline" target="_blank">
           Example Graph
         </Link>{" "}
       </p>
+      <section className="flex justify-center gap-2 mt-2">
+        <EmbeddedCheckoutButton priceId="month" buttonLabel="" />
+        <EmbeddedCheckoutButton
+          priceId="lifetime"
+          buttonLabel="Buy for lifetime"
+        />
+      </section>
     </section>
   );
 };

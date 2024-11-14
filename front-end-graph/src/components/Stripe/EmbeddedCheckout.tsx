@@ -65,7 +65,7 @@ export const ModalCheckout = forwardRef<IModalCheckoutRef, { priceId: string }>(
     });
 
     return (
-      <div id="checkout" className="my-4">
+      <div id="checkout" className="my-4 z-40">
         <dialog ref={modalRef} className="w-11/12 py-6 sm:w-9/12">
           <div className="modal-action">
             <form method="dialog">
@@ -80,7 +80,7 @@ export const ModalCheckout = forwardRef<IModalCheckoutRef, { priceId: string }>(
           <div className="modal-box w-100">
             <p className="text-center">
               You can read our terms before buying our subscription{" "}
-              <Link href={"/terms"} className="underline">
+              <Link href={"/terms"} className="underline" target="_blank">
                 here
               </Link>
               .
