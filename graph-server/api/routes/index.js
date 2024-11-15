@@ -46,6 +46,38 @@ router.get("/only/:blockId", authMiddleware, async(req, res)=>{
   }
 })
 
+router.get("/databases/:blockId", authMiddleware, async (req, res) => {
+  try {
+    const { blockId } = req.params;
+
+    // Etapa 1: Buscar blocos filhos
+    const children = await req.notionAPI.fetchBlockChildren(blockId);
+
+    // Filtrar apenas os blocos do tipo `child_database`
+    const childDatabases = children.results.filter(block => block.type === "child_database");
+
+    // Etapa 2: Consultar detalhes de cada `child_database`
+    const databaseDetails = await Promise.all(
+      childDatabases.map(async (db) => {
+        const database = await req.notionAPI.fetchDatabase(db.id);
+        return {
+          id: db.id,
+          title: database.title[0]?.plain_text || "Untitled Database",
+          schema: database.properties,
+          lastEditedTime: db.last_edited_time,
+        };
+      })
+    );
+
+    res.json({
+      success: true,
+      databases: databaseDetails,
+    });
+  } catch (error) {
+    console.error("Error fetching child databases:", error);
+    res.status(500).json({ success: false, message: "Error fetching child databases", error: error.message });
+  }
+});
 
 router.post("/search", authMiddleware, async (req, res)=>{
    try {

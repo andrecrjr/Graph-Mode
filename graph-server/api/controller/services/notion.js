@@ -132,6 +132,25 @@ class NotionAPI {
       'Content-Type': 'application/json',
     };
   }
+
+  async fetchDatabase(databaseId) {
+  try {
+    const url = `${this.apiUrl}/databases/${databaseId}`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: this.getHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch database ${databaseId}: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching database:', error);
+    throw new Error(`Error fetching database: ${error.message}`);
+  }
+}
 }
 
 export {NotionAPI}
