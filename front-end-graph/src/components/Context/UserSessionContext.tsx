@@ -35,7 +35,6 @@ export const useUserSession = () => {
       "useUserSession deve ser usado dentro de um UserSessionProvider",
     );
   }
-  console.log(context);
 
   return context;
 };

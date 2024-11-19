@@ -23,20 +23,14 @@ const History = () => {
   if (!session) {
     return null;
   }
+  console.log(session);
 
-  if (!session?.user.lifetimePaymentId || !session?.user.subscriptionId) {
-    return (
-      <p className="text-center pt-5">
-        Access your latest history with{" "}
-        <Link href="/pricing" className="underline">
-          PRO
-        </Link>
-        .
-      </p>
-    );
-  }
-
-  if (status === "authenticated" && history && history.length > 0) {
+  if (
+    status === "authenticated" &&
+    history &&
+    history.length > 0 &&
+    (session?.user.lifetimePaymentId || session?.user.subscriptionId)
+  ) {
     return (
       <section className="mx-auto text-center mt-3">
         <h3>Last Graph Pages</h3>
@@ -70,6 +64,19 @@ const History = () => {
       </section>
     );
   }
+
+  if (!session?.user.lifetimePaymentId || !session?.user.subscriptionId) {
+    return (
+      <p className="text-center pt-5">
+        Access your latest history with{" "}
+        <Link href="/pricing" className="underline">
+          PRO
+        </Link>
+        .
+      </p>
+    );
+  }
+
   return null;
 };
 

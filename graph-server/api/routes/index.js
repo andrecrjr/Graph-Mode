@@ -50,13 +50,10 @@ router.get("/databases/:blockId", authMiddleware, async (req, res) => {
   try {
     const { blockId } = req.params;
 
-    // Etapa 1: Buscar blocos filhos
     const children = await req.notionAPI.fetchBlockChildren(blockId);
 
-    // Filtrar apenas os blocos do tipo `child_database`
     const childDatabases = children.results.filter(block => block.type === "child_database");
 
-    // Etapa 2: Consultar detalhes de cada `child_database`
     const databaseDetails = await Promise.all(
       childDatabases.map(async (db) => {
         const database = await req.notionAPI.fetchDatabase(db.id);
