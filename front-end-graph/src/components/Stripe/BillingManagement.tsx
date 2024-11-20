@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
 
 export function SubscriptionSettings({ data }: { data: Session | null }) {
+  console.log(data);
   if (data?.user)
     return (
       <Card className="w-11/12 md:w-5/12 mx-auto mt-12">
