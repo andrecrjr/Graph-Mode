@@ -48,6 +48,15 @@ export async function handleSubscriptionCreated(event, res) {
             let userData = (await userController.getKey(`notion-${notionUserId}`)||{});
             userData.lifetimePaymentId = eventData.payment_intent;
             userData.lastPaymentDate = eventData.created * 1000;
+			if(userData.subscriptionId && !userData.cancelAt){
+				await stripe.subscriptions.update(userData.subscriptionId, {
+      				cancel_at_period_end: true,
+                    metadata: {
+                        notionUserId,
+                    },
+		    	});
+				delete userData["subscriptionId"]				
+			}
 
             await userController.setKey(`notion-${notionUserId}`, userData);
 
@@ -64,23 +73,23 @@ export async function handleSubscriptionCreated(event, res) {
 
 export async function handleSubscriptionDeleted(event, res) {
 	const eventData = event.data.object;
-
+	const notionUserId = eventData.metadata.notionUserId
 	try {
 		
 		if(!eventData.metadata.notionUserId){
 			logger.error(`Metadata missing notionUserId in ${event.type}`);
 			return res.status(400).send({ error: "Invalid event: Missing notionUserId" });
 		}
-		const userSub = await userController.getKey(`notion-${eventData.metadata.notionUserId}`);
+		const userSub = await userController.getKey(`notion-${notionUserId}`);
 
-		if (userSub) {
-			await userController.deleteKey(`notion-${eventData.metadata.notionUserId}`);
-			logger.info(`Subscription removed for user: ${eventData.metadata.notionUserId}`);
+		if (userSub && !userSub.lifetimePaymentId) {
+			await userController.deleteKey(`notion-${notionUserId}`);
+			logger.info(`Subscription removed for user: ${notionUserId}`);
 		}
 		return res.status(200).send(`Removed subscription successfully processed for user: : ${notionUserId}`);
 	} catch (err) {
 		logger.error(
-			`Error handling subscription deletion for subscription ${eventData.id}: ${err.message}`,
+			`Error handling subscription deletion for subscription ${eventData.id} with metadata ${JSON.stringify(eventData.metadata)}: ${err.message}`,
 		);
 		return res.status(500).send("Internal Server Error");
 	}

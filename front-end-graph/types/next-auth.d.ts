@@ -15,7 +15,7 @@ declare module "next-auth" {
       lifetimePaymentId?: string | null;
       nextPaymentDate?: string;
       type: string;
-      cancelAt?: number;
+      cancelAt?: string;
       cancelAtPeriodEnd?: boolean;
     } & DefaultSession["user"];
   }

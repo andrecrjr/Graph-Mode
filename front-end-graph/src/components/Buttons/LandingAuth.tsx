@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { useUserSession } from "../Context/UserSessionContext";
 import Link from "next/link";
 
-export const LandingAuthButton = () => {
+export const LandingAuthButton = ({ label = "Go to Graph Mode 🎇" }) => {
   const { session } = useUserSession();
   const _onClick = () => {
     if (!!window.dataLayer) {
@@ -25,7 +25,7 @@ export const LandingAuthButton = () => {
   if (session) {
     return (
       <Link href="/app" className="w-full">
-        <Button className="w-full">Go to Graph Mode 🎇</Button>
+        <Button className="w-full">{label}</Button>
       </Link>
     );
   }

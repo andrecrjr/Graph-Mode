@@ -15,7 +15,8 @@ import { LandingAuthButton } from "../Buttons/LandingAuth";
 
 export function PricingTiers() {
   const data = useSession();
-
+  const userSubscribed = data.data?.user.subscriptionId;
+  const userPaid = data.data?.user.lifetimePaymentId;
   return (
     <section
       className="w-full py-12 md:py-24 lg:py-32 bg-gray-50 dark:bg-gray-900 
@@ -82,7 +83,7 @@ export function PricingTiers() {
               </ul>
             </CardContent>
             <CardFooter>
-              {!data.data && (
+              {!data.data && !userSubscribed && !userPaid && (
                 <section className="flex flex-col w-full">
                   <Button
                     className="w-full mb-2"
@@ -103,7 +104,12 @@ export function PricingTiers() {
                   </i>
                 </section>
               )}
-              {!!data.data && <EmbeddedCheckoutButton priceId={"month"} />}
+              {!!data.data && !userSubscribed && !userPaid && (
+                <EmbeddedCheckoutButton priceId={"month"} />
+              )}
+              {(userPaid || userSubscribed) && (
+                <LandingAuthButton label="Amazing you got this tier!" />
+              )}
             </CardFooter>
           </Card>
           <Card>
@@ -135,7 +141,7 @@ export function PricingTiers() {
               </ul>
             </CardContent>
             <CardFooter>
-              {!data.data && (
+              {!data.data && !userPaid && (
                 <section className="flex flex-col w-full">
                   <Button
                     className="w-full mb-2"
@@ -156,11 +162,14 @@ export function PricingTiers() {
                   </i>
                 </section>
               )}
-              {!!data.data && (
+              {!!data.data && !userPaid && (
                 <EmbeddedCheckoutButton
                   buttonLabel="Buy Now"
                   priceId={"lifetime"}
                 />
+              )}
+              {userPaid && (
+                <LandingAuthButton label="Amazing you are the top tier!" />
               )}
             </CardFooter>
           </Card>

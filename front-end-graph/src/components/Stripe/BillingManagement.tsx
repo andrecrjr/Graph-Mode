@@ -11,6 +11,7 @@ import {
 import { convertDateToIntl } from "../utils";
 import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
+import Link from "next/link";
 
 export function SubscriptionSettings({ data }: { data: Session | null }) {
   console.log(data);
@@ -25,8 +26,8 @@ export function SubscriptionSettings({ data }: { data: Session | null }) {
             </CardDescription>
           )}
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
+        <CardContent className="space-y-4 flex flex-wrap flex-col">
+          <>
             <p className="font-bold text-green-800">
               Current Plan:{" "}
               {data?.user.subscriptionId &&
@@ -37,7 +38,7 @@ export function SubscriptionSettings({ data }: { data: Session | null }) {
                 !data?.user.subscriptionId &&
                 "Free"}
             </p>
-            {!data?.user.lifetimePaymentId && (
+            {!data?.user.lifetimePaymentId && !data.user.cancelAt && (
               <p className="text-sm text-muted-foreground">
                 Your next invoice is scheduled for{" "}
                 {(data?.user.nextPaymentDate &&
@@ -45,7 +46,7 @@ export function SubscriptionSettings({ data }: { data: Session | null }) {
                   "Wait..."}
               </p>
             )}
-          </div>
+          </>
           {!data?.user.lifetimePaymentId && !data.user.cancelAt && (
             <Button
               variant="destructive"
@@ -56,20 +57,32 @@ export function SubscriptionSettings({ data }: { data: Session | null }) {
                     method: "DELETE",
                   },
                 ).then((res) => {
-                  console.log(res);
+                  window.location.reload();
                 });
               }}
             >
               Cancel Subscription
             </Button>
           )}
-          {data?.user.lifetimePaymentId && <p>{"Thanks for your support!"}</p>}
-          {data.user.cancelAt && (
-            <p className="text-sm text-muted-foreground">
-              This will be your final scheduled invoice, ending your
-              subscription on the date above.
+          {data?.user.lifetimePaymentId && (
+            <p>{"Thanks for your support in our project!"}</p>
+          )}
+          {data.user.cancelAt && !data?.user.lifetimePaymentId && (
+            <p className="text-sm text-muted-foreground font-bold">
+              This notice confirms that your subscription will terminate on{" "}
+              {convertDateToIntl(data?.user.cancelAt || "")}. No additional
+              invoices will be issued.
             </p>
           )}
+          <Link href="/app" className="underline mb-6 items-end">
+            Go back to Graph Mode
+          </Link>
+          <Link
+            href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
+            className="underline items-end"
+          >
+            Problem with your subscription? Contact Me
+          </Link>
         </CardContent>
       </Card>
     );
