@@ -9,12 +9,10 @@ import {
   CardTitle,
 } from "../ui/card";
 import { convertDateToIntl } from "../utils";
-import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
 import Link from "next/link";
 
 export function SubscriptionSettings({ data }: { data: Session | null }) {
-  console.log(data);
   if (data?.user)
     return (
       <Card className="w-11/12 md:w-5/12 mx-auto mt-12">
@@ -81,7 +79,7 @@ export function SubscriptionSettings({ data }: { data: Session | null }) {
             href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
             className="underline items-end"
           >
-            Problem with your subscription? Contact Me
+            Problem with your subscription? Contact Me!
           </Link>
         </CardContent>
       </Card>

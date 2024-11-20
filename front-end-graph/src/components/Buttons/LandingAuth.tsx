@@ -4,8 +4,9 @@ import { signIn } from "next-auth/react";
 import { Button } from "../ui/button";
 import { useUserSession } from "../Context/UserSessionContext";
 import Link from "next/link";
+import { CheckCheckIcon, SparkleIcon } from "lucide-react";
 
-export const LandingAuthButton = ({ label = "Go to Graph Mode 🎇" }) => {
+export const LandingAuthButton = ({ label = "Go to Graph Mode" }) => {
   const { session } = useUserSession();
   const _onClick = () => {
     if (!!window.dataLayer) {
@@ -25,7 +26,10 @@ export const LandingAuthButton = ({ label = "Go to Graph Mode 🎇" }) => {
   if (session) {
     return (
       <Link href="/app" className="w-full">
-        <Button className="w-full">{label}</Button>
+        <Button className="w-full bg-green-600 hover:bg-green-700">
+          {label}
+          <CheckCheckIcon className="ml-2 w-4" />
+        </Button>
       </Link>
     );
   }

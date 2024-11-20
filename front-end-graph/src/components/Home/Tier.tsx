@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, LucideShoppingBasket, ShoppingBagIcon } from "lucide-react";
 import { useSession, signIn } from "next-auth/react";
 import { EmbeddedCheckoutButton } from "../Stripe/EmbeddedButton";
 import { LandingAuthButton } from "../Buttons/LandingAuth";
@@ -105,9 +105,18 @@ export function PricingTiers() {
                 </section>
               )}
               {!!data.data && !userSubscribed && !userPaid && (
-                <EmbeddedCheckoutButton priceId={"month"} />
+                <EmbeddedCheckoutButton
+                  classNames={"bg-blue-600 hover:bg-blue-700"}
+                  buttonLabel={
+                    <p className="font-bold flex items-center">
+                      Give a try{" "}
+                      <LucideShoppingBasket className="inline ml-2 w-4" />
+                    </p>
+                  }
+                  priceId={"month"}
+                />
               )}
-              {(userPaid || userSubscribed) && (
+              {userSubscribed && (
                 <LandingAuthButton label="Amazing you got this tier!" />
               )}
             </CardFooter>
@@ -164,12 +173,18 @@ export function PricingTiers() {
               )}
               {!!data.data && !userPaid && (
                 <EmbeddedCheckoutButton
-                  buttonLabel="Buy Now"
+                  classNames={"bg-blue-600 hover:bg-blue-700"}
+                  buttonLabel={
+                    <p className="font-bold flex items-center">
+                      Buy Now{" "}
+                      <LucideShoppingBasket className="inline ml-2 w-4" />
+                    </p>
+                  }
                   priceId={"lifetime"}
                 />
               )}
               {userPaid && (
-                <LandingAuthButton label="Amazing you are the top tier!" />
+                <LandingAuthButton label="Amazing you are the TOP tier! " />
               )}
             </CardFooter>
           </Card>

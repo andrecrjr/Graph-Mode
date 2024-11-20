@@ -25,7 +25,7 @@ export default function Landing() {
             <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
               <Link href="/app">
                 <Button>
-                  Try it for free <ArrowRight className="ml-1" />
+                  Go to Graph Mode <ArrowRight className="ml-1" />
                 </Button>
               </Link>
               <Link href="/graph/mock">

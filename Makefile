@@ -59,3 +59,6 @@ install_deps: install-bun
 install_deps_server:
 	@echo "Instalando dependências na pasta $(BACK_END_DIR)..."
 	cd $(BACK_END_DIR) && pnpm install
+
+stripe-dev:
+	stripe listen --forward-to http://localhost:3001/webhook/stripe
