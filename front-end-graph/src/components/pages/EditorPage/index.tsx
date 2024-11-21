@@ -16,6 +16,7 @@ export default function EditorPage() {
   const {
     state: { errorFetchGraph, loadingFetchGraph },
   } = useGraphContextData();
+  const { createOrUpdatePage } = useEditorActionPage();
 
   const {
     state: { sidebarOpen },
@@ -33,10 +34,19 @@ export default function EditorPage() {
     return (
       <>
         <Button
-          className="fixed bottom-7 right-8 min-w-16 sm:min-w-12 z-50 p-2 flex justify-center bg-black hover:bg-gray-700 text-white rounded-full focus:outline-none"
+          className="fixed bottom-7 right-8 min-w-16 sm:min-w-12 z-50 p-2 flex justify-center bg-black
+           hover:bg-gray-700 text-white rounded-full focus:outline-none"
           onClick={toggleSidebar}
         >
           {!sidebarOpen ? <Notebook width={32} /> : <X />}
+        </Button>
+        <Button
+          className={`fixed bottom-20 right-8 min-w-16 sm:min-w-12 z-50 p-2 hidden justify-center
+           bg-green-600 hover:bg-green-700 text-white rounded-full focus:outline-none
+            ${sidebarOpen && "flex"}`}
+          onClick={createOrUpdatePage}
+        >
+          <PenIcon />
         </Button>
 
         <div
@@ -53,7 +63,7 @@ export default function EditorPage() {
 
 const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
   const { session: data } = useUserSession();
-  const { createOrUpdatePage, pageId } = useEditorActionPage();
+  const { pageId } = useEditorActionPage();
 
   if (
     data?.user.subscriptionId ||
@@ -62,14 +72,6 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
   )
     return (
       <>
-        <Button
-          className={`fixed bottom-20 right-4 min-w-16 sm:min-w-12 z-50 p-2 hidden justify-center
-           bg-green-600 hover:bg-green-700 text-white rounded-full focus:outline-none
-            ${isOpen && "flex"}`}
-          onClick={createOrUpdatePage}
-        >
-          <PenIcon />
-        </Button>
         <section>
           <div className="px-8">
             <p className="text-center text-gray-500 font-bold">
@@ -96,10 +98,10 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
         </Link>{" "}
       </p>
       <section className="flex justify-center gap-2 mt-2">
-        <EmbeddedCheckoutButton priceId="month" buttonLabel="" />
+        <EmbeddedCheckoutButton priceId="month" />
         <EmbeddedCheckoutButton
           priceId="lifetime"
-          buttonLabel="Buy for lifetime"
+          buttonLabel={<p>Buy for lifetime</p>}
         />
       </section>
     </section>
