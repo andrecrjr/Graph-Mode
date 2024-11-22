@@ -1,6 +1,7 @@
 import { stripe } from "@/components/Auth";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, GoalIcon, Unlock } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -71,14 +72,13 @@ export default async function CheckoutReturn({
             .
           </p>
           <p className="pt-4 font-bold text-center">
-            You now have full access to all premium features.
+            {"You're"} all set! Start exploring your premium perks now.
           </p>
           <p className="text-center">
-            <Link
-              href="/app"
-              className="underline text-green-700 self-center font-bold "
-            >
-              Explore Graph Mode
+            <Link href="/app">
+              <Button className="bg-green-700 hover:bg-green-600 self-center">
+                Go to Graph Mode <Unlock className="pl-2" />
+              </Button>
             </Link>
           </p>
         </CardContent>

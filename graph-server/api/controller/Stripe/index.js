@@ -38,8 +38,13 @@ export async function handleSubscriptionCreated(event, res) {
             let userData = (await userController.getKey(`notion-${notionUserId}`)||{});
             userData.subscriptionId = eventData.subscription;
             userData.lastPaymentDate = eventData.created * 1000;
-			userData.nextPaymentDate = eventData.subscription.current_period_end * 1000;
-
+			userData.nextPaymentDate = updatedSubscription.current_period_end * 1000;
+			const userCancelledButSubscribedAgain = userData.cancelAt || userData.cancelAtPeriodEnd
+			if(userCancelledButSubscribedAgain){
+				delete userData["cancelAt"]
+				delete userData["cancelAtPeriodEnd"]
+				logger.info(`User:${notionUserId} subscribed again successfuly`)
+			}
             await userController.setKey(`notion-${notionUserId}`, userData);
 
             logger.info(`Subscription successfully updated for user: ${notionUserId}`);
@@ -48,14 +53,15 @@ export async function handleSubscriptionCreated(event, res) {
             let userData = (await userController.getKey(`notion-${notionUserId}`)||{});
             userData.lifetimePaymentId = eventData.payment_intent;
             userData.lastPaymentDate = eventData.created * 1000;
-			if(userData.subscriptionId && !userData.cancelAt){
+			const userHasSubscriptionButBoughtLifetime = userData.subscriptionId && !userData.cancelAt && !userData.cancelAtPeriodEnd
+			if(userHasSubscriptionButBoughtLifetime){
 				await stripe.subscriptions.update(userData.subscriptionId, {
       				cancel_at_period_end: true,
                     metadata: {
                         notionUserId,
                     },
 		    	});
-				delete userData["subscriptionId"]				
+				delete userData["subscriptionId"]		
 			}
 
             await userController.setKey(`notion-${notionUserId}`, userData);
@@ -123,6 +129,13 @@ export async function handlePaymentSucceeded(event, res) {
         userData.subscriptionId = subscription.id;
         userData.lastPaymentDate = eventData.created * 1000;
         userData.nextPaymentDate = subscription.current_period_end * 1000;
+		console.log("nextpaymentdate", subscription.current_period_end)
+		const userCancelledButPaid = userData.cancelAt || userData.cancelAtPeriodEnd
+		if(userCancelledButPaid){
+			delete userData["cancelAt"]
+			delete userData["cancelAtPeriodEnd"]
+			logger.info(`User:${notionUserId} paid again successfully even if he cancelled before`)
+		}
 
         await userController.setKey(`notion-${notionUserId}`, userData);
 
@@ -130,7 +143,7 @@ export async function handlePaymentSucceeded(event, res) {
 
         return res.status(200).send(`Payment succeeded for user: ${notionUserId}, subscription updated`);
     } catch (err) {
-        logger.error(`Error handling payment succeeded for user ${notionUserId}: ${err.message}`, err);
+        logger.error(`Error handling payment succeeded for user: ${err.message}`, err);
         return res.status(500).send("Internal Server Error");
     }
 }

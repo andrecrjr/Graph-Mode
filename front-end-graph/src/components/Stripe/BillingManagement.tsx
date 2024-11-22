@@ -11,8 +11,15 @@ import {
 import { convertDateToIntl } from "../utils";
 import { Session } from "next-auth";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
-export function SubscriptionSettings({ data }: { data: Session | null }) {
+export default function SubscriptionSettings() {
+  const { data } = useSession();
+
+  if (!data) {
+    console.log("abrindo");
+    return <p>Loading</p>;
+  }
   if (data?.user)
     return (
       <Card className="w-11/12 md:w-5/12 mx-auto mt-12">
@@ -39,8 +46,8 @@ export function SubscriptionSettings({ data }: { data: Session | null }) {
             {!data?.user.lifetimePaymentId && !data.user.cancelAt && (
               <p className="text-sm text-muted-foreground">
                 Your next invoice is scheduled for{" "}
-                {(data?.user.nextPaymentDate &&
-                  convertDateToIntl(data?.user.nextPaymentDate || "")) ||
+                {(data.user.nextPaymentDate &&
+                  convertDateToIntl(data.user.nextPaymentDate)) ||
                   "Wait..."}
               </p>
             )}
@@ -48,28 +55,33 @@ export function SubscriptionSettings({ data }: { data: Session | null }) {
           {!data?.user.lifetimePaymentId && !data.user.cancelAt && (
             <Button
               variant="destructive"
-              onClick={() => {
-                fetch(
-                  `/api/update-checkout?subscriptionId=${data?.user.subscriptionId}`,
-                  {
-                    method: "DELETE",
-                  },
-                ).then((res) => {
+              onClick={async () => {
+                try {
+                  await fetch(
+                    `/api/update-checkout?subscriptionId=${data?.user.subscriptionId}`,
+                    {
+                      method: "DELETE",
+                    },
+                  );
                   window.location.reload();
-                });
+                } catch (error) {
+                  alert(
+                    "Problem to cancel your subscription please try again in few minutes!",
+                  );
+                }
               }}
             >
               Cancel Subscription
             </Button>
           )}
-          {data?.user.lifetimePaymentId && (
+          {data.user.lifetimePaymentId && (
             <p>{"Thanks for your support in our project!"}</p>
           )}
-          {data.user.cancelAt && !data?.user.lifetimePaymentId && (
+          {data.user.cancelAt && !data.user.lifetimePaymentId && (
             <p className="text-sm text-muted-foreground font-bold">
               This notice confirms that your subscription will terminate on{" "}
-              {convertDateToIntl(data?.user.cancelAt || "")}. No additional
-              invoices will be issued.
+              {convertDateToIntl(data.user.cancelAt)}. No additional invoices
+              will be issued.
             </p>
           )}
           <Link href="/app" className="underline mb-6 items-end">

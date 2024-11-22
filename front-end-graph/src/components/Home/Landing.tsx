@@ -24,7 +24,7 @@ export default function Landing() {
             </div>
             <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
               <Link href="/app">
-                <Button>
+                <Button className="bg-green-700 hover:bg-green-600">
                   Go to Graph Mode <ArrowRight className="ml-1" />
                 </Button>
               </Link>

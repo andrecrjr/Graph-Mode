@@ -10,3 +10,11 @@ export const GraphComponent = dynamic(
     ssr: false,
   },
 );
+
+export const BillingManagement = dynamic(
+  () => import("@/components/Stripe/BillingManagement"),
+  {
+    loading: () => <LoadingPlaceholder />,
+    ssr: false,
+  },
+);

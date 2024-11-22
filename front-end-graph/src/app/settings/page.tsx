@@ -6,7 +6,7 @@ const Settings: React.FC = async () => {
   const data = await auth();
   return (
     <>
-      <SubscriptionSettings data={data} />
+      <SubscriptionSettings />
     </>
   );
 };

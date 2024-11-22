@@ -15,7 +15,9 @@ import { LandingAuthButton } from "../Buttons/LandingAuth";
 
 export function PricingTiers() {
   const data = useSession();
-  const userSubscribed = data.data?.user.subscriptionId;
+  const userSubscribed =
+    data.data?.user.subscriptionId && !data.data?.user.cancelAtPeriodEnd;
+
   const userPaid = data.data?.user.lifetimePaymentId;
   return (
     <section
@@ -104,7 +106,10 @@ export function PricingTiers() {
                   </i>
                 </section>
               )}
-              {!!data.data && !userSubscribed && !userPaid && (
+
+              {userSubscribed ? (
+                <LandingAuthButton label="Subscribed" />
+              ) : (
                 <EmbeddedCheckoutButton
                   classNames={"bg-blue-600 hover:bg-blue-700"}
                   buttonLabel={
@@ -115,9 +120,6 @@ export function PricingTiers() {
                   }
                   priceId={"month"}
                 />
-              )}
-              {userSubscribed && (
-                <LandingAuthButton label="Amazing you got this tier!" />
               )}
             </CardFooter>
           </Card>
