@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from "../ui/card";
 import { convertDateToIntl } from "../utils";
-import { Session } from "next-auth";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
