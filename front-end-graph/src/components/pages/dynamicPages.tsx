@@ -2,6 +2,7 @@
 
 import LoadingPlaceholder from "@/components/Graph/Loading";
 import dynamic from "next/dynamic";
+import LoadingDynamicPlaceholder from "../Loading";
 
 export const GraphComponent = dynamic(
   () => import("@/components/Graph/GraphComponent"),
@@ -14,7 +15,17 @@ export const GraphComponent = dynamic(
 export const BillingManagement = dynamic(
   () => import("@/components/Stripe/BillingManagement"),
   {
-    loading: () => <LoadingPlaceholder />,
+    loading: () => (
+      <LoadingDynamicPlaceholder message="Loading Subscription Data" />
+    ),
+    ssr: false,
+  },
+);
+
+export const PricingTierComponent = dynamic(
+  () => import("@/components/Home/Tier"),
+  {
+    loading: () => <LoadingDynamicPlaceholder message="Loading Tiers Data" />,
     ssr: false,
   },
 );

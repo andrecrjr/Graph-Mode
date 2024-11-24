@@ -13,7 +13,7 @@ import { useSession, signIn } from "next-auth/react";
 import { EmbeddedCheckoutButton } from "../Stripe/EmbeddedButton";
 import { LandingAuthButton } from "../Buttons/LandingAuth";
 
-export function PricingTiers() {
+export default function PricingTiers() {
   const data = useSession();
   const userSubscribed =
     data.data?.user.subscriptionId && !data.data?.user.cancelAtPeriodEnd;
@@ -107,14 +107,16 @@ export function PricingTiers() {
                 </section>
               )}
 
-              {userSubscribed ? (
+              {data.data?.user && userSubscribed && (
                 <LandingAuthButton label="Subscribed" />
-              ) : (
+              )}
+
+              {data.data?.user && !userSubscribed && (
                 <EmbeddedCheckoutButton
                   classNames={"bg-blue-600 hover:bg-blue-700"}
                   buttonLabel={
                     <p className="font-bold flex items-center">
-                      Give a try{" "}
+                      Subscribe{" "}
                       <LucideShoppingBasket className="inline ml-2 w-4" />
                     </p>
                   }

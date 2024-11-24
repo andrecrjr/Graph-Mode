@@ -1,11 +1,12 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { PricingTiers } from "./Tier";
+
 import BuyMeCoffee from "./BuyCoffee";
 import { NotionHome } from "../svg/NotionHome";
 import ImprovedFeatures from "./Features";
 import { ArrowRight, LucideChartNetwork } from "lucide-react";
+import { PricingTierComponent } from "../pages/dynamicPages";
 
 export default function Landing() {
   return (
@@ -44,7 +45,7 @@ export default function Landing() {
         </Link>
       </section>
       <ImprovedFeatures />
-      <PricingTiers />
+      <PricingTierComponent />
       <BuyMeCoffee />
       <section className="w-full py-12 md:py-24 lg:py-32 min-h-screen  bg-gray-100 z-10 dark:bg-gray-800 flex items-center justify-center">
         <div className="container px-4 md:px-6">

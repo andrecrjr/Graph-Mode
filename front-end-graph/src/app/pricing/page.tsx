@@ -1,4 +1,4 @@
-import { PricingTiers } from "@/components/Home/Tier";
+import { PricingTierComponent } from "@/components/pages/dynamicPages";
 import React from "react";
 
 // import { Container } from './styles';
@@ -6,7 +6,7 @@ import React from "react";
 const Pricing: React.FC = () => {
   return (
     <>
-      <PricingTiers />
+      <PricingTierComponent />
     </>
   );
 };
