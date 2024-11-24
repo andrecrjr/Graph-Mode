@@ -7,7 +7,7 @@ import LoadingDynamicPlaceholder from "../Loading";
 export const GraphComponent = dynamic(
   () => import("@/components/Graph/GraphComponent"),
   {
-    loading: () => <LoadingPlaceholder />,
+    loading: () => <LoadingDynamicPlaceholder />,
     ssr: false,
   },
 );
