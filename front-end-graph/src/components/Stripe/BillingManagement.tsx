@@ -23,7 +23,6 @@ export default function SubscriptionSettings() {
   }, [cancelled]);
 
   if (!data) {
-    console.log("abrindo");
     return <p>Loading</p>;
   }
   if (data?.user)
