@@ -41,14 +41,7 @@ const CreatorSection: React.FC = () => {
                 target="_blank"
                 className="bg-yellow-400 ml-2 mt-2 md:mt-0  text-center text-black px-6 py-3 rounded-md shadow hover:bg-yellow-500 transition-all duration-200"
               >
-                Ko-fi
-              </a>
-              <a
-                href="https://www.linkedin.com/in/andrecrjr/"
-                target="_blank"
-                className="bg-blue-500 ml-2 mt-2 md:mt-0 text-center text-white px-6 py-3 rounded-md shadow hover:bg-blue-600 transition-all duration-200"
-              >
-                Linkedin
+                Buy me a Coffee
               </a>
               <a
                 href="https://andrecrjr.github.io/?utm_source=graphmode"

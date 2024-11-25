@@ -10,16 +10,18 @@ import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/Header";
 import ButtonPWA from "@/components/Buttons/InstallPWA";
 import { auth } from "@/components/Auth";
-import { cache } from "react";
 
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["100", "300", "400"],
 });
 export const metadata: Metadata = {
-  title: "Graph Mode",
+  title: "Graph Mode - Interactive Zettelkasten for Notion",
   description:
-    "Transform your Notion pages into an interactive Zettelkasten/Graph view, with the power of Graph Mode!",
+    "Transform your Notion pages into an interactive Zettelkasten/Graph view. Boost your productivity and note organization with Graph Mode.",
+  keywords:
+    "Graph Mode, Notion, Zettelkasten, Interactive Graph, Productivity App, Note-Taking, Knowledge Management",
+  robots: "index, follow",
 };
 
 export default async function RootLayout({
