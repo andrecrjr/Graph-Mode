@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 
-import LoadingPlaceholder from "./Loading";
 import Sidebar from "../Sidebar";
 import EditorPage from "@/components/pages/EditorPage";
 import { GraphSVGLazyComponent, LoadingGraphLazyComponent } from "./index";
