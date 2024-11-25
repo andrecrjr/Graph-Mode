@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -14,6 +14,13 @@ import { useSession } from "next-auth/react";
 
 export default function SubscriptionSettings() {
   const { data } = useSession();
+  const [cancelled, setCancelled] = useState(false);
+
+  useEffect(() => {
+    if (cancelled) {
+      window.location.reload();
+    }
+  }, [cancelled]);
 
   if (!data) {
     console.log("abrindo");
@@ -56,14 +63,17 @@ export default function SubscriptionSettings() {
               variant="destructive"
               onClick={async () => {
                 try {
-                  await fetch(
+                  const res = await fetch(
                     `/api/update-checkout?subscriptionId=${data?.user.subscriptionId}`,
                     {
                       method: "DELETE",
                     },
                   );
-                  window.location.reload();
+                  if (res.ok) {
+                    setCancelled(true);
+                  }
                 } catch (error) {
+                  setCancelled(false);
                   alert(
                     "Problem to cancel your subscription please try again in few minutes!",
                   );
@@ -83,6 +93,7 @@ export default function SubscriptionSettings() {
               will be issued.
             </p>
           )}
+
           <Link href="/app" className="underline mb-6 items-end">
             Go back to Graph Mode
           </Link>
