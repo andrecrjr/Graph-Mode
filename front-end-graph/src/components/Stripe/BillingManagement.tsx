@@ -18,7 +18,9 @@ export default function SubscriptionSettings() {
 
   useEffect(() => {
     if (cancelled) {
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     }
   }, [cancelled]);
 
@@ -79,7 +81,7 @@ export default function SubscriptionSettings() {
                 }
               }}
             >
-              Cancel Subscription
+              {!cancelled ? "Cancel Subscription" : "Cancelling..."}
             </Button>
           )}
           {data.user.lifetimePaymentId && (
