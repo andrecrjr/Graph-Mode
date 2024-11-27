@@ -134,7 +134,7 @@ export default function PricingTiers() {
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="text-4xl font-bold">
-                $60<span className="text-sm font-normal">/lifetime</span>
+                $50<span className="text-sm font-normal">/lifetime</span>
               </div>
               <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-center">
