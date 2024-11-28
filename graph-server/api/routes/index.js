@@ -7,6 +7,7 @@ import mock from "../controller/mock.json" with {type: "json"};
 import path from "path";
 import dotenv from 'dotenv';
 import { authMiddleware } from "../middleware/authMiddleware.js";
+import logger from "../logs/index.js";
 dotenv.config()
 
 const __filename = fileURLToPath(import.meta.url);
@@ -29,7 +30,7 @@ router.get('/blocks/:blockId', authMiddleware, async (req, res) => {
     const elements = await fetchBlockChildrenRecursively(blockId, req.notionAPI, elementProcessor, firstParent.id);
     res.json([...elements,{rateLimit:req.notionAPI.getRateLimit()}]);
   } catch (error) {
-    console.log(error)
+    logger.error(`Error to find blockId: ${blockId} with token auth: ${req.headers?.authorization}. Error: ${error}`)
     res.status(404).json({ error: `Erro ao buscar filhos do bloco: ${error.message}` });
   }
 });
@@ -41,7 +42,7 @@ router.get("/only/:blockId", authMiddleware, async(req, res)=>{
     const elements = await req.notionAPI.fetchBlockChildren(blockId, false, getChildren);
     res.json(elements);
   } catch (error) {
-    console.error('Erro ao buscar filhos do bloco:', error);
+    logger.error(`Error to find blockId ${error}`)
     res.status(404).json({ error: 'Erro ao buscar filhos do bloco' });
   }
 })
@@ -81,7 +82,7 @@ router.post("/search", authMiddleware, async (req, res)=>{
     const elements = await req.notionAPI.fetchSearch(req.body.query);
     res.json(elements);
   } catch (error) {
-    console.error('Erro ao buscar filhos do bloco:', error);
+    logger.error(`Error in search ${error}`)
     res.status(404).json({ error: 'Erro ao buscar filhos do bloco' });
   }
 })

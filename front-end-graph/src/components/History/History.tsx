@@ -69,9 +69,13 @@ const History = () => {
     return (
       <p className="text-center pt-5">
         Access your latest history with{" "}
-        <Link href="/pricing" className="underline">
-          PRO
-        </Link>
+        {process.env.NEXT_PUBLIC_TIER_RELEASED ? (
+          <Link href="/#pricing" className="underline">
+            PRO
+          </Link>
+        ) : (
+          "PRO"
+        )}
         .
       </p>
     );

@@ -1,3 +1,4 @@
+import logger from "../../logs/index.js";
 import { RedisController } from "../RedisController/index.js";
 
 class NotionAPI {
@@ -38,7 +39,7 @@ class NotionAPI {
       }
       return response.json();
     } catch (error) {
-      console.error('Error accessing the Notion API:', error);
+      logger.error("Error to access Notion API", error)
       throw new Error(`Error accessing the Notion API: ${error.message}`);
     }
   }
