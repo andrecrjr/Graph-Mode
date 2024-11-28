@@ -1,38 +1,51 @@
+import logger from "../../logs/index.js";
+import { RedisController } from "../RedisController/index.js";
+
 class NotionAPI {
-  constructor(apiUrl=process.env.API_URL, apiKey) {
+  constructor(apiUrl=process.env.API_URL, apiKey, userNotion=null) {
     this.apiUrl = apiUrl || process.env.API_URL;
     this.apiKey = apiKey;
     this.count=0;
-    this.limitNotionRefresh=process.env.LIMIT_NOTION_REFRESH||null
+    this.limitNotionRefresh=process.env.LIMIT_NOTION_REFRESH||30
     this.rateLimit=false;
+    this.redis = new RedisController();
+    this.userNotion=userNotion;
+  }
+
+  async setRateLimit(){
+    const resp = await this.redis.getKey(`notion-${this.userNotion}`)
+    this.rateLimit = !resp
   }
 
   getRateLimit() {
-    return !this.rateLimit;
+    return this.rateLimit;
   }
 
-  async fetchBlockChildren(blockId, nextCursor = null, children=true) {
+  async fetchBlockChildren(blockId, nextCursor = null, children = true) {
     try {
-      if(this.limitNotionRefresh && this.count > this.limitNotionRefresh){
-        this.rateLimit=true;
-        return {id:null, results:[], hasMore:false, rateLimit:true};
-      }else{
-        this.count++
-        const url = `${this.apiUrl}/blocks/${blockId}/${children ? "children?page_size=100" : "?"}${nextCursor ? `&start_cursor=${nextCursor}` : ''}`;
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: this.getHeaders(),
-        });
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch children for block ${blockId}: ${response.statusText}`);
-        }
-        return response.json();
+      if (this.isRateLimitExceeded()) {
+        return { id: null, results: [], hasMore: false, rateLimit: true };
       }
+      this.count++;
+      const url = `${this.apiUrl}/blocks/${blockId}/${children ? "children?page_size=100" : "?"}${nextCursor ? `&start_cursor=${nextCursor}` : ''}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.getHeaders(),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch children for block ${blockId}: ${response.statusText}`);
+      }
+      return response.json();
     } catch (error) {
-      console.error('Error accessing the Notion API:', error);
+      logger.error("Error to access Notion API", error)
       throw new Error(`Error accessing the Notion API: ${error.message}`);
     }
+  }
+
+  isRateLimitExceeded() {
+    return (this.rateLimit && this.count > this.limitNotionRefresh) || (!this.rateLimit && 0 > this.count);
   }
 
   async fetchSearch(query){
@@ -120,6 +133,25 @@ class NotionAPI {
       'Content-Type': 'application/json',
     };
   }
+
+  async fetchDatabase(databaseId) {
+  try {
+    const url = `${this.apiUrl}/databases/${databaseId}`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: this.getHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch database ${databaseId}: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching database:', error);
+    throw new Error(`Error fetching database: ${error.message}`);
+  }
+}
 }
 
 export {NotionAPI}

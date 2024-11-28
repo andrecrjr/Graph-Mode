@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     );
     return {
       title: `${product.child_page.title} Page - Graph Mode`,
+      robots: "noindex, nofollow",
     };
   } catch (error) {
     return {

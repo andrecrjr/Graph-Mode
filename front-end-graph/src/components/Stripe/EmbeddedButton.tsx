@@ -1,20 +1,22 @@
 "use client";
-import React, { useRef } from "react";
+import React, { ReactElement, useRef } from "react";
 import { Button } from "../ui/button";
 import { IModalCheckoutRef, ModalCheckout } from "./EmbeddedCheckout";
 
 export function EmbeddedCheckoutButton({
   buttonLabel,
   priceId = "month",
+  classNames,
 }: {
-  buttonLabel?: string;
+  buttonLabel?: ReactElement;
   priceId: string;
+  classNames?: string;
 }) {
   const modalCheckoutRef = useRef<IModalCheckoutRef>(null);
   return (
     <>
       <Button
-        className="w-full"
+        className={`w-full ${classNames}`}
         onClick={() => {
           modalCheckoutRef.current?.open();
         }}

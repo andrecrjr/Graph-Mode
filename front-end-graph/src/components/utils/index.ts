@@ -76,6 +76,24 @@ export const createOrUpdateNode = (
   return nodes;
 };
 
-export const convertDateToIntl = (data: string) => {
-  return new Intl.DateTimeFormat().format(new Date(data));
+export const convertDateToIntl = (dateString: number) => {
+  try {
+    // Garante que é uma instância válida de Date
+    if (typeof window === "undefined") {
+      // Garantir que não seja executado no servidor
+      return "Date unavailable on server";
+    }
+
+    const date = new Date(dateString);
+
+    // Usa a formatação padrão (idioma e opções personalizáveis)
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    }).format(date);
+  } catch (error) {
+    console.error("Error formatting date:", error);
+    return "Invalid date"; // Retorna uma string padrão em caso de erro
+  }
 };

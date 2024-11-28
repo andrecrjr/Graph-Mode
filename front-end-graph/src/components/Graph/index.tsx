@@ -1,9 +1,19 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import LoadingPlaceholder from "./Loading";
+import LoadingDynamicPlaceholder from "../Loading";
 
 export const GraphComponent = dynamic(() => import("./GraphComponent"), {
-  loading: () => <LoadingPlaceholder />,
+  loading: () => <LoadingDynamicPlaceholder />,
+  ssr: false,
+});
+
+export const GraphSVGLazyComponent = dynamic(() => import("./GraphSvg"), {
+  loading: () => <LoadingDynamicPlaceholder />,
+  ssr: false,
+});
+
+export const LoadingGraphLazyComponent = dynamic(() => import("./Loading"), {
+  loading: () => <LoadingDynamicPlaceholder />,
   ssr: false,
 });

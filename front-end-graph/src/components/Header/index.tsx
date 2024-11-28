@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import AuthButton from "../Buttons";
 import { usePathname } from "next/navigation";
@@ -28,12 +28,14 @@ export default function Header() {
           >
             Features
           </Link>
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="/#support"
-          >
-            ☕
-          </Link>
+          {process.env.NEXT_PUBLIC_TIER_RELEASED && (
+            <Link
+              className="text-sm font-medium hover:underline underline-offset-4"
+              href="/#pricing"
+            >
+              Pricing
+            </Link>
+          )}
           <Link
             className="text-sm font-medium hover:underline underline-offset-4"
             href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"

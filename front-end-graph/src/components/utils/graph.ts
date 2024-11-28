@@ -7,7 +7,11 @@ export const loadNodePositions = (blockId: string) => {
   return saveStorage.get(savedPositionsKey);
 };
 
-export const fetchAndSaveCacheData = async (pageId: string, token: string) => {
+export const fetchAndSaveCacheData = async (
+  pageId: string,
+  token: string,
+  userNotion: string,
+) => {
   const localStorageKey = `data-block-${pageId}`;
   const tempStorageKey = `temp-data-blocks-${pageId}`;
   const cachedData = saveStorage.get(localStorageKey);
@@ -17,7 +21,7 @@ export const fetchAndSaveCacheData = async (pageId: string, token: string) => {
     return cachedData;
   }
 
-  const data = await fetchServer(`/blocks/${pageId}`, token);
+  const data = await fetchServer(`/blocks/${pageId}?user=${userNotion}`, token);
 
   saveStorage.set(localStorageKey, data);
   saveStorage.set(tempStorageKey, data);

@@ -8,13 +8,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, LucideShoppingBasket, ShoppingBagIcon } from "lucide-react";
 import { useSession, signIn } from "next-auth/react";
 import { EmbeddedCheckoutButton } from "../Stripe/EmbeddedButton";
+import { LandingAuthButton } from "../Buttons/LandingAuth";
 
-export function PricingTiers() {
+export default function PricingTiers() {
   const data = useSession();
+  const userSubscribed =
+    data.data?.user.subscriptionId && !data.data?.user.cancelAtPeriodEnd;
 
+  const userPaid = data.data?.user.lifetimePaymentId;
   return (
     <section
       className="w-full py-12 md:py-24 lg:py-32 bg-gray-50 dark:bg-gray-900 
@@ -46,22 +50,17 @@ export function PricingTiers() {
                   <CheckIcon className="mr-2 h-4 w-4" />
                   Up to 30 Notion requests to get some few pages
                 </li>
-                <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" />
-                  Unlimited Fast Notes: Create as many notes per day as you
-                  need.
-                </li>
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full">Get Started</Button>
+              <LandingAuthButton />
             </CardFooter>
           </Card>
           <Card>
             <CardHeader>
               <CardTitle>Monthly Tier</CardTitle>
               <CardDescription>
-                Premium tier, perfect for heavy users and creative documents
+                Premium tier, perfect for heavy users
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
@@ -81,12 +80,12 @@ export function PricingTiers() {
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
-                  Graph Excalidraw Mode: Visualize your ideas with ease.
+                  Page History: Quickly revisit your recently viewed pages.
                 </li>
               </ul>
             </CardContent>
             <CardFooter>
-              {!data.data && (
+              {!data.data && !userSubscribed && !userPaid && (
                 <section className="flex flex-col w-full">
                   <Button
                     className="w-full mb-2"
@@ -107,19 +106,35 @@ export function PricingTiers() {
                   </i>
                 </section>
               )}
-              {!!data.data && <EmbeddedCheckoutButton priceId={"month"} />}
+
+              {data.data?.user && userSubscribed && (
+                <LandingAuthButton label="Subscribed" />
+              )}
+
+              {data.data?.user && !userSubscribed && (
+                <EmbeddedCheckoutButton
+                  classNames={"bg-blue-600 hover:bg-blue-700"}
+                  buttonLabel={
+                    <p className="font-bold flex items-center">
+                      Subscribe{" "}
+                      <LucideShoppingBasket className="inline ml-2 w-4" />
+                    </p>
+                  }
+                  priceId={"month"}
+                />
+              )}
             </CardFooter>
           </Card>
           <Card>
             <CardHeader>
               <CardTitle>Lifetime PRO</CardTitle>
               <CardDescription>
-                {"It's yours forever (or at least til we go alive)"}
+                Unlock a Lifetime of Productivity
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="text-4xl font-bold">
-                $60<span className="text-sm font-normal">/forever</span>
+                $50<span className="text-sm font-normal">/lifetime</span>
               </div>
               <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-center">
@@ -133,13 +148,13 @@ export function PricingTiers() {
                   need.
                 </li>
                 <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" />
-                  Get all updates for free forever
+                  <CheckIcon className="mr-2 h-4 w-4" /> Page History: Quickly
+                  revisit your recently viewed pages.
                 </li>
               </ul>
             </CardContent>
             <CardFooter>
-              {!data.data && (
+              {!data.data && !userPaid && (
                 <section className="flex flex-col w-full">
                   <Button
                     className="w-full mb-2"
@@ -160,11 +175,20 @@ export function PricingTiers() {
                   </i>
                 </section>
               )}
-              {!!data.data && (
+              {!!data.data && !userPaid && (
                 <EmbeddedCheckoutButton
-                  buttonLabel="Buy Now"
+                  classNames={"bg-blue-600 hover:bg-blue-700"}
+                  buttonLabel={
+                    <p className="font-bold flex items-center">
+                      Buy Now{" "}
+                      <LucideShoppingBasket className="inline ml-2 w-4" />
+                    </p>
+                  }
                   priceId={"lifetime"}
                 />
+              )}
+              {userPaid && (
+                <LandingAuthButton label="Amazing you are the TOP tier! " />
               )}
             </CardFooter>
           </Card>

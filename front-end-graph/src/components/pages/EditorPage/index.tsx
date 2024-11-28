@@ -8,13 +8,15 @@ import SelectEditorBar from "./SelectNodeBar";
 import { useEditorActionPage } from "@/components/hooks/useEditorAction";
 import Link from "next/link";
 import { useUserSession } from "@/components/Context/UserSessionContext";
-import { IS_DEVELOPMENT, isMock } from "@/components/utils";
+import { isMock } from "@/components/utils";
 import { useEditorContext } from "@/components/Context/EditorContext";
+import { EmbeddedCheckoutButton } from "@/components/Stripe/EmbeddedButton";
 
 export default function EditorPage() {
   const {
     state: { errorFetchGraph, loadingFetchGraph },
   } = useGraphContextData();
+  const { createOrUpdatePage } = useEditorActionPage();
 
   const {
     state: { sidebarOpen },
@@ -32,10 +34,19 @@ export default function EditorPage() {
     return (
       <>
         <Button
-          className="fixed bottom-7 right-8 min-w-16 sm:min-w-12 z-50 p-2 flex justify-center bg-black hover:bg-gray-700 text-white rounded-full focus:outline-none"
+          className="fixed bottom-7 right-8 min-w-16 sm:min-w-12 z-50 p-2 flex justify-center bg-black
+           hover:bg-gray-700 text-white rounded-full focus:outline-none"
           onClick={toggleSidebar}
         >
           {!sidebarOpen ? <Notebook width={32} /> : <X />}
+        </Button>
+        <Button
+          className={`fixed bottom-20 right-8 min-w-16 sm:min-w-12 z-50 p-2 hidden justify-center
+           bg-green-600 hover:bg-green-700 text-white rounded-full focus:outline-none
+            ${sidebarOpen && "flex"}`}
+          onClick={createOrUpdatePage}
+        >
+          <PenIcon />
         </Button>
 
         <div
@@ -52,7 +63,7 @@ export default function EditorPage() {
 
 const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
   const { session: data } = useUserSession();
-  const { createOrUpdatePage, pageId } = useEditorActionPage();
+  const { pageId } = useEditorActionPage();
 
   if (
     data?.user.subscriptionId ||
@@ -61,14 +72,6 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
   )
     return (
       <>
-        <Button
-          className={`fixed bottom-20 right-4 min-w-16 sm:min-w-12 z-50 p-2 hidden justify-center
-           bg-green-600 hover:bg-green-700 text-white rounded-full focus:outline-none
-            ${isOpen && "flex"}`}
-          onClick={createOrUpdatePage}
-        >
-          <PenIcon />
-        </Button>
         <section>
           <div className="px-8">
             <p className="text-center text-gray-500 font-bold">
@@ -86,20 +89,21 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
 
   return (
     <section className="w-full h-full flex flex-col justify-center items-center">
-      <p className="font-bold">
-        Fast Notes: Coming Soon with Graph Mode (PRO Only)!
-      </p>
-      <p>
-        {
-          "You'll can create seamless connections to Notion directly from here being PRO!"
-        }
-      </p>
+      <p className="font-bold">Fast Notes with Graph Mode PRO Only!</p>
+      <p>{"Seamlessly connect to Notion with a PRO subscription."}</p>
       <p>
         Try out Fast Notes in our{" "}
         <Link href="/graph/mock" className="underline" target="_blank">
           Example Graph
         </Link>{" "}
       </p>
+      <section className="flex justify-center gap-2 mt-2">
+        <EmbeddedCheckoutButton priceId="month" />
+        <EmbeddedCheckoutButton
+          priceId="lifetime"
+          buttonLabel={<p>Buy for lifetime</p>}
+        />
+      </section>
     </section>
   );
 };

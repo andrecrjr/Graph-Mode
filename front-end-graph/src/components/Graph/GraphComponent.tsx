@@ -1,10 +1,9 @@
 "use client";
 import React from "react";
 
-import LoadingPlaceholder from "./Loading";
 import Sidebar from "../Sidebar";
 import EditorPage from "@/components/pages/EditorPage";
-import GraphSvg from "./GraphSvg";
+import { GraphSVGLazyComponent, LoadingGraphLazyComponent } from "./index";
 import { LoadPageData } from "./LoadPageData";
 import MockPage from "@/components/pages/MockPage";
 
@@ -13,9 +12,9 @@ export const GraphComponent: React.FC = () => {
     <MockPage>
       <LoadPageData>
         <div className="graph overflow-hidden max-w-screen">
-          <LoadingPlaceholder />
           <Sidebar />
-          <GraphSvg />
+          <LoadingGraphLazyComponent />
+          <GraphSVGLazyComponent />
           <EditorPage />
         </div>
       </LoadPageData>

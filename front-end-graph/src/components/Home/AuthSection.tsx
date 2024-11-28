@@ -1,3 +1,4 @@
+import AuthButton from "../Buttons";
 import SearchInput from "../SearchInput";
 import { Session } from "@auth/core/types";
 
@@ -10,9 +11,7 @@ export async function AuthSection({ session }: { session: Session | null }) {
         </>
       ) : (
         <section className="mx-4">
-          <p className="font-bold mx-auto bg-yellow-200">
-            Please log in to Notion to continue.
-          </p>
+          <AuthButton />
         </section>
       )}
     </section>

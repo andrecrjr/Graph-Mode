@@ -1,12 +1,13 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { PricingTiers } from "./Tier";
+
 import BuyMeCoffee from "./BuyCoffee";
 import { NotionHome } from "../svg/NotionHome";
 import ImprovedFeatures from "./Features";
+import { ArrowRight, LucideChartNetwork } from "lucide-react";
+import { PricingTierComponent } from "../pages/dynamicPages";
 import CreatorSection from "./CreatorSection";
-import { LandingAuthButton } from "../Buttons/LandingAuth";
 
 export default function Landing() {
   return (
@@ -16,29 +17,38 @@ export default function Landing() {
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-3">
               <h1 className="text-4xl font-bold sm:text-8xl tracking-tight">
-                Explore Graph Mode
+                Unlock Graph Mode
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-500 sm:text-xl dark:text-gray-400">
-                Visualize your Notion Pages like never before. Inspired by
-                Zettelkasten/Obsidian, powered by Notion.
+                Transform your Notion pages into an interactive graph inspired
+                by Zettelkasten/Obsidian. Start exploring connections today.
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-              <LandingAuthButton />
               <Link href="/graph/mock">
-                <Button>View Example Graph 👀</Button>
+                <Button variant={"secondary"}>
+                  View Demo Now <LucideChartNetwork className="ml-1" />
+                </Button>
+              </Link>
+              <Link href="/app">
+                <Button className="bg-green-700 hover:bg-green-600">
+                  Go to Graph Mode <ArrowRight className="ml-1" />
+                </Button>
               </Link>
             </div>
           </div>
         </div>
-        <Link href="https://notion.so" className="mt-auto pb-8">
+        <Link
+          href="https://notion.so?utm_source=graph-mode"
+          className="mt-auto pb-8"
+        >
           <NotionHome />
         </Link>
       </section>
       <ImprovedFeatures />
       <CreatorSection />
+      {process.env.NEXT_PUBLIC_TIER_RELEASED && <PricingTierComponent />}
       <BuyMeCoffee />
-      {/* <PricingTiers /> */}
       <section className="w-full py-12 md:py-24 lg:py-32 min-h-screen  bg-gray-100 z-10 dark:bg-gray-800 flex items-center justify-center">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between">
@@ -105,27 +115,6 @@ export default function Landing() {
   );
 }
 
-function LayersIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" />
-      <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" />
-      <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" />
-    </svg>
-  );
-}
-
 export function MindMapIcon(props: any) {
   return (
     <svg
@@ -145,46 +134,6 @@ export function MindMapIcon(props: any) {
       <line x1="9" x2="18" y1="6" y2="9" />
       <line x1="9" x2="18" y1="18" y2="18" />
       <line x1="9" x2="9" y1="9" y2="15" />
-    </svg>
-  );
-}
-
-function NetworkIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="2" />
-      <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14" />
-    </svg>
-  );
-}
-
-function SearchIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
     </svg>
   );
 }
