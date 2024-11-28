@@ -14,12 +14,14 @@ export async function DemoSection({ data }: { data: Session | null }) {
           </Button>
         </Link>
       ) : (
-        <Link href="/pricing">
+        <>
+        {process.env.NEXT_PUBLIC_TIER_RELEASED && <Link href="/pricing">
           <Button variant={"outline"} className="font-bold">
             <Unlock className="mr-2" />
             Unlock Full Potential: Upgrade to PRO Today
           </Button>
-        </Link>
+        </Link>}
+        </>
       )}
       {!data && (
         <Link href="/graph/mock" className="ml-4">
