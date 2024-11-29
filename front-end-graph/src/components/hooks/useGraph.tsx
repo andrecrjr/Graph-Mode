@@ -3,6 +3,7 @@ import React, { useCallback } from "react";
 import * as d3 from "d3";
 import { useGraphContextData } from "../Context/GraphContext";
 import { Link, Node } from "../../../types/graph";
+import { isNodeOrLink } from "../utils";
 
 export const useGraph = () => {
   const {
@@ -27,7 +28,7 @@ export const useGraph = () => {
     ) => {
       if (!data.nodes || !data.links) return;
       const svg = d3
-        .select(svgRef.current)
+        .select(svgRef.current!)
         .attr("width", WINDOW.MAX_GRAPH_WIDTH)
         .attr("height", WINDOW.MAX_GRAPH_HEIGHT);
 
@@ -63,7 +64,7 @@ export const useGraph = () => {
             WINDOW.MAX_GRAPH_HEIGHT / 3,
           ),
         )
-        .force("collide", d3.forceCollide().radius(50)); // Ajuste o raio conforme necessário
+        .force("collide", d3.forceCollide().radius(60)); // Ajuste o raio conforme necessário
 
       const link = container
         .append("g")
@@ -140,39 +141,61 @@ export const useGraph = () => {
 
       simulation.on("tick", () => {
         link
-          .attr("x1", (d) => (d.source as unknown as Node).x!)
-          .attr("y1", (d) => (d.source as unknown as Node).y!)
-          .attr("x2", (d) => (d.target as unknown as Node).x!)
-          .attr("y2", (d) => (d.target as unknown as Node).y!);
+          .attr("x1", (d) => {
+            if (isNodeOrLink(d.source)) {
+              return d.source.x!;
+            }
+            return 0;
+          })
+          .attr("y1", (d) => {
+            if (isNodeOrLink(d.source)) {
+              return d.source.y!;
+            }
+            return 0;
+          })
+          .attr("x2", (d) => {
+            if (isNodeOrLink(d.target)) {
+              return d.target.x!;
+            }
+            return 0;
+          })
+          .attr("y2", (d) => {
+            if (isNodeOrLink(d.target)) {
+              return d.target.y!;
+            }
+            return 0;
+          });
 
         node
-          .attr(
-            "cx",
-            (d) =>
-              ((d as Node).x = Math.max(
+          .attr("cx", (d) => {
+            if (isNodeOrLink(d)) {
+              return (d.x = Math.max(
                 10,
-                Math.min(WINDOW.MAX_GRAPH_WIDTH - 10, (d as Node).x!),
-              )),
-          )
-          .attr(
-            "cy",
-            (d) =>
-              ((d as Node).y = Math.max(
+                Math.min(WINDOW.MAX_GRAPH_WIDTH - 10, d.x!),
+              ));
+            }
+            return 0;
+          })
+          .attr("cy", (d) => {
+            if (isNodeOrLink(d)) {
+              return (d.y = Math.max(
                 10,
-                Math.min(WINDOW.MAX_GRAPH_HEIGHT - 10, (d as Node).y!),
-              )),
-          );
+                Math.min(WINDOW.MAX_GRAPH_HEIGHT - 10, d.y!),
+              ));
+            }
+            return 0;
+          });
 
         labels
-          .attr("x", (d) => (d as Node).x!)
-          .attr("y", (d) => (d as Node).y!);
+          .attr("x", (d) => (isNodeOrLink(d) ? d.x! : 0))
+          .attr("y", (d) => (isNodeOrLink(d) ? d.y! : 0));
       });
 
       simulation.on("end", () => {
         console.log("Simulation ended, saving node positions...");
       });
 
-      const zoomed = (event: d3.D3ZoomEvent<Element, unknown>) => {
+      const zoomed = (event: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
         const { k, x, y } = event.transform;
 
         const newWidth = Math.max(WINDOW.MAX_GRAPH_WIDTH, Math.abs(x) * 2);
@@ -181,21 +204,20 @@ export const useGraph = () => {
 
         container.attr("transform", `translate(${x},${y}) scale(${k})`);
       };
-
       const zoom = d3
-        .zoom<Element, unknown>()
+        .zoom<SVGSVGElement, unknown>()
         .scaleExtent([0.5, 5])
         .on("zoom", zoomed);
-      //@ts-ignore
-      svg //@ts-ignore
-        .call(zoom) //@ts-ignore
+
+      svg
+        .call(zoom)
         .call(zoom.transform, d3.zoomIdentity.translate(initialX, initialY));
 
       function dragstarted(
         event: d3.D3DragEvent<SVGCircleElement, Node, Node>,
         d: Node,
       ) {
-        if (!event.active) simulation.alphaTarget(0).restart();
+        if (!event.active) simulation.alphaTarget(0.3).restart();
         d.fx = d.x;
         d.fy = d.y;
       }
@@ -206,16 +228,17 @@ export const useGraph = () => {
       ) {
         d.fx = event.x;
         d.fy = event.y;
-        simulation.alpha(0.1).restart();
+        simulation.alpha(0.4).restart();
       }
 
       function dragended(
         event: d3.D3DragEvent<SVGCircleElement, Node, Node>,
         d: Node,
       ) {
-        if (!event.active) simulation.alphaTarget(0);
+        if (!event.active) simulation.alphaTarget(0.3);
         d.fx = event.x;
         d.fy = event.y;
+        simulation.alpha(0.3).restart(); // Reinicia a simulação para que as forças voltem a agir, como gravidade e colisão
       }
 
       return () => {

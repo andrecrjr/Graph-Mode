@@ -47,21 +47,21 @@ export const createOrUpdateNode = (
   } else {
     existingData = saveStorage.get(localStorageKey(pageId)) || [];
   }
-  console.log(id);
+
   const nodes = {
     nodes: [
       {
         id: pageItem.id,
         label: pageItem.properties?.title.title[0].plain_text,
         type: "page",
-      },
+      } as Node,
     ],
     links: [
       {
         source: pageItem.id,
         target: id.includes("-") ? id : uuidFormatted(id),
         type: "node",
-      },
+      } as Link,
     ],
   };
 
@@ -97,3 +97,7 @@ export const convertDateToIntl = (dateString: number) => {
     return "Invalid date"; // Retorna uma string padrão em caso de erro
   }
 };
+
+export function isNodeOrLink(obj: any): obj is Node {
+  return obj && typeof obj === "object" && "x" in obj && "y" in obj;
+}

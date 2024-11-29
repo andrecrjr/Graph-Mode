@@ -9,7 +9,7 @@ export const GraphComponent = dynamic(() => import("./GraphComponent"), {
 });
 
 export const GraphSVGLazyComponent = dynamic(() => import("./GraphSvg"), {
-  loading: () => <LoadingDynamicPlaceholder />,
+  loading: () => <LoadingDynamicPlaceholder message="Loading your" />,
   ssr: false,
 });
 
