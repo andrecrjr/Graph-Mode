@@ -99,10 +99,6 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
       </p>
       <section className="flex justify-center gap-2 mt-2">
         <EmbeddedCheckoutButton priceId="month" />
-        <EmbeddedCheckoutButton
-          priceId="lifetime"
-          buttonLabel={<p>Buy for lifetime</p>}
-        />
       </section>
     </section>
   );
