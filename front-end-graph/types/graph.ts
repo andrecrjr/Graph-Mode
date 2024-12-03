@@ -1,13 +1,15 @@
-export interface Node extends d3.SimulationNodeDatum {
+import { SimulationLinkDatum, SimulationNodeDatum } from "d3";
+
+export interface Node extends SimulationNodeDatum {
   id: string;
   label: string;
   firstParent?: boolean;
   type?: string;
+  createdGraph?: boolean;
 }
 
-export interface Link {
+export interface Link extends SimulationLinkDatum<Node> {
   id?: string | number;
-  source: string;
-  target: string;
   type?: string;
+  createdGraph?: boolean;
 }

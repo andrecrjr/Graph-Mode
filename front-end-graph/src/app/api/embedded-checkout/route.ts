@@ -5,8 +5,17 @@ export async function POST(request: Request) {
   try {
     const data = await auth();
     const { priceId } = await request.json();
+    if (!priceId || !data) {
+      throw new Error("No price id or user data");
+    }
+
     let price;
     const prices = process.env.PRICE_IDS?.split(",")!;
+    const validPriceIds = ["month", "lifetime"];
+    if (!validPriceIds.includes(priceId)) {
+      throw new Error("Invalid priceId");
+    }
+
     if (priceId === "month") price = prices[1];
     if (priceId === "lifetime") price = prices[3];
 

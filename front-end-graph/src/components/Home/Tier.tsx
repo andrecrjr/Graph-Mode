@@ -37,7 +37,7 @@ export default function PricingTiers() {
             </p>
           </div>
         </div>
-        <div className="grid md:grid-cols-3 gap-6 mt-8">
+        <div className="grid md:grid-cols-2 gap-6 mt-8">
           <Card>
             <CardHeader>
               <CardTitle>Free Tier</CardTitle>
@@ -122,73 +122,6 @@ export default function PricingTiers() {
                   }
                   priceId={"month"}
                 />
-              )}
-            </CardFooter>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Lifetime PRO</CardTitle>
-              <CardDescription>
-                Unlock a Lifetime of Productivity
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div className="text-4xl font-bold">
-                $50<span className="text-sm font-normal">/lifetime</span>
-              </div>
-              <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
-                <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" />
-                  Unlimited Notion requests: Retrieve entire pages within your
-                  graph.
-                </li>
-                <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" />
-                  Unlimited Fast Notes: Create as many notes per day as you
-                  need.
-                </li>
-                <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" /> Page History: Quickly
-                  revisit your recently viewed pages.
-                </li>
-              </ul>
-            </CardContent>
-            <CardFooter>
-              {!data.data && !userPaid && (
-                <section className="flex flex-col w-full">
-                  <Button
-                    className="w-full mb-2"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      signIn("notion", {
-                        callbackUrl: "/#pricing",
-                      });
-                    }}
-                    disabled={data.status === "loading"}
-                  >
-                    {data.status === "loading"
-                      ? "Getting your Notion Account"
-                      : "Login with Notion"}
-                  </Button>
-                  <i className="block text-sm text-center">
-                    Login with Notion first to subscribe.
-                  </i>
-                </section>
-              )}
-              {!!data.data && !userPaid && (
-                <EmbeddedCheckoutButton
-                  classNames={"bg-blue-600 hover:bg-blue-700"}
-                  buttonLabel={
-                    <p className="font-bold flex items-center">
-                      Buy Now{" "}
-                      <LucideShoppingBasket className="inline ml-2 w-4" />
-                    </p>
-                  }
-                  priceId={"lifetime"}
-                />
-              )}
-              {userPaid && (
-                <LandingAuthButton label="Amazing you are the TOP tier! " />
               )}
             </CardFooter>
           </Card>
