@@ -53,7 +53,7 @@ export default function Landing() {
                 Your Knowledge, Visualized
               </h2>
               <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg">
-                Our graph mode transforms complex information into an intuitive,
+                Our graph mode transforms Notion Pages into an intuitive,
                 interconnected visual experience. See how your ideas link
                 together in ways you never imagined.
               </p>
