@@ -45,6 +45,41 @@ export default function Landing() {
           <NotionHome />
         </Link>
       </section>
+      <section className="w-full py-12 md:py-24 z-50 h-screen lg:py-32 bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="container px-4 md:px-6">
+          <div className="grid md:grid-cols-2 gap-5 items-center">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-4">
+                Your Knowledge, Visualized
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg">
+                Our graph mode transforms complex information into an intuitive,
+                interconnected visual experience. See how your ideas link
+                together in ways you never imagined.
+              </p>
+              <div className="flex space-x-4">
+                <Link href="/app">
+                  <Button size="lg">Start Exploring</Button>
+                </Link>
+                <Link href="/#pricing">
+                  <Button variant="outline" size="lg">
+                    Explore Plans <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            <div className="flex justify-center items-center">
+              <img
+                src="/images/iosPlaceholder.png"
+                alt="Graph Mode Product Screenshot"
+                width={600}
+                height={400}
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
       <ImprovedFeatures />
       <CreatorSection />
       {process.env.NEXT_PUBLIC_TIER_RELEASED && <PricingTierComponent />}
