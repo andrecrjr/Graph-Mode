@@ -8,19 +8,24 @@ export async function DemoSection({ data }: { data: Session | null }) {
   return (
     <section className="flex justify-center items-center">
       {data?.user.subscriptionId || data?.user.lifetimePaymentId ? (
-        <Link href="/subscription" className="ml-4">
+        <Link
+          href="https://billing.stripe.com/p/login/eVaeVj7y46EY0Jq288"
+          className="ml-4"
+        >
           <Button className="flex items-center space-x-2" variant={"secondary"}>
             Manage Subscription
           </Button>
         </Link>
       ) : (
         <>
-        {process.env.NEXT_PUBLIC_TIER_RELEASED && <Link href="/pricing">
-          <Button variant={"outline"} className="font-bold">
-            <Unlock className="mr-2" />
-            Unlock Full Potential: Upgrade to PRO Today
-          </Button>
-        </Link>}
+          {process.env.NEXT_PUBLIC_TIER_RELEASED && (
+            <Link href="/pricing">
+              <Button variant={"outline"} className="font-bold">
+                <Unlock className="mr-2" />
+                Unlock Full Potential: Upgrade to PRO Today
+              </Button>
+            </Link>
+          )}
         </>
       )}
       {!data && (
