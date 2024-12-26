@@ -25,9 +25,9 @@ export default function EditorPage() {
   } = useEditorContext();
 
   const toggleSidebar = () => {
-    if (window && window.dataLayer) {
+    if (window && window.dataLayer && sidebarOpen) {
       window.dataLayer.push({
-        event: "button_click", // Nome do evento
+        event_name: "button_click_note", // Nome do evento
         button_id: "fast-note-button", // Identificador único do botão
         button_text: "Open Fast Note", // Texto do botão
       });
