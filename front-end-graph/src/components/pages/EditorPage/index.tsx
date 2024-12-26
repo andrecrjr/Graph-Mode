@@ -11,6 +11,7 @@ import { useUserSession } from "@/components/Context/UserSessionContext";
 import { isMock } from "@/components/utils";
 import { useEditorContext } from "@/components/Context/EditorContext";
 import { EmbeddedCheckoutButton } from "@/components/Stripe/EmbeddedButton";
+import clsx from "clsx";
 
 export default function EditorPage() {
   const {
@@ -24,6 +25,13 @@ export default function EditorPage() {
   } = useEditorContext();
 
   const toggleSidebar = () => {
+    if (window && window.dataLayer) {
+      window.dataLayer.push({
+        event: "button_click", // Nome do evento
+        button_id: "fast-note-button", // Identificador único do botão
+        button_text: "Open Fast Note", // Texto do botão
+      });
+    }
     editorDispatch({
       type: "OPEN_SIDEBAR",
       payload: { sidebarOpen: !sidebarOpen },
@@ -34,8 +42,13 @@ export default function EditorPage() {
     return (
       <>
         <Button
-          className="fixed bottom-7 right-8 min-w-16 sm:min-w-12 z-50 p-2 flex justify-center bg-black
-           hover:bg-gray-700 text-white rounded-full focus:outline-none"
+          className={clsx(
+            "fixed bottom-7 right-8 min-w-16 sm:min-w-12 z-50 p-2 flex justify-center text-white rounded-full focus:outline-none",
+            {
+              "bg-green-500 hover:bg-green-700": !sidebarOpen,
+              "bg-gray-500 hover:bg-gray-700": sidebarOpen,
+            },
+          )}
           onClick={toggleSidebar}
         >
           {!sidebarOpen ? <Notebook width={32} /> : <X />}
@@ -62,44 +75,54 @@ export default function EditorPage() {
 }
 
 const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
-  const { session: data } = useUserSession();
-  const { pageId } = useEditorActionPage();
+  // const { session: data } = useUserSession();
+  // const { pageId } = useEditorActionPage();
 
-  if (
-    data?.user.subscriptionId ||
-    data?.user.lifetimePaymentId ||
-    isMock(pageId)
-  )
-    return (
-      <>
-        <section>
-          <div className="px-8">
-            <p className="text-center text-gray-500 font-bold">
-              Fast Notes - BETA
-            </p>
-            <p className="italic text-gray-500 text-sm">
-              Graph Convention: First heading in editor sets the page title.
-            </p>
-            <SelectEditorBar />
-          </div>
-          <Editor />
-        </section>
-      </>
-    );
-
+  // if (
+  //   data?.user.subscriptionId ||
+  //   data?.user.lifetimePaymentId ||
+  //   isMock(pageId)
+  // )
   return (
-    <section className="w-full h-full flex flex-col justify-center items-center">
-      <p className="font-bold">Fast Notes with Graph Mode PRO Only!</p>
-      <p>{"Seamlessly connect to Notion with a PRO subscription."}</p>
-      <p>
-        Try out Fast Notes in our{" "}
-        <Link href="/graph/mock" className="underline" target="_blank">
-          Example Graph
-        </Link>{" "}
-      </p>
-      <section className="flex justify-center gap-2 mt-2">
-        <EmbeddedCheckoutButton priceId="month" />
+    <>
+      <section>
+        <div className="px-8">
+          <p className="text-center text-gray-500 font-bold">
+            Fast Notes - BETA
+          </p>
+          <p className="italic text-gray-500 text-xs">
+            Graph Convention: First heading in editor sets the page title.
+          </p>
+          <SelectEditorBar />
+        </div>
+        <Editor />
+        <p className="text-center text-xs">
+          Have suggestions or noticed a bug?{" "}
+          <a
+            href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
+            target="_blank"
+            className="underline"
+          >
+            Let us know here!
+          </a>
+        </p>
       </section>
-    </section>
+    </>
   );
+
+  // return (
+  //   <section className="w-full h-full flex flex-col justify-center items-center">
+  //     <p className="font-bold">Fast Notes with Graph Mode PRO Only!</p>
+  //     <p>{"Seamlessly connect to Notion with a PRO subscription."}</p>
+  //     <p>
+  //       Try out Fast Notes in our{" "}
+  //       <Link href="/graph/mock" className="underline" target="_blank">
+  //         Example Graph
+  //       </Link>{" "}
+  //     </p>
+  //     <section className="flex justify-center gap-2 mt-2">
+  //       <EmbeddedCheckoutButton priceId="month" />
+  //     </section>
+  //   </section>
+  // );
 };

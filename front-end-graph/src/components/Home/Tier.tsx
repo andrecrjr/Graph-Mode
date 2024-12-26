@@ -73,11 +73,11 @@ export default function PricingTiers() {
                   Unlimited Notion requests: Retrieve entire pages within your
                   graph.
                 </li>
-                <li className="flex items-center">
+                {/* <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
                   Unlimited Fast Notes: Create as many notes per day as you
                   need.
-                </li>
+                </li> */}
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
                   Page History: Quickly revisit your recently viewed pages.
