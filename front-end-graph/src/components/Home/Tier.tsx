@@ -48,7 +48,11 @@ export default function PricingTiers() {
               <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
-                  Up to 30 Notion requests to get some few pages
+                  Up to 30 Notion requests to access your pages as graphs.
+                </li>
+                <li className="flex items-center">
+                  <CheckIcon className="mr-2 h-4 w-4" />
+                  Up to 5 fast notes per day to stay organized and productive
                 </li>
               </ul>
             </CardContent>
@@ -70,17 +74,22 @@ export default function PricingTiers() {
               <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
-                  Unlimited Notion requests: Retrieve entire pages within your
-                  graph.
+                  <p className="font-bold text-green-600">
+                    Unlimited Notion requests
+                  </p>
+                  : Retrieve entire pages within your graph.
                 </li>
-                {/* <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" />
-                  Unlimited Fast Notes: Create as many notes per day as you
-                  need.
-                </li> */}
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
-                  Page History: Quickly revisit your recently viewed pages.
+                  <p className="font-bold text-green-600">
+                    Unlimited Fast Notes
+                  </p>
+                  : Create as many notes per day as you need.
+                </li>
+                <li className="flex items-center">
+                  <CheckIcon className="mr-2 h-4 w-4" />
+                  <p className="font-bold text-green-600">Page History</p>:
+                  Quickly revisit your recently viewed pages.
                 </li>
               </ul>
             </CardContent>

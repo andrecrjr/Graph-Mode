@@ -6,11 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useGraphContextData } from "@/components/Context/GraphContext";
 import SelectEditorBar from "./SelectNodeBar";
 import { useEditorActionPage } from "@/components/hooks/useEditorAction";
-import Link from "next/link";
-import { useUserSession } from "@/components/Context/UserSessionContext";
-import { isMock } from "@/components/utils";
 import { useEditorContext } from "@/components/Context/EditorContext";
-import { EmbeddedCheckoutButton } from "@/components/Stripe/EmbeddedButton";
 import clsx from "clsx";
 
 export default function EditorPage() {
@@ -25,13 +21,6 @@ export default function EditorPage() {
   } = useEditorContext();
 
   const toggleSidebar = () => {
-    if (window && window.dataLayer && sidebarOpen) {
-      window.dataLayer.push({
-        event: "button_click_note", // Nome do evento
-        button_id: "fast-note-button", // Identificador único do botão
-        button_text: "Open Fast Note", // Texto do botão
-      });
-    }
     editorDispatch({
       type: "OPEN_SIDEBAR",
       payload: { sidebarOpen: !sidebarOpen },
@@ -102,6 +91,7 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
             href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
             target="_blank"
             className="underline"
+            rel="noreferrer"
           >
             Let us know here!
           </a>

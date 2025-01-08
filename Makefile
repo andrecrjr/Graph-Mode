@@ -62,3 +62,9 @@ install_deps_server:
 
 stripe-dev:
 	stripe listen --forward-to http://localhost:3001/webhook/stripe
+
+exec-redis:
+	docker exec -it graph-mode-redis-1 sh
+
+exec-app:
+	docker exec -it graph-mode-server-1 sh

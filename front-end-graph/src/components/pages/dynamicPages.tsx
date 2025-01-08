@@ -1,6 +1,5 @@
 "use client";
 
-import LoadingPlaceholder from "@/components/Graph/Loading";
 import dynamic from "next/dynamic";
 import LoadingDynamicPlaceholder from "../Loading";
 
