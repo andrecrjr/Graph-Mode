@@ -4,6 +4,7 @@ import { useGraphContextData } from "../Context/GraphContext";
 import { fetchServer } from "../service/Notion";
 import { useToast } from "@/components/hooks/use-toast";
 import { createOrUpdateNode, isMock, saveStorage } from "../utils";
+import { useUserSession } from "../Context/UserSessionContext";
 
 export const useEditorActionPage = () => {
   const { toast } = useToast();
@@ -19,6 +20,8 @@ export const useEditorActionPage = () => {
   } = useEditorContext();
 
   const { dispatch } = useGraphContextData();
+  const { session } = useUserSession();
+  const userEmail = session?.user.person?.email;
 
   const createMockPage = (): INotionPage => ({
     id: `mock-id-${(Math.random() * 8000).toFixed(8)}`,
@@ -77,7 +80,7 @@ export const useEditorActionPage = () => {
       let data: INotionPage;
       if (!isMock(pageId)) {
         data = await fetchServer<INotionPage>(
-          "/translate/page",
+          `/translate/page?user=${userEmail}`,
           saveStorage.get("notionKey", true),
           {
             method: "POST",
@@ -94,10 +97,14 @@ export const useEditorActionPage = () => {
 
       savePageData(data);
     } catch (error) {
-      console.error(error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred.";
+
       toast({
         title: "Error",
-        description: "Problem to create your new Page Node, please try again.",
+        description: errorMessage,
         className: "bg-red-500 text-white",
       });
     }

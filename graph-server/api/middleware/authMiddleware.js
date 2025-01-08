@@ -9,7 +9,7 @@ export const authMiddleware = async (req, res, next) => {
   }
   
   req.notionAPI = new NotionAPI(null, AUTH);
-  if(!!req.query?.user){
+  if(req.query?.user){
     req.notionAPI = new NotionAPI(null, AUTH, req.query.user);
     await req.notionAPI.setRateLimit()
   }

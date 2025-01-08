@@ -17,7 +17,7 @@ class NotionToBlockNoteConverter {
   }
 
   convertHeading(block) {
-    const level = parseInt(block.type.split('_')[1], 10);
+    const level = Number.parseInt(block.type.split('_')[1], 10);
     
     return {
       id: this.generateId(),

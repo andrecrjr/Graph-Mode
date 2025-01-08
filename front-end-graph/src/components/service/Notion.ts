@@ -27,7 +27,10 @@ export const fetchServer = async <T>(
     const response = await fetch(`${API_ENDPOINT}${url}`, fetchMetadata);
 
     if (!response.ok) {
-      throw new Error(`Erro ${response.status}: ${response.statusText}`);
+      const resp = await response.json();
+      throw new Error(
+        `${resp.message || "An unexpected error has ocurred, please try again in few minutes!"}`,
+      );
     }
 
     return await response.json();
