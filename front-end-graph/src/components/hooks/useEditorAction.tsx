@@ -1,4 +1,4 @@
-import { INotionPage } from "@/types/notionPage";
+import type { INotionPage } from "@/types/notionPage";
 import { useEditorContext } from "../Context/EditorContext";
 import { useGraphContextData } from "../Context/GraphContext";
 import { fetchServer } from "../service/Notion";
@@ -54,7 +54,7 @@ export const useEditorActionPage = () => {
         initialContentDocument,
       );
       toast({
-        title: `Page created with success!`,
+        title: "Page created with success!",
         className: "bg-green-600 text-white",
       });
       editorDispatch({
@@ -63,7 +63,7 @@ export const useEditorActionPage = () => {
       });
     } else {
       toast({
-        title: `Problem to get the save the selected page!`,
+        title: "Problem to get the save the selected page!",
         className: "bg-green-600 text-white",
       });
     }
@@ -96,7 +96,7 @@ export const useEditorActionPage = () => {
     } catch (error) {
       console.error(error);
       toast({
-        title: `Error`,
+        title: "Error",
         description: "Problem to create your new Page Node, please try again.",
         className: "bg-red-500 text-white",
       });
