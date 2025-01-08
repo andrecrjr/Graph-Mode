@@ -6,11 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useGraphContextData } from "@/components/Context/GraphContext";
 import SelectEditorBar from "./SelectNodeBar";
 import { useEditorActionPage } from "@/components/hooks/useEditorAction";
-import Link from "next/link";
-import { useUserSession } from "@/components/Context/UserSessionContext";
-import { isMock } from "@/components/utils";
 import { useEditorContext } from "@/components/Context/EditorContext";
-import { EmbeddedCheckoutButton } from "@/components/Stripe/EmbeddedButton";
 import clsx from "clsx";
 
 export default function EditorPage() {
@@ -95,6 +91,7 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
             href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
             target="_blank"
             className="underline"
+            rel="noreferrer"
           >
             Let us know here!
           </a>

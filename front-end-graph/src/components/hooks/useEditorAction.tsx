@@ -5,6 +5,8 @@ import { fetchServer } from "../service/Notion";
 import { useToast } from "@/components/hooks/use-toast";
 import { createOrUpdateNode, isMock, saveStorage } from "../utils";
 import { useUserSession } from "../Context/UserSessionContext";
+import { ToastAction } from "../ui/toast";
+import Link from "next/link";
 
 export const useEditorActionPage = () => {
   const { toast } = useToast();
@@ -104,7 +106,17 @@ export const useEditorActionPage = () => {
 
       toast({
         title: "Error",
-        description: errorMessage,
+        description: `${errorMessage}`,
+        action: errorMessage.includes("limit reached") ? (
+          <Link href="/pricing" className="flex">
+            <ToastAction
+              altText="Premium"
+              className="hover:opacity-65 hover:bg-primary"
+            >
+              Get unlimited notes
+            </ToastAction>
+          </Link>
+        ) : undefined,
         className: "bg-red-500 text-white",
       });
     }
