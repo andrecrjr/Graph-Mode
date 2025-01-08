@@ -1,7 +1,7 @@
 import {RedisController} from '../controller/RedisController/index.js';
 import logger from '../logs/index.js';
 
-const MAX_POSTS = process.env.MAX_POSTS || 10; // Maximum fast notes allowed per day
+const MAX_NOTES = process.env.MAX_NOTES || 5; // Maximum fast notes allowed per day
 const DAILY_TIME = 86400;  // 86400 seconds = 24 hours
 
 export const rateLimitMiddleware = async (req, res, next) => {
@@ -18,7 +18,7 @@ export const rateLimitMiddleware = async (req, res, next) => {
         }
         
         const currentCount = await redis.getKey(rateLimitKey) || 0;
-        if (currentCount >= MAX_POSTS) {
+        if (currentCount >= MAX_NOTES) {
             logger.info(`User reached daily fast note limit ${rateLimitKey}`)
             return res.status(429).json({
                 error: true,

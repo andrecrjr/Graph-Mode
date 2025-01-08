@@ -48,11 +48,11 @@ export default function PricingTiers() {
               <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
-                  Up to 30 Notion requests to get some few pages
+                  Up to 30 Notion requests to access your pages as graphs.
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
-                  Up to 5 fast notes per day
+                  Up to 5 fast notes per day to stay organized and productive
                 </li>
               </ul>
             </CardContent>
