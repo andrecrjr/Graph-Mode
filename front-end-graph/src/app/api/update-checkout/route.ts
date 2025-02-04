@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req: NextRequest, res: NextResponse) {
   const data = await auth();
-  console.log("usuario", !!data?.user.subscriptionId);
   if (data?.user.subscriptionId) {
     try {
       await stripe.subscriptions.update(data?.user.subscriptionId as string, {

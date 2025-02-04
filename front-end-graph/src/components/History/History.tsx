@@ -23,7 +23,6 @@ const History = () => {
   if (!session) {
     return null;
   }
-  console.log(session);
 
   if (
     status === "authenticated" &&

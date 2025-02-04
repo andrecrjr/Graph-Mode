@@ -42,7 +42,7 @@ export default function Landing() {
           id="ad-1"
           data-ad-slot="5070735560"
           ad-style="height:90px"
-          className="w-full mt-3 h-[70px] mb-2"
+          className="w-full mt-3 h-[90px] mb-2"
           refreshOnRouteChange={true}
         />
         <Link

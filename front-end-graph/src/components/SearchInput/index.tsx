@@ -78,7 +78,6 @@ export default function SearchInput() {
   const handleResultClick = (result: ResultSearch) => {
     setInputValue(result.name);
     setShowResults(false);
-    console.log(result);
     router.push(`/graph/${result.id}`);
   };
 

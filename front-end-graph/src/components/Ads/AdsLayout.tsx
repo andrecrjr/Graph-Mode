@@ -30,7 +30,6 @@ const AdBanner = ({ id, ...props }: AdsBannerProps) => {
 
   const loadAd = useCallback(() => {
     if (!adRef.current) return;
-    console.log(adRef);
 
     adRef.current.innerHTML = ""; // Clear previous ads before injecting a new one
 
