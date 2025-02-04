@@ -27,14 +27,20 @@ const AdBanner = (props: AdsBannerProps) => {
   const adRef = useRef<HTMLModElement>(null);
 
   useEffect(() => {
-    try {
-      const adsbygoogle = (window as any).adsbygoogle;
+    const p: any = {};
 
-      if (adRef.current && adsbygoogle && isVip) {
-        adsbygoogle.push({});
+    p.google_ad_client = process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID;
+    p.enable_page_level_ads = true;
+
+    try {
+      if (typeof window === "object" && !isVip) {
+        // biome-ignore lint/suspicious/noAssignInExpressions: adsense
+        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push(
+          p,
+        );
       }
-    } catch (err) {
-      console.error("AdSense error:", err);
+    } catch {
+      // Pass
     }
   }, [isVip]);
 
@@ -42,7 +48,7 @@ const AdBanner = (props: AdsBannerProps) => {
     <>
       <ins
         ref={adRef}
-        className="adsbygoogle adbanner-customize mt-2"
+        className="adsbygoogle adbanner-customize mt-2 mb-2"
         style={{
           display: "block",
           overflow: "hidden",
