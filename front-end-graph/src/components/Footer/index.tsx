@@ -2,17 +2,11 @@ import React from "react";
 import { IS_DEVELOPMENT } from "../utils";
 import { NotionHome } from "../svg/NotionHome";
 import Link from "next/link";
-import { AdBanner } from "../Ads";
+import AdBanner from "../Ads/AdsLayout";
 
 export const GeneralFooter = () => {
   return (
     <footer className="mt-auto h-auto pt-5 bg-gray-50 text-center flex justify-center flex-col items-center  z-50">
-      <AdBanner
-        data-ad-format="auto"
-        data-ad-slot="5070735560"
-        data-full-width-responsive="true"
-        className="w-full mt-3 h-[70px] mb-2"
-      />
       <div className="pb-2">
         <NotionHome />
       </div>
