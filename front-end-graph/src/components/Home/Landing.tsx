@@ -8,6 +8,7 @@ import ImprovedFeatures from "./Features";
 import { ArrowRight, LucideChartNetwork } from "lucide-react";
 import { PricingTierComponent } from "../pages/dynamicPages";
 import CreatorSection from "./CreatorSection";
+import { AdBanner } from "../Ads";
 
 export default function Landing() {
   return (

@@ -10,6 +10,7 @@ import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/Header";
 import ButtonPWA from "@/components/Buttons/InstallPWA";
 import { auth } from "@/components/Auth";
+import Script from "next/script";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -53,6 +54,12 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ldJSON) }}
         />
+
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9102624110286209"
+          // crossorigin="anonymous"
+        ></script>
       </head>
       <body className={`w-full ${roboto.className}`}>
         <AuthProvider session={dataSession}>
