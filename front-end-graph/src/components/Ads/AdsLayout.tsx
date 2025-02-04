@@ -1,15 +1,7 @@
 "use client";
 
-import Router from "next/router";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useUserSession } from "../Context/UserSessionContext";
-import Script from "next/script";
-
-declare global {
-  interface Window {
-    adsbygoogle: unknown[];
-  }
-}
 
 interface AdsBannerProps {
   "data-ad-slot": string;
@@ -19,47 +11,61 @@ interface AdsBannerProps {
   className?: string;
 }
 
+declare global {
+  interface Window {
+    adsbygoogle: unknown[];
+  }
+}
+
 const AdBanner = (props: AdsBannerProps) => {
   const { session } = useUserSession();
-
   const isVip =
     session?.user.lifetimePaymentId || session?.user.nextPaymentDate;
-  const adRef = useRef<HTMLModElement>(null);
 
   useEffect(() => {
-    const p: any = {};
+    if (isVip) return; // Don't load ads for VIP users
 
-    p.google_ad_client = process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID;
-    p.enable_page_level_ads = true;
+    const adContainer = document.getElementById("ins-parent");
+    if (!adContainer || adContainer.children.length > 0) return; // Prevent duplicate ads
+
+    const adElement = document.createElement("ins");
+    adElement.className = "adsbygoogle";
+    adElement.style.display = "block";
+    adElement.setAttribute(
+      "data-ad-client",
+      process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID!,
+    );
+    adElement.setAttribute("data-ad-slot", props["data-ad-slot"]);
+    adElement.setAttribute("data-ad-format", props["data-ad-format"]);
+    adElement.setAttribute(
+      "data-full-width-responsive",
+      props["data-full-width-responsive"],
+    );
+    if (props["data-ad-layout"]) {
+      adElement.setAttribute("data-ad-layout", props["data-ad-layout"]);
+    }
+
+    adContainer.appendChild(adElement);
 
     try {
-      if (typeof window === "object" && !isVip) {
-        // biome-ignore lint/suspicious/noAssignInExpressions: adsense
-        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push(
-          p,
-        );
-      }
-    } catch {
-      // Pass
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (error) {
+      console.error("AdSense error:", error);
     }
-  }, [isVip]);
+  }, [isVip, props]);
 
   return (
-    <>
-      <ins
-        ref={adRef}
-        className="adsbygoogle adbanner-customize mt-2 mb-2"
-        style={{
-          display: "block",
-          overflow: "hidden",
-          border:
-            process.env.NODE_ENV === "development" ? "1px solid red" : "none",
-        }}
-        data-adtest="on"
-        data-ad-client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID}
-        {...props}
-      />
-    </>
+    <div
+      id="ins-parent"
+      className={`adbanner-customize mt-2 mb-2 ${props.className || ""}`}
+      style={{
+        display: "block",
+        overflow: "hidden",
+        border:
+          process.env.NODE_ENV === "development" ? "1px solid red" : "none",
+      }}
+    ></div>
   );
 };
+
 export default AdBanner;

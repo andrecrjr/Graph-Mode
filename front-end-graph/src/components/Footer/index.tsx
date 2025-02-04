@@ -2,7 +2,7 @@ import React from "react";
 import { IS_DEVELOPMENT } from "../utils";
 import { NotionHome } from "../svg/NotionHome";
 import Link from "next/link";
-import { AdBanner } from "../Ads";
+import AdBanner from "../Ads/AdsLayout";
 
 export const GeneralFooter = () => {
   return (
