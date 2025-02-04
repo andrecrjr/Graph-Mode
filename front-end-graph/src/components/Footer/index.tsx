@@ -11,7 +11,7 @@ export const GeneralFooter = () => {
         data-ad-format="auto"
         data-ad-slot="5070735560"
         data-full-width-responsive="true"
-        className="w-full mt-3 h-[70px]"
+        className="w-full mt-3 h-[70px] mb-2"
       />
       <div className="pb-2">
         <NotionHome />
