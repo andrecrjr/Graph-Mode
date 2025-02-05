@@ -55,12 +55,11 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ldJSON) }}
         />
 
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9102624110286209"
-          // crossorigin="anonymous"
-          strategy="beforeInteractive"
-        ></Script>
+        <script
+          async={true}
+          data-cfasync="false"
+          src="//pl25784794.profitablecpmrate.com/bd2fda7809b32937cfb0801a3f098cac/invoke.js"
+        ></script>
       </head>
       <body className={`w-full ${roboto.className}`}>
         <AuthProvider session={dataSession}>

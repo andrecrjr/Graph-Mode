@@ -71,25 +71,69 @@ export default function PricingTiers() {
               <div className="text-4xl font-bold">
                 $3<span className="text-sm font-normal">/month</span>
               </div>
-              <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
-                <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" />
-                  <p className="font-bold text-green-600">
-                    Unlimited Notion requests
-                  </p>
-                  : Retrieve entire pages within your graph.
+              <ul className="grid gap-3 text-base text-gray-700 dark:text-gray-300">
+                <li className="flex items-start gap-3">
+                  <CheckIcon
+                    className="h-5 w-5 flex-shrink-0 text-green-600"
+                    aria-hidden="true"
+                  />
+                  <div className="space-y-1">
+                    <strong className="block font-semibold text-green-700 dark:text-green-500">
+                      No Advertising
+                    </strong>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      Enjoy a completely ad-free experience with zero
+                      distractions
+                    </p>
+                  </div>
                 </li>
-                <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" />
-                  <p className="font-bold text-green-600">
-                    Unlimited Fast Notes
-                  </p>
-                  : Create as many notes per day as you need.
+
+                <li className="flex items-start gap-3">
+                  <CheckIcon
+                    className="h-5 w-5 flex-shrink-0 text-green-600"
+                    aria-hidden="true"
+                  />
+                  <div className="space-y-1">
+                    <strong className="block font-semibold text-green-700 dark:text-green-500">
+                      Unlimited Notion Requests
+                    </strong>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      Access and retrieve entire pages from your Notion graph
+                      without limitations
+                    </p>
+                  </div>
                 </li>
-                <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" />
-                  <p className="font-bold text-green-600">Page History</p>:
-                  Quickly revisit your recently viewed pages.
+
+                <li className="flex items-start gap-3">
+                  <CheckIcon
+                    className="h-5 w-5 flex-shrink-0 text-green-600"
+                    aria-hidden="true"
+                  />
+                  <div className="space-y-1">
+                    <strong className="block font-semibold text-green-700 dark:text-green-500">
+                      Unlimited Fast Notes
+                    </strong>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      Create and organize as many notes as you need daily with
+                      instant access
+                    </p>
+                  </div>
+                </li>
+
+                <li className="flex items-start gap-3">
+                  <CheckIcon
+                    className="h-5 w-5 flex-shrink-0 text-green-600"
+                    aria-hidden="true"
+                  />
+                  <div className="space-y-1">
+                    <strong className="block font-semibold text-green-700 dark:text-green-500">
+                      Page History
+                    </strong>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      Easily revisit and restore recently viewed pages with
+                      version tracking
+                    </p>
+                  </div>
                 </li>
               </ul>
             </CardContent>
