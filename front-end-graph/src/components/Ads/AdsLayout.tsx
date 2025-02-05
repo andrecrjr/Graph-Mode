@@ -13,6 +13,7 @@ interface AdsBannerProps {
   "ad-style"?: string;
   className?: string;
   refreshOnRouteChange?: boolean; // Optional prop to refresh ads on route change
+  onAdLoads?: VoidFunction;
 }
 
 declare global {
@@ -52,6 +53,7 @@ const AdBanner = ({ id, ...props }: AdsBannerProps) => {
       );
     props["data-ad-layout"] &&
       adElement.setAttribute("data-ad-layout", props["data-ad-layout"]);
+    props.onAdLoads && props.onAdLoads();
 
     adRef.current.appendChild(adElement);
 
