@@ -7,7 +7,6 @@ import { NotionHome } from "../svg/NotionHome";
 import ImprovedFeatures from "./Features";
 import { ArrowRight, LucideChartNetwork } from "lucide-react";
 import { PricingTierComponent } from "../pages/dynamicPages";
-import AdBanner from "../Ads/AdsLayout";
 
 export default function Landing() {
   return (
@@ -38,13 +37,6 @@ export default function Landing() {
             </div>
           </div>
         </div>
-        <AdBanner
-          id="ad-1"
-          data-ad-slot="5070735560"
-          ad-style="height:90px"
-          className="w-full mt-3 h-[90px] mb-2"
-          refreshOnRouteChange={true}
-        />
         <Link
           href="https://notion.so?utm_source=graph-mode"
           className="mt-auto pb-8"

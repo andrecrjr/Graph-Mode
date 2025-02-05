@@ -5,7 +5,7 @@ import { GeneralFooter } from "@/components/Footer";
 import { BGParticle } from "@/components/Home/BgParticle";
 import { LazyHistory } from "@/components/History";
 import { auth } from "../Auth";
-import AdBanner from "../Ads/AdsLayout";
+import AdsTerraBanner from "../Ads/Adsterra";
 
 export default async function AppPage() {
   const data = await auth();
@@ -19,13 +19,7 @@ export default async function AppPage() {
         <AuthSection session={data} />
         <DemoSection data={data} />
         <LazyHistory />
-        <AdBanner
-          id="ad-home-inside"
-          data-ad-slot="6641809860"
-          ad-style="height:90px"
-          className="w-full mt-3 h-[90px] mb-2"
-          refreshOnRouteChange={true}
-        />
+        <AdsTerraBanner />
       </section>
       <GeneralFooter />
     </>

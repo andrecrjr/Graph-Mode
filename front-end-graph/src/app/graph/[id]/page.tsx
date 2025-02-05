@@ -5,6 +5,9 @@ import React from "react";
 import type { Metadata } from "next";
 import { fetchNotionServer } from "@/components/service/Notion";
 import { isMock } from "@/components/utils";
+import { FloatButton } from "@/components/Buttons/FloatButton";
+import AdBanner from "@/components/Ads/AdsLayout";
+import { FloatAd } from "@/components/Ads/AdFloat";
 
 type Props = {
   params: { id: string };
@@ -49,6 +52,7 @@ export default async function GraphPage({
   return (
     <div className="overflow-hidden max-w-screen">
       <GraphComponent />
+      <FloatAd />
     </div>
   );
 }
