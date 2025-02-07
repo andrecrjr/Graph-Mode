@@ -13,10 +13,11 @@ import { saveStorage } from "../utils";
 
 interface DrawingCanvasProps {
   svgRef: RefObject<SVGSVGElement>;
+  container: RefObject<SVGGElement>;
   pageId: string;
 }
 
-const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ svgRef, pageId }) => {
+const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ svgRef, pageId, container }) => {
   const drawingRef = useRef(false);
   const isMouseDownRef = useRef(false);
   const currentPathRef = useRef<Selection<
@@ -32,6 +33,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ svgRef, pageId }) => {
   const [pathsCount, setPathsCount] = useState(0);
   const { dispatch, state } = useGraphContextData();
   const [pathsData, setPathsData] = useState<string[]>([]);
+  
 
   const handlePenClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -43,16 +45,20 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ svgRef, pageId }) => {
     });
   };
 
+
+  const containerSvg = select(container.current);
   useEffect(() => {
+    const drawLayer = containerSvg.append('g').attr('class', 'drawing-layer');
+
     const savedPaths = saveStorage.get(`drawingPaths-${pageId}`);
     if (savedPaths) {
       const parsedPaths = savedPaths as string[];
       const svgElement = svgRef.current;
       if (!svgElement) return;
-      const svg = select(svgElement);
+      
 
       parsedPaths.forEach((pathD) => {
-        const path = svg
+        const path = drawLayer
           .append("path")
           .attr("d", pathD)
           .attr("stroke", "black")
@@ -72,14 +78,15 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ svgRef, pageId }) => {
   }, [pathsData, pageId]);
 
   useEffect(() => {
+    const containerSvg = select(container.current);
     const svgElement = svgRef.current;
-    if (!svgElement) return;
+    if (!containerSvg) return;
 
     const svg = select(svgElement);
     let pathData: string = "";
 
     const getPoint = (event: MouseEvent | TouchEvent) => {
-      const rect = svgElement.getBoundingClientRect();
+      const rect = svgElement?.getBoundingClientRect();
       let clientX: number, clientY: number;
 
       if (event instanceof MouseEvent) {
@@ -114,9 +121,9 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ svgRef, pageId }) => {
 
       isMouseDownRef.current = true;
       const point = getPoint(event);
-
+      console.log(containerSvg)
       pathData = `M ${point.x} ${point.y}`;
-      currentPathRef.current = svg
+      currentPathRef.current = drawLayer
         .append("path")
         .attr("d", pathData)
         .attr("stroke", "black")
@@ -136,8 +143,9 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ svgRef, pageId }) => {
 
       const point = getPoint(event);
       pathData += ` L ${point.x} ${point.y}`;
+      console.log(pathData)
       currentPathRef.current.attr("d", pathData);
-
+      
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(stopDrawingDueToInactivity, 65);
 

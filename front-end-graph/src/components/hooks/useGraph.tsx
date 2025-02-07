@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { saveNodePositions } from "../utils/graph";
 import * as d3 from "d3";
 import { useGraphContextData } from "../Graph/GraphContext";
@@ -7,6 +7,7 @@ import { Link, Node } from "../../../types/graph";
 
 export const useGraph = () => {
   const { dispatch } = useGraphContextData();
+  const containerGroupRef = useRef<SVGGElement | null>(null)
 
   const LOCAL_SETTINGS = {
     MAX_GRAPH_WIDTH: 6000,
@@ -30,6 +31,7 @@ export const useGraph = () => {
         .attr("height", LOCAL_SETTINGS.MAX_GRAPH_HEIGHT);
 
       const container = svg.append("g");
+      containerGroupRef.current = container.node()
 
       const simulation = d3
         .forceSimulation<Node>(data.nodes)
@@ -227,5 +229,5 @@ export const useGraph = () => {
     [],
   );
 
-  return { mountGraph };
+  return { mountGraph, containerGroupRef };
 };

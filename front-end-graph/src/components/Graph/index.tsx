@@ -23,7 +23,7 @@ export const GraphComponent: React.FC = () => {
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   const { data: graphData, loading, error } = useFetchGraphData(pageUID);
-  const { mountGraph } = useGraph();
+  const { mountGraph, containerGroupRef } = useGraph();
 
   useEffect(() => {
     if (graphData) {
@@ -43,7 +43,7 @@ export const GraphComponent: React.FC = () => {
         </p>
       )}
       <Sidebar />
-      <DrawingCanvas svgRef={svgRef} pageId={pageUID} />
+      <DrawingCanvas svgRef={svgRef} container={containerGroupRef} pageId={pageUID} />
 
       <svg ref={svgRef} className="dark:bg-black cursor-move"></svg>
     </div>
