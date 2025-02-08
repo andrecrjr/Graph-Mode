@@ -44,15 +44,9 @@ export default async function GraphPage({
 }: {
   params: { id: string };
 }) {
-  // const data = await auth();
-  // if (isMock(params.id) && data) {
-  //   redirect("/app");
-  // }
-
   return (
     <div className="overflow-hidden max-w-screen">
       <GraphComponent />
-      <FloatAd />
     </div>
   );
 }

@@ -54,12 +54,6 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ldJSON) }}
         />
-
-        <script
-          async={true}
-          data-cfasync="false"
-          src="//pl25784794.profitablecpmrate.com/bd2fda7809b32937cfb0801a3f098cac/invoke.js"
-        ></script>
       </head>
       <body className={`w-full ${roboto.className}`}>
         <AuthProvider session={dataSession}>

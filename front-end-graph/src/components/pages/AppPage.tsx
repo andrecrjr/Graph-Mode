@@ -19,7 +19,6 @@ export default async function AppPage() {
         <AuthSection session={data} />
         <DemoSection data={data} />
         <LazyHistory />
-        <AdsTerraBanner />
       </section>
       <GeneralFooter />
     </>
