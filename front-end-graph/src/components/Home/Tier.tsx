@@ -41,14 +41,16 @@ export default function PricingTiers() {
           <Card>
             <CardHeader>
               <CardTitle>Free Tier</CardTitle>
-              <CardDescription>Perfect for normal user usage</CardDescription>
+              <CardDescription>
+                Free purpose only for testing the environment
+              </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="text-4xl font-bold">$0</div>
               <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
-                  Up to 30 Notion requests to access your pages as graphs.
+                  Up to 5 Notion requests to access your pages as graphs.
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
@@ -64,7 +66,7 @@ export default function PricingTiers() {
             <CardHeader>
               <CardTitle>Monthly Tier</CardTitle>
               <CardDescription>
-                Premium tier, perfect for heavy users
+                Premium tier, the best way for users
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
@@ -72,22 +74,6 @@ export default function PricingTiers() {
                 $3<span className="text-sm font-normal">/month</span>
               </div>
               <ul className="grid gap-3 text-base text-gray-700 dark:text-gray-300">
-                <li className="flex items-start gap-3">
-                  <CheckIcon
-                    className="h-5 w-5 flex-shrink-0 text-green-600"
-                    aria-hidden="true"
-                  />
-                  <div className="space-y-1">
-                    <strong className="block font-semibold text-green-700 dark:text-green-500">
-                      No Advertising
-                    </strong>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      Enjoy a completely ad-free experience with zero
-                      distractions
-                    </p>
-                  </div>
-                </li>
-
                 <li className="flex items-start gap-3">
                   <CheckIcon
                     className="h-5 w-5 flex-shrink-0 text-green-600"
