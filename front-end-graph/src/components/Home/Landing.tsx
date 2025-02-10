@@ -8,6 +8,7 @@ import ImprovedFeatures from "./Features";
 import { ArrowRight, LucideChartNetwork } from "lucide-react";
 import { PricingTierComponent } from "../pages/dynamicPages";
 import CreatorSection from "./CreatorSection";
+import ZettelkastenComparison from "./ZeltekastenWay";
 
 export default function Landing() {
   return (
@@ -61,7 +62,7 @@ export default function Landing() {
                 <Link href="/app">
                   <Button size="lg">Start Exploring</Button>
                 </Link>
-                <Link href="/#pricing">
+                <Link href="/pricing">
                   <Button variant="outline" size="lg">
                     Explore Plans <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -80,8 +81,7 @@ export default function Landing() {
           </div>
         </div>
       </section>
-      <ImprovedFeatures />
-      <CreatorSection />
+      <ZettelkastenComparison />
       {process.env.NEXT_PUBLIC_TIER_RELEASED && <PricingTierComponent />}
       <BuyMeCoffee />
       <section className="w-full py-12 md:py-24 lg:py-32 min-h-screen  bg-gray-100 z-10 dark:bg-gray-800 flex items-center justify-center">

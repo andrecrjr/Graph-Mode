@@ -15,8 +15,7 @@ import { Badge } from "../ui/badge";
 
 export default function PricingTiers() {
   const data = useSession();
-  const userSubscribed =
-    data.data?.user.subscriptionId && !data.data?.user.cancelAtPeriodEnd;
+  const userSubscribed = data.data?.user.subscriptionId;
   const userPaid = data.data?.user.lifetimePaymentId;
 
   return (
@@ -25,16 +24,20 @@ export default function PricingTiers() {
       id="pricing"
     >
       <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-              Choose Your Plan
-            </h2>
-            <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-              Start with a 5-day free trial. No credit card required to try.
-            </p>
+        <section className="px-4 md:px-6 py-8">
+          <div className="flex flex-col items-center text-center space-y-4">
+            <header className="space-y-2">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                Choose Your Plan
+              </h2>
+              <p className="max-w-[900px] text-gray-500 md:text-xl lg:text-base xl:text-xl dark:text-gray-400">
+                Enjoy a 5-day free trial—no charges if you cancel before it
+                ends.{" "}
+              </p>
+            </header>
           </div>
-        </div>
+        </section>
+
         <div className="grid md:grid-cols-2 gap-6 mt-8">
           <Card>
             <CardHeader>

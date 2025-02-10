@@ -1,52 +1,66 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable @next/next/no-img-element */
 import React from "react";
+import { Coffee, Briefcase, Github } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
 const CreatorSection: React.FC = () => {
   return (
-    <section className="bg-gray-200 flex items-center z-50 py-20 min-h-screen">
-      <div className="container mx-auto px-6 lg:px-20">
-        <div className="bg-white shadow-md rounded-lg p-10 flex flex-col lg:flex-row items-center">
-          <div className="lg:w-2/3 w-full lg:pl-10 mt-8 lg:mt-0">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              Who created Graph Mode?
-            </h2>
-            <p className="text-lg text-gray-700 mb-6">
-              Hi! I'm <span className="font-bold">AC. Junior</span>, the
-              developer behind "Graph Mode". Inspired by my passion for Notion,
-              Zettelkasten, and simple yet powerful tools like Obsidian, I
-              created this site as part of my portfolio. My goal is to make the
-              concept of a second brain accessible to everyone using Notion.
-            </p>
-            <p className="text-lg text-gray-700 mb-6">
-              With a background in software engineering, I hope "Graph Mode"
-              aims to help users explore and visualize data effectively, taking
-              inspiration from Zettelkasten methods like those seen in Obsidian.
-            </p>
-            <p className="text-lg text-gray-700 mb-6">
-              If you enjoy it, feel free to support or follow me on social
-              networks:
-            </p>
-            <section className="w-full flex-col flex md:flex-row py-2">
-              <a
-                href="https://ko-fi.com/andrecrjr"
-                target="_blank"
-                className="bg-yellow-400 ml-2 mt-2 md:mt-0  text-center text-black px-6 py-3 rounded-md shadow hover:bg-yellow-500 transition-all duration-200"
-                rel="noreferrer"
-              >
-                Buy me a Coffee
-              </a>
-              <a
-                href="https://andrecrjr.github.io/?utm_source=graphmode"
-                target="_blank"
-                className="bg-gray-500 ml-2 mt-2 md:mt-0  text-center text-white px-6 py-3 rounded-md shadow hover:bg-gray-600 transition-all duration-200"
-                rel="noreferrer"
-              >
-                Portfolio
-              </a>
-            </section>
-          </div>
-        </div>
+    <section className="bg-gradient-to-b from-gray-50 to-gray-100 flex items-center z-50 py-20 min-h-screen">
+      <div className="container mx-auto px-4 lg:px-8">
+        <Card className="overflow-hidden">
+          <CardContent className="p-8 lg:p-12">
+            <div className="max-w-3xl mx-auto space-y-8">
+              {/* Header */}
+              <div className="text-center lg:text-left">
+                <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                  About The Creator
+                </h2>
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  Hey! I&apos;m <span className="font-semibold">AC JR</span>, a
+                  software engineer who loves building tools that make knowledge
+                  management easier. Graph Mode combines the best of Notion with
+                  the visual power of tools like Obsidian - helping you see your
+                  notes in a whole new way.
+                </p>
+              </div>
+
+              {/* Social Links */}
+              <div className="pt-6 border-t border-gray-200">
+                <p className="text-lg text-gray-700 mb-4">
+                  Want to support or connect?
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href="https://ko-fi.com/andrecrjr"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center px-4 py-2 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition-colors duration-200"
+                  >
+                    <Coffee className="w-4 h-4 mr-2" />
+                    Buy me a Coffee
+                  </a>
+                  <a
+                    href="https://github.com/andrecrjr"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors duration-200"
+                  >
+                    <Github className="w-4 h-4 mr-2" />
+                    GitHub
+                  </a>
+                  <a
+                    href="https://andrecrjr.github.io/?utm_source=graphmode"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200"
+                  >
+                    <Briefcase className="w-4 h-4 mr-2" />
+                    Portfolio
+                  </a>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </section>
   );
