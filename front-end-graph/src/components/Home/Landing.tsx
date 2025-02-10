@@ -44,7 +44,7 @@ export default function Landing() {
           <NotionHome />
         </Link>
       </section>
-      <section className="w-full py-12 md:py-24 z-50 h-screen lg:py-32 bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <section className="w-full py-12 md:py-24 z-50 h-screen lg:py-32 bg-white dark:bg-gray-900 flex items-center justify-center">
         <div className="container px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-5 items-center">
             <div>
@@ -82,68 +82,6 @@ export default function Landing() {
       <ZettelkastenComparison />
       {process.env.NEXT_PUBLIC_TIER_RELEASED && <PricingTierComponent />}
       <BuyMeCoffee />
-      <section className="w-full py-12 md:py-24 lg:py-32 min-h-screen  bg-gray-100 z-10 dark:bg-gray-800 flex items-center justify-center">
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="md:w-1/2 mb-8 md:mb-0">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-4">
-                Visualize Your Ideas
-              </h2>
-              <p className="text-gray-500 dark:text-gray-400 mb-4">
-                Turn your Notion pages into an interactive knowledge node graph.
-                Uncover connections, navigate seamlessly, and gain fresh
-                insights into your information.
-              </p>
-              <Link href="/app">
-                <Button>Try Graph Mode Now</Button>
-              </Link>
-            </div>
-            <div className="md:w-1/2 flex justify-center">
-              <svg
-                className="w-full max-w-md"
-                viewBox="0 0 200 200"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle
-                  cx="100"
-                  cy="100"
-                  r="80"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <circle cx="70" cy="70" r="10" fill="currentColor" />
-                <circle cx="130" cy="70" r="10" fill="currentColor" />
-                <circle cx="100" cy="130" r="10" fill="currentColor" />
-                <line
-                  x1="70"
-                  y1="70"
-                  x2="130"
-                  y2="70"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <line
-                  x1="70"
-                  y1="70"
-                  x2="100"
-                  y2="130"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <line
-                  x1="130"
-                  y1="70"
-                  x2="100"
-                  y2="130"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
