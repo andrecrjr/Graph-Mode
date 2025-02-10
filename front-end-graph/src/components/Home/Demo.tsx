@@ -9,7 +9,11 @@ export async function DemoSection({ data }: { data: Session | null }) {
     <section className="flex justify-center items-center">
       {data?.user.subscriptionId || data?.user.lifetimePaymentId ? (
         <Link
-          href="https://billing.stripe.com/p/login/eVaeVj7y46EY0Jq288"
+          href={
+            process.env.NODE_ENV !== "production"
+              ? "https://billing.stripe.com/p/login/test_00g00Fc3LdBX9dm8ww"
+              : "https://billing.stripe.com/p/login/eVaeVj7y46EY0Jq288"
+          }
           className="ml-4"
         >
           <Button className="flex items-center space-x-2" variant={"secondary"}>

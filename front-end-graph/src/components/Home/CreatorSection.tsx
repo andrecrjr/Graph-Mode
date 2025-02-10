@@ -7,14 +7,6 @@ const CreatorSection: React.FC = () => {
     <section className="bg-gray-200 flex items-center z-50 py-20 min-h-screen">
       <div className="container mx-auto px-6 lg:px-20">
         <div className="bg-white shadow-md rounded-lg p-10 flex flex-col lg:flex-row items-center">
-          <div className="lg:w-1/3 w-full flex justify-center">
-            <img
-              className="rounded-full mx-auto lg:mx-0 w-48 h-48 object-cover shadow-lg"
-              src="/myself.jpg"
-              alt="Photo of the Myself AC. Junior"
-              loading="lazy"
-            />
-          </div>
           <div className="lg:w-2/3 w-full lg:pl-10 mt-8 lg:mt-0">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">
               Who created Graph Mode?

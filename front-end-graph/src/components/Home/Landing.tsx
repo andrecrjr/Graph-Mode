@@ -7,6 +7,7 @@ import { NotionHome } from "../svg/NotionHome";
 import ImprovedFeatures from "./Features";
 import { ArrowRight, LucideChartNetwork } from "lucide-react";
 import { PricingTierComponent } from "../pages/dynamicPages";
+import CreatorSection from "./CreatorSection";
 
 export default function Landing() {
   return (
@@ -80,7 +81,7 @@ export default function Landing() {
         </div>
       </section>
       <ImprovedFeatures />
-      {/* <CreatorSection /> */}
+      <CreatorSection />
       {process.env.NEXT_PUBLIC_TIER_RELEASED && <PricingTierComponent />}
       <BuyMeCoffee />
       <section className="w-full py-12 md:py-24 lg:py-32 min-h-screen  bg-gray-100 z-10 dark:bg-gray-800 flex items-center justify-center">

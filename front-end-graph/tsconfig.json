@@ -27,7 +27,10 @@
       ],
       "@/types/*": [
         "./types/*"
-      ]
+      ],
+      "@/ui/*": ["./src/components/ui/*"],
+      "@/components/*": ["./src/components/*"],
+
     },
     "target": "ES2017"
   },
