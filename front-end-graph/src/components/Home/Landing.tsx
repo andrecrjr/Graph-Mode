@@ -4,16 +4,14 @@ import Link from "next/link";
 
 import BuyMeCoffee from "./BuyCoffee";
 import { NotionHome } from "../svg/NotionHome";
-import ImprovedFeatures from "./Features";
 import { ArrowRight, LucideChartNetwork } from "lucide-react";
 import { PricingTierComponent } from "../pages/dynamicPages";
-import CreatorSection from "./CreatorSection";
 import ZettelkastenComparison from "./ZeltekastenWay";
 
 export default function Landing() {
   return (
     <div className="flex flex-col min-h-screen">
-      <section className="w-full  md:py-24 h-screen flex flex-col items-center justify-center z-10">
+      <section className="w-full  md:py-24 h-screen flex flex-col items-center justify-center">
         <div className="container mt-auto px-4 md:px-6">
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-3">
