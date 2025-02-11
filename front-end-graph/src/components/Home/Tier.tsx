@@ -15,7 +15,8 @@ import { Badge } from "../ui/badge";
 
 export default function PricingTiers() {
   const data = useSession();
-  const userSubscribed = data.data?.user.subscriptionId;
+  const userSubscribed =
+    data.data?.user.subscriptionId || data.data?.user.lifetimePaymentId;
   const userPaid = data.data?.user.lifetimePaymentId;
 
   return (
