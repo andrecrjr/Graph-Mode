@@ -28,7 +28,7 @@ router.get('/blocks/:blockId', authMiddleware, async (req, res) => {
     const firstParent = await req.notionAPI.fetchBlockChildren(blockId, false, false);
     elementProcessor.processParent(firstParent)
     const elements = await fetchBlockChildrenRecursively(blockId, req.notionAPI, elementProcessor, firstParent.id);
-    res.json([...elements,{rateLimit:req.notionAPI.getRateLimit()}]);
+    res.json([...elements,{isVip:req.notionAPI.getIsVip()}]);
   } catch (error) {
     logger.error(`Error to find blockId: ${blockId} with token auth: ${req.headers?.authorization}. Error: ${error}`)
     res.status(404).json({ error: `Erro ao buscar filhos do bloco: ${error.message}` });

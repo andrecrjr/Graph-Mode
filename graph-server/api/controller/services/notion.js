@@ -6,27 +6,23 @@ class NotionAPI {
     this.apiUrl = apiUrl || process.env.API_URL;
     this.apiKey = apiKey;
     this.count=0;
-    this.limitNotionRefresh=process.env.LIMIT_NOTION_REFRESH||30
-    this.rateLimit=false;
+    this.limitNotionRefresh=parseInt(process.env.LIMIT_NOTION_REFRESH)||30
+    this.isVip=false;
     this.redis = new RedisController();
     this.userNotion=userNotion;
   }
 
   async setRateLimit(){
     const resp = await this.redis.getKey(`notion-${this.userNotion}`)
-    this.rateLimit = !resp
+    this.isVip = resp
   }
 
-  getRateLimit() {
-    return this.rateLimit;
+  getIsVip() {
+    return this.isVip;
   }
 
   async fetchBlockChildren(blockId, nextCursor = null, children = true) {
     try {
-      if (this.isRateLimitExceeded()) {
-        return { id: null, results: [], hasMore: false, rateLimit: true };
-      }
-      this.count++;
       const url = `${this.apiUrl}/blocks/${blockId}/${children ? "children?page_size=100" : "?"}${nextCursor ? `&start_cursor=${nextCursor}` : ''}`;
 
       const response = await fetch(url, {
@@ -42,10 +38,6 @@ class NotionAPI {
       logger.error("Error to access Notion API", error)
       throw new Error(`Error accessing the Notion API: ${error.message}`);
     }
-  }
-
-  isRateLimitExceeded() {
-    return (this.rateLimit && this.count > this.limitNotionRefresh) || (!this.rateLimit && 0 > this.count);
   }
 
   async fetchSearch(query){

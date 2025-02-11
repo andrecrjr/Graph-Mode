@@ -24,7 +24,7 @@ build:
 	# Derrubando os containers existentes
 	$(COMPOSE) down
 	
-	# Removendo imagens Docker que começam com 'graph-mode', se existirem
+	# Removendo imagens Docker que começam com 'IMAGE_PREFIX', se existirem
 	@if docker images | grep '^$(IMAGE_PREFIX)' > /dev/null; then \
 	    echo "Removendo imagens com prefixo '$(IMAGE_PREFIX)'..."; \
 	    docker images | grep '^$(IMAGE_PREFIX)' | awk '{print $$3}' | xargs docker rmi; \
