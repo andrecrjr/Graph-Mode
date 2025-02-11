@@ -24,7 +24,7 @@ export const BillingManagement = dynamic(
 export const PricingTierComponent = dynamic(
   () => import("@/components/Home/Tier"),
   {
-    loading: () => <LoadingDynamicPlaceholder message="Loading Tiers Data" />,
+    loading: () => <LoadingDynamicPlaceholder message="Loading Plans" />,
     ssr: false,
   },
 );

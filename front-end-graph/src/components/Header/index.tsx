@@ -14,7 +14,7 @@ export default function Header() {
   const router = usePathname();
   if (!router.includes("/graph/"))
     return (
-      <header className="px-4 bg-gray-50 lg:px-6 h-14 flex items-center z-40 w-full ">
+      <header className="px-4 lg:px-6 h-14 flex items-center z-40 w-full ">
         <Link
           className="text-sm font-medium hover:underline underline-offset-4 mr-4"
           href="/"

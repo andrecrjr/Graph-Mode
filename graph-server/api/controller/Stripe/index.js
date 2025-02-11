@@ -9,10 +9,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export async function handleSubscriptionCreated(event, res) {
 	const eventData = event.data.object;
 
-	if (eventData?.payment_status !== "paid") {
-		return res.status(400).send({ error: "Invalid payment status" });
-	}
-
 	const notionUserId = eventData.metadata?.notionUserId;
 
 	if (!notionUserId) {
@@ -36,9 +32,11 @@ export async function handleSubscriptionCreated(event, res) {
             logger.info(`Updated subscription with metadata: ${JSON.stringify(updatedSubscription.metadata)}`);
 
             let userData = (await userController.getKey(`notion-${notionUserId}`)||{});
+
             userData.subscriptionId = eventData.subscription;
             userData.lastPaymentDate = eventData.created * 1000;
 			userData.nextPaymentDate = updatedSubscription.current_period_end * 1000;
+			await userController.setKey(`notion-${notionUserId}`, userData);
 			const userCancelledButSubscribedAgain = userData.cancelAt || userData.cancelAtPeriodEnd
 			if(userCancelledButSubscribedAgain){
 				delete userData["cancelAt"]
@@ -159,6 +157,7 @@ export async function handleCancelAtEnd(event, res) {
 	const notionUserId = eventData.metadata.notionUserId;
 
 	try {
+
 		if (eventData.cancel_at_period_end) {
 			const cancelAt = eventData.current_period_end * 1000;
 			let userData = await userController.getKey(`notion-${notionUserId}`);

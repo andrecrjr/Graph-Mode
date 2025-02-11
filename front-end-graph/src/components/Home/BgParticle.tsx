@@ -17,7 +17,7 @@ export const BGParticle = () => {
   }, []);
 
   const particlesLoaded = async (container?: Container): Promise<void> => {
-    IS_DEVELOPMENT && console.log(container);
+    IS_DEVELOPMENT && console.log("Loaded Particles");
   };
 
   const options: ISourceOptions = useMemo(

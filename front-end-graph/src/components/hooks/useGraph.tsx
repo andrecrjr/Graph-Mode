@@ -91,7 +91,9 @@ export const useGraph = () => {
           `node hover:fill-blue-700 dark:hover:fill-blue-500 cursor-pointer`,
         )
         .attr("class", (d) =>
-          d?.firstParent ? "fill-gray-500" : "fill-gray-600 dark:fill-gray-200",
+          d?.firstParent
+            ? "fill-blue-500 dark:fill-blue-700"
+            : "fill-gray-600 dark:fill-gray-200",
         )
         .attr(
           "r",
