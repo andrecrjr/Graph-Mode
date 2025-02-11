@@ -14,7 +14,7 @@ class NotionAPI {
 
   async setRateLimit(){
     const resp = await this.redis.getKey(`notion-${this.userNotion}`)
-    this.isVip = resp
+    this.isVip = !!resp
   }
 
   getIsVip() {
