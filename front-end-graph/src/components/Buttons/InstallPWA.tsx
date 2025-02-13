@@ -79,6 +79,7 @@ function ButtonPWA() {
       <Link
         className="font-bold text-sm underline pb-3"
         target="_blank"
+        rel="noopener noreferrer"
         href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105&utm_source=click-float"
       >
         Send feedbacks in our Contact form!

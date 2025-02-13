@@ -89,9 +89,8 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
           Have suggestions or noticed a bug?{" "}
           <a
             href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
-            target="_blank"
+            rel="noopener noreferrer"
             className="underline"
-            rel="noreferrer"
           >
             Let us know here!
           </a>

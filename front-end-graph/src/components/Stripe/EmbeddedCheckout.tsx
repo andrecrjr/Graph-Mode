@@ -80,7 +80,12 @@ export const ModalCheckout = forwardRef<IModalCheckoutRef, { priceId: string }>(
           <div className="modal-box w-100">
             <p className="text-center">
               You can read our terms before buying our subscription{" "}
-              <Link href={"/terms"} className="underline" target="_blank">
+              <Link
+                href={"/terms"}
+                className="underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 here
               </Link>
               .

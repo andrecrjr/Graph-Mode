@@ -32,7 +32,7 @@ const CreatorSection: React.FC = () => {
                   <a
                     href="https://ko-fi.com/andrecrjr"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center px-4 py-2 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition-colors duration-200"
                   >
                     <Coffee className="w-4 h-4 mr-2" />
@@ -40,8 +40,7 @@ const CreatorSection: React.FC = () => {
                   </a>
                   <a
                     href="https://github.com/andrecrjr"
-                    target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors duration-200"
                   >
                     <Github className="w-4 h-4 mr-2" />
@@ -50,7 +49,7 @@ const CreatorSection: React.FC = () => {
                   <a
                     href="https://andrecrjr.github.io/?utm_source=graphmode"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200"
                   >
                     <Briefcase className="w-4 h-4 mr-2" />

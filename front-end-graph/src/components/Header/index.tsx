@@ -40,6 +40,7 @@ export default function Header() {
             className="text-sm font-medium hover:underline underline-offset-4"
             href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
             target="_blank"
+            rel="noopener noreferrer"
           >
             Contact
           </Link>
