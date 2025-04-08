@@ -37,9 +37,11 @@ async function processBatchWithLimit(items, processor, requestTracker, isVip, us
 
     const batchResults = await Promise.all(
       batch.map(item => {
-        if (requestTracker.count < requestLimit) {
+        // Add a buffer to prevent exceeding the limit
+        if (requestTracker.count < requestLimit - batch.length + 1) {
           return processor(item);
         }
+        logger.warn(`Skipping batch item to prevent exceeding request limit`);
         return null;
       })
     );
@@ -128,6 +130,12 @@ async function fetchBlockChildrenRecursively(
 
               // Only recurse if we have a valid childId and haven't hit limits
               if (childId && requestTracker.count < requestLimit && !abortSignal?.aborted) {
+                // Critical pre-check: Don't start recursive calls that would exceed limit
+                if (!isVip && requestTracker.count >= requestLimit - 1) {
+                  logger.warn(`Request limit ${requestLimit} would be exceeded by recursion, stopping at depth ${currentDepth}`);
+                  return null;
+                }
+
                 // Pass the same options to next level, incrementing depth
                 const nextOptions = {
                   ...options,
