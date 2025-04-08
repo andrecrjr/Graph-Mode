@@ -8,6 +8,7 @@ import SelectEditorBar from "./SelectNodeBar";
 import { useEditorActionPage } from "@/components/hooks/useEditorAction";
 import { useEditorContext } from "@/components/Context/EditorContext";
 import clsx from "clsx";
+import "./style.css";
 
 export default function EditorPage() {
   const {
@@ -52,9 +53,8 @@ export default function EditorPage() {
         </Button>
 
         <div
-          className={`fixed top-0 right-0 h-full w-full sm:w-8/12 bg-white overflow-y-scroll dark:bg-gray-800 transform pt-10 ${
-            !sidebarOpen ? "translate-x-full" : "translate-x-0"
-          } transition-transform duration-200 ease-in-out z-40`}
+          className={`fixed top-0 right-0 h-full w-full sm:w-8/12 bg-white overflow-y-scroll dark:bg-[#1f1f1f] transform pt-10 ${!sidebarOpen ? "translate-x-full" : "translate-x-0"
+            } transition-transform duration-200 ease-in-out z-40`}
         >
           <EditorPageContent isOpen={sidebarOpen} />
         </div>
@@ -75,7 +75,7 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
   return (
     <>
       <section>
-        <div className="px-8">
+        <div className="px-8 dark:text-white">
           <p className="text-center text-gray-500 font-bold">
             Fast Notes - BETA
           </p>
@@ -85,7 +85,7 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
           <SelectEditorBar />
         </div>
         <Editor />
-        <p className="text-center text-xs">
+        <p className="text-center text-xs dark:text-white">
           Have suggestions or noticed a bug?{" "}
           <a
             href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
@@ -99,19 +99,4 @@ const EditorPageContent = ({ isOpen }: { isOpen: boolean }) => {
     </>
   );
 
-  // return (
-  //   <section className="w-full h-full flex flex-col justify-center items-center">
-  //     <p className="font-bold">Fast Notes with Graph Mode PRO Only!</p>
-  //     <p>{"Seamlessly connect to Notion with a PRO subscription."}</p>
-  //     <p>
-  //       Try out Fast Notes in our{" "}
-  //       <Link href="/graph/mock" className="underline" target="_blank">
-  //         Example Graph
-  //       </Link>{" "}
-  //     </p>
-  //     <section className="flex justify-center gap-2 mt-2">
-  //       <EmbeddedCheckoutButton priceId="month" />
-  //     </section>
-  //   </section>
-  // );
 };

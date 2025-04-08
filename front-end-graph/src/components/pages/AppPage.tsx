@@ -13,7 +13,7 @@ export default async function AppPage() {
     <>
       <BGParticle />
       <section className="mt-auto">
-        <h1 className="text-4xl lg:text-7xl font-bold text-center mb-4 tracking-tight">
+        <h1 className="text-4xl lg:text-7xl font-bold text-center mb-4 tracking-tight dark:text-white">
           Graph Mode
         </h1>
         <AuthSection session={data} />

@@ -4,6 +4,8 @@ import * as d3 from "d3";
 import { useGraphContextData } from "../Context/GraphContext";
 import { Link, Node } from "../../../types/graph";
 import { isNodeOrLink } from "../utils";
+import { GraphTheme } from "../Context/ThemeContext";
+import { getThemeConfig } from "../utils/theme";
 
 export const useGraph = () => {
   const {
@@ -25,8 +27,11 @@ export const useGraph = () => {
     (
       data: { nodes?: Node[]; links?: Link[] },
       svgRef: React.MutableRefObject<SVGSVGElement | null>,
+      theme: GraphTheme = "default",
     ) => {
       if (!data.nodes || !data.links) return;
+      const themeConfig = getThemeConfig(theme);
+
       const svg = d3
         .select(svgRef.current!)
         .attr("width", WINDOW.MAX_GRAPH_WIDTH)
@@ -73,7 +78,7 @@ export const useGraph = () => {
         .data(data.links)
         .enter()
         .append("line")
-        .attr("class", "link stroke-gray-700 dark:stroke-gray-100");
+        .attr("class", `link ${themeConfig.linkStroke}`);
 
       const node = container
         .append("g")
@@ -92,8 +97,8 @@ export const useGraph = () => {
         )
         .attr("class", (d) =>
           d?.firstParent
-            ? "fill-blue-500 dark:fill-blue-700"
-            : "fill-gray-600 dark:fill-gray-200",
+            ? themeConfig.nodeFill.primary
+            : themeConfig.nodeFill.secondary,
         )
         .attr(
           "r",
@@ -122,17 +127,17 @@ export const useGraph = () => {
         .data(data.nodes)
         .enter()
         .append("text")
-        .attr("class", "label fill-gray-800 dark:fill-yellow-300")
+        .attr("class", `label ${themeConfig.labelFill}`)
         .attr("text-anchor", "middle")
         .attr(
           "dy",
 
           WINDOW.GRAPH_BALL_SIZE[
-            WINDOW.WINDOW_WIDTH > WINDOW.RESPONSE_BREAKPOINT ? "sm" : "lg"
+          WINDOW.WINDOW_WIDTH > WINDOW.RESPONSE_BREAKPOINT ? "sm" : "lg"
           ] +
-            WINDOW.GRAPH_BALL_LABEL_MARGIN[
-              WINDOW.WINDOW_WIDTH > WINDOW.RESPONSE_BREAKPOINT ? "sm" : "lg"
-            ],
+          WINDOW.GRAPH_BALL_LABEL_MARGIN[
+          WINDOW.WINDOW_WIDTH > WINDOW.RESPONSE_BREAKPOINT ? "sm" : "lg"
+          ],
         )
         .text((d) => d.label);
 

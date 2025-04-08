@@ -4,17 +4,17 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const CreatorSection: React.FC = () => {
   return (
-    <section className="bg-gradient-to-b from-gray-50 to-gray-100 flex items-center z-50 py-20 min-h-screen">
+    <section className="bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center z-50 py-20 min-h-screen transition-colors duration-200">
       <div className="container mx-auto px-4 lg:px-8">
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden dark:bg-gray-800 dark:border-gray-700">
           <CardContent className="p-8 lg:p-12">
             <div className="max-w-3xl mx-auto space-y-8">
               {/* Header */}
               <div className="text-center lg:text-left">
-                <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
                   About The Creator
                 </h2>
-                <p className="text-lg text-gray-700 leading-relaxed">
+                <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
                   Hey! I&apos;m <span className="font-semibold">AC JR</span>, a
                   software engineer who loves building tools that make knowledge
                   management easier. Graph Mode combines the best of Notion with
@@ -24,8 +24,8 @@ const CreatorSection: React.FC = () => {
               </div>
 
               {/* Social Links */}
-              <div className="pt-6 border-t border-gray-200">
-                <p className="text-lg text-gray-700 mb-4">
+              <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
+                <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
                   Want to support or connect?
                 </p>
                 <div className="flex flex-wrap gap-3">
@@ -50,7 +50,7 @@ const CreatorSection: React.FC = () => {
                     href="https://andrecrjr.github.io/?utm_source=graphmode"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200"
+                    className="inline-flex items-center px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
                   >
                     <Briefcase className="w-4 h-4 mr-2" />
                     Portfolio

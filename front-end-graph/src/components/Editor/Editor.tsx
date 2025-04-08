@@ -19,7 +19,7 @@ import { filterSuggestionItems } from "@blocknote/core";
 import { getMentionMenuItems } from "./custom/inlinePageMention";
 import { useGraphContextData } from "../Context/GraphContext";
 import { getCustomSlashMenuItems, schema } from "./custom/";
-
+import { useDarkMode } from "../Context/DarkModeContext";
 export default function Editor() {
   const {
     state: {
@@ -27,6 +27,7 @@ export default function Editor() {
     },
   } = useGraphContextData();
   const { editorDispatch, state } = useEditorContext();
+  const { isDarkMode } = useDarkMode();
 
   const editor = useCreateBlockNote({
     schema,
@@ -46,7 +47,7 @@ export default function Editor() {
           });
         }}
         formattingToolbar={false}
-        theme={"light"}
+        theme={isDarkMode ? "dark" : "light"}
       >
         <FormattingToolbarController
           formattingToolbar={() => (

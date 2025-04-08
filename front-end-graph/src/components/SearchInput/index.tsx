@@ -100,7 +100,7 @@ export default function SearchInput() {
   return (
     <div className="w-full mx-auto p-4">
       <div className="relative">
-        <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+        <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 dark:text-gray-400" />
         <Input
           ref={inputRef}
           type="text"
@@ -108,7 +108,7 @@ export default function SearchInput() {
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          className="pl-8 pr-4 py-2 w-full rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow duration-200 ease-in-out bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
+          className="pl-8 pr-4 py-2 w-full rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow duration-200 ease-in-out bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400 dark:text-white"
         />
         {isLoading && (
           <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
@@ -118,15 +118,14 @@ export default function SearchInput() {
         {showResults && (
           <ul
             ref={resultsRef}
-            className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-auto"
+            className="absolute z-10 w-full mt-1 bg-white dark:text-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-auto"
           >
             {results.map((result, index) => (
               <li
                 key={result.id}
                 onClick={() => handleResultClick(result)}
-                className={`px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                  index === selectedIndex ? "bg-gray-100 dark:bg-gray-700" : ""
-                }`}
+                className={`px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${index === selectedIndex ? "bg-gray-100 dark:bg-gray-700" : ""
+                  }`}
               >
                 {result.name}
               </li>

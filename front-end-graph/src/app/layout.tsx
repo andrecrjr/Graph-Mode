@@ -6,6 +6,8 @@ import { GraphContextProvider } from "@/components/Context/GraphContext";
 import { MainContainer } from "@/components/Layout/MainLayout";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { EditorProvider } from "@/components/Context/EditorContext";
+import { ThemeProvider } from "@/components/Context/ThemeContext";
+import { DarkModeProvider } from "@/components/Context/DarkModeContext";
 import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/Header";
 import ButtonPWA from "@/components/Buttons/InstallPWA";
@@ -41,7 +43,7 @@ export default async function RootLayout({
   };
   const dataSession = await auth();
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <head>
         <link rel="canonical" href={`/`} />
         <link
@@ -56,20 +58,24 @@ export default async function RootLayout({
         />
       </head>
       <body className={`w-full ${roboto.className}`}>
-        <AuthProvider session={dataSession}>
-          <Header />
-          <MainContainer>
-            <GraphContextProvider>
-              <EditorProvider>{children}</EditorProvider>
-              <ButtonPWA />
-            </GraphContextProvider>
-          </MainContainer>
-          <Toaster />
-          {process.env.NODE_ENV === "production" &&
-            process.env.NEXT_PUBLIC_GA_TAG && (
-              <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_TAG} />
-            )}
-        </AuthProvider>
+        <DarkModeProvider>
+          <AuthProvider session={dataSession}>
+            <Header />
+            <MainContainer>
+              <GraphContextProvider>
+                <ThemeProvider>
+                  <EditorProvider>{children}</EditorProvider>
+                </ThemeProvider>
+                <ButtonPWA />
+              </GraphContextProvider>
+            </MainContainer>
+            <Toaster />
+            {process.env.NODE_ENV === "production" &&
+              process.env.NEXT_PUBLIC_GA_TAG && (
+                <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_TAG} />
+              )}
+          </AuthProvider>
+        </DarkModeProvider>
       </body>
     </html>
   );

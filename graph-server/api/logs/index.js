@@ -1,33 +1,53 @@
-import { createLogger, format, transports } from 'winston'
-const { combine, timestamp, printf, errors, json } = format;
+import { createLogger, format, transports } from 'winston';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+// Define __filename and __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Define custom log format
-const logFormat = printf(({ level, message, timestamp, stack }) => {
-  return `${timestamp} ${level}: ${stack || message} ${process.env.NODE_ENV === 'development' && ":: dev-mode"}`;
+const logFormat = format.printf(({ level, message, timestamp, stack }) => {
+  return `${timestamp} ${level}: ${stack || message} ${process.env.NODE_ENV === 'development' ? ":: dev-mode" : ""}`;
 });
 
 // Create logger
 const logger = createLogger({
-  level: 'info', // Minimum log level (debug, info, warn, error)
-  format: combine(
-    timestamp(),      // Add timestamps
-    errors({ stack: true }),  // Log error stack traces
-    json(),          // Log in JSON format (useful for structured logging)
+  level: 'info',
+  format: format.combine(
+    format.timestamp(),
+    format.errors({ stack: true }),
+    format.json()
   ),
   transports: [
-    new transports.Console(),  // Log to console
-    new transports.File({ filename: '/logs/error.log', level: 'error' }), // Error logs in a file
-    new transports.File({ filename: '/logs/combined.log' }),  // All logs in another file
+    new transports.Console({
+      format: format.combine(
+        format.colorize(),
+        format.simple()
+      ),
+    }),
+    new transports.File({
+      filename: join(__dirname, 'debug', 'combined.log'),
+      level: 'info',
+      maxsize: 4096, // 4KB
+      maxFiles: 1,
+    }),
+    new transports.File({
+      filename: join(__dirname, 'debug', 'error.log'),
+      level: 'error',
+      maxsize: 1048576, // 1MB
+      maxFiles: 10,
+    }),
   ],
 });
 
 // If in development mode, use more readable logging
 if (process.env.NODE_ENV === 'development') {
-  logger.add(new transports.Console({
-    format: combine(
-      timestamp(),
-      logFormat,
-    )
+  logger.add(new transports.File({
+    filename: join(__dirname, 'debug', 'development.log'),
+    level: 'debug',
+    maxsize: 1048576, // 1MB
+    maxFiles: 10,
   }));
 }
 

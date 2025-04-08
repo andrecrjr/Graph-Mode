@@ -7,6 +7,15 @@ export const loadNodePositions = (blockId: string) => {
   return saveStorage.get(savedPositionsKey);
 };
 
+interface ApiResponse {
+  blocks?: any[];
+  tier?: string;
+  isVip?: boolean;
+  requestCount?: number;
+  requestLimit?: number;
+  [key: string]: any;
+}
+
 export const fetchAndSaveCacheData = async (
   pageId: string,
   token: string,
@@ -21,22 +30,37 @@ export const fetchAndSaveCacheData = async (
     return cachedData;
   }
 
-  const data = await fetchServer(`/blocks/${pageId}?user=${userNotion}`, token);
+  const response = await fetchServer(`/blocks/${pageId}?user=${userNotion}`, token) as ApiResponse;
 
-  saveStorage.set(localStorageKey, data);
-  saveStorage.set(tempStorageKey, data);
-  return data;
+  // Extract blocks data and metadata from response
+  const blocksData = response.blocks || response;
+
+  // Create enriched data object that includes metadata
+  const enrichedData = Array.isArray(blocksData) ? {
+    blocks: blocksData,
+    tier: response.tier || "free",
+    isVip: response.isVip || false,
+    requestCount: response.requestCount || 0,
+    requestLimit: response.requestLimit || 1000
+  } : blocksData;
+
+  saveStorage.set(localStorageKey, enrichedData);
+  saveStorage.set(tempStorageKey, enrichedData);
+  return enrichedData;
 };
 
 export const processGraphData = (data: any, blockId: string) => {
-  const nodes: Node[] = data
+  // Extract blocks array if it exists in the enriched data format
+  const blocksData = data.blocks || data;
+
+  const nodes: Node[] = blocksData
     .filter((d: any) => d.type === "page")
     .map((d: any) => ({
       id: d.id,
       label: d.label,
       firstParent: d.firstParent,
     }));
-  const links: Link[] = data
+  const links: Link[] = blocksData
     .filter(
       (d: any) =>
         d.type === "node" &&

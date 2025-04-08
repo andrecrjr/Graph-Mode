@@ -1,0 +1,44 @@
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bn-colors-editor-text: #d1d5db;
+        /* Light gray for text */
+        --bn-colors-editor-background: #1f2937;
+        /* Your specified background color */
+        --bn-colors-menu-text: #d1d5db;
+        --bn-colors-menu-background: #2d3748;
+        /* Slightly lighter than editor background */
+        --bn-colors-tooltip-text: #d1d5db;
+        --bn-colors-tooltip-background: #4b5563;
+        /* Dark gray */
+        --bn-colors-hovered-text: #ffffff;
+        --bn-colors-hovered-background: #374151;
+        /* Medium gray */
+        --bn-colors-selected-text: #ffffff;
+        --bn-colors-selected-background: #4b5563;
+        --bn-colors-disabled-text: #6b7280;
+        /* Dark gray */
+        --bn-colors-disabled-background: #2d3748;
+        --bn-colors-shadow: #000000;
+        --bn-colors-border: #4b5563;
+        --bn-colors-side-menu: #2d3748;
+        --bn-colors-highlights-gray-text: #9ca3af;
+        --bn-colors-highlights-gray-background: #4b5563;
+        --bn-colors-highlights-brown-text: #a78b71;
+        --bn-colors-highlights-brown-background: #5a4333;
+        --bn-colors-highlights-red-text: #f87171;
+        --bn-colors-highlights-red-background: #7f1d1d;
+        --bn-colors-highlights-orange-text: #fb923c;
+        --bn-colors-highlights-orange-background: #7c2d12;
+        --bn-colors-highlights-yellow-text: #facc15;
+        --bn-colors-highlights-yellow-background: #713f12;
+        --bn-colors-highlights-green-text: #34d399;
+        --bn-colors-highlights-green-background: #14532d;
+        --bn-colors-highlights-blue-text: #60a5fa;
+        --bn-colors-highlights-blue-background: #1e3a8a;
+        --bn-colors-highlights-purple-text: #c084fc;
+        --bn-colors-highlights-purple-background: #4c1d95;
+        --bn-colors-highlights-pink-text: #f472b6;
+        --bn-colors-highlights-pink-background: #831843;
+    }
+}

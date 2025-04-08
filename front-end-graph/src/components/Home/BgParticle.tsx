@@ -4,10 +4,11 @@ import { type Container, type ISourceOptions } from "@tsparticles/engine";
 import React, { useEffect, useMemo, useState } from "react";
 import { loadSlim } from "@tsparticles/slim";
 import { IS_DEVELOPMENT } from "../utils";
+import { useDarkMode } from "../Context/DarkModeContext";
 
 export const BGParticle = () => {
   const [init, setInit] = useState(false);
-
+  const { isDarkMode } = useDarkMode();
   useEffect(() => {
     initParticlesEngine(async (engine) => {
       await loadSlim(engine);
@@ -141,7 +142,7 @@ export const BGParticle = () => {
     [],
   );
 
-  if (init) {
+  if (init && !isDarkMode) {
     return (
       <Particles
         id="tsparticles"
