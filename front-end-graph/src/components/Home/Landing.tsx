@@ -30,7 +30,7 @@ export default function Landing() {
                 </Button>
               </Link>
               <Link href="/app">
-                <Button className="bg-green-700 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-500">
+                <Button className="bg-green-700 hover:bg-green-700 dark:text-white dark:hover:bg-green-600">
                   Go to Graph Mode <ArrowRight className="ml-1" />
                 </Button>
               </Link>

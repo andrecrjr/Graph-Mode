@@ -62,14 +62,13 @@ export default async function CheckoutReturn({
         <CardContent className="space-y-4">
           <p>
             Thank you for your business! Your subscription is now active. You
-            can manage your subscription at any time in your{" "}
+            can manage your subscription at any time in the button{" "}
             <Link
-              href="/subscription"
+              href={`/app`}
               className="font-medium text-primary underline"
             >
-              subscription dashboard
-            </Link>
-            .
+              Manage Subscription
+            </Link> in the app.
           </p>
           <p className="pt-4 font-bold text-center">
             {"You're"} all set! Start exploring your premium perks now.
