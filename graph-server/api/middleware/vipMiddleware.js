@@ -52,12 +52,12 @@ export const vipMiddleware = async (req, res, next) => {
 
         // Set rate limits based on tier
         if (userTier === ACCOUNT_TIERS.FREE) {
-            req.requestLimit = parseInt(process.env.LIMIT_NOTION_REFRESH) || 5;
+            req.requestLimit = parseInt(process.env.LIMIT_NOTION_REFRESH) || 8;
             req.maxNotes = parseInt(process.env.MAX_NOTES) || 2;
         } else {
             // Unlimited for VIP users (using a high number)
-            req.requestLimit = 1000;
-            req.maxNotes = 1000;
+            req.requestLimit = 10000;
+            req.maxNotes = 10000;
         }
 
         // Log user tier detection
