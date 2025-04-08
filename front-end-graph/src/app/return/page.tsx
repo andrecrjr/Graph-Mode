@@ -76,7 +76,7 @@ export default async function CheckoutReturn({
           </p>
           <p className="text-center">
             <Link href="/app">
-              <Button className="bg-green-700 hover:bg-green-600 self-center">
+              <Button className="bg-green-700 hover:bg-green-600 self-center dark:text-white">
                 Go to Graph Mode <Unlock className="pl-2" />
               </Button>
             </Link>

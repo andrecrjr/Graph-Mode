@@ -31,7 +31,7 @@ const History = () => {
     (session?.user.lifetimePaymentId || session?.user.subscriptionId)
   ) {
     return (
-      <section className="mx-auto text-center mt-3">
+      <section className="mx-auto text-center mt-3 dark:text-white">
         <h3>Last Graph Pages</h3>
         <ul className="pb-3">
           {history.slice(0, 5).map((item) => {

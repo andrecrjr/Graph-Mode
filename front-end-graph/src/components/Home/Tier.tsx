@@ -28,7 +28,7 @@ export default function PricingTiers() {
         <section className="px-4 md:px-6 py-8">
           <div className="flex flex-col items-center text-center space-y-4">
             <header className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl dark:text-white">
                 Choose Your Plan
               </h2>
               <p className="max-w-[900px] text-gray-500 md:text-xl lg:text-base xl:text-xl dark:text-gray-400">
@@ -161,7 +161,7 @@ export default function PricingTiers() {
                 <EmbeddedCheckoutButton
                   classNames="bg-blue-600 hover:bg-blue-700"
                   buttonLabel={
-                    <p className="font-bold flex items-center">
+                    <p className="font-bold flex items-center dark:text-white">
                       Start Free Trial{" "}
                       <LucideShoppingBasket className="inline ml-2 w-4" />
                     </p>

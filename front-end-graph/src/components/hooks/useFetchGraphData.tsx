@@ -45,7 +45,7 @@ export const useFetchGraphData = (pageId: string) => {
                 </Link>
               </>
             ),
-            className: "bg-amber-100 border-amber-400",
+            className: "bg-amber-100 border-amber-400 dark:bg-amber-900 dark:border-amber-400",
           });
         }
       } else {

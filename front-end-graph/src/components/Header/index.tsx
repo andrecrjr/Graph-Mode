@@ -26,6 +26,7 @@ export default function Header() {
           <Link
             className="text-sm font-medium hover:underline underline-offset-4 dark:text-gray-300"
             href="/#features"
+            aria-label="Features"
           >
             Features
           </Link>
@@ -33,6 +34,7 @@ export default function Header() {
             <Link
               className="text-sm font-medium hover:underline underline-offset-4 dark:text-gray-300"
               href="/#pricing"
+              aria-label="Pricing"
             >
               Pricing
             </Link>
@@ -42,6 +44,7 @@ export default function Header() {
             href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Contact"
           >
             Contact
           </Link>
@@ -53,10 +56,4 @@ export default function Header() {
       </header>
     );
 
-  // Adicionar botão de modo noturno nas páginas de gráfico
-  return (
-    <header className="fixed top-0 right-0 z-50 p-2">
-      <DarkModeToggle />
-    </header>
-  );
 }

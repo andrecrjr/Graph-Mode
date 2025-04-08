@@ -9,7 +9,7 @@ export default function DarkModeToggle({ className = "" }: { className?: string 
     return (
         <button
             onClick={toggleDarkMode}
-            className={`p-2 rounded-full focus:outline-none transition-colors ${isDarkMode
+            className={`p-2 top-[35px] right-[14px] rounded-full focus:outline-none transition-colors ${isDarkMode
                 ? "text-yellow-300 hover:bg-gray-700"
                 : "text-gray-700 hover:bg-gray-200"
                 } ${className}`}

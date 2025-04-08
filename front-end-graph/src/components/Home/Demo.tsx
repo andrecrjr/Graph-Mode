@@ -24,7 +24,7 @@ export async function DemoSection({ data }: { data: Session | null }) {
         <>
           {process.env.NEXT_PUBLIC_TIER_RELEASED && (
             <Link href="/pricing">
-              <Button variant={"outline"} className="font-bold">
+              <Button variant={"outline"} className="font-bold dark:text-white dark:bg-green-700">
                 <Unlock className="mr-2" />
                 Unlock Full Potential: Upgrade to PRO Today
               </Button>
