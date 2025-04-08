@@ -47,3 +47,49 @@ This NodeJS and D3.js project creates interactive graph visualizations based on 
 
 ### Troubleshooting
 Does not fully support multi-column layouts but works well for a general list of pages.
+
+## User Tiers and Limitations
+
+The application implements a tiered access system with different limitations based on user subscription status:
+
+### User Tiers
+
+- **Free**: Basic access with rate limits
+- **Premium**: Enhanced access for subscribers
+- **Lifetime**: Unlimited access for lifetime purchase users
+
+### Tier Limitations
+
+|                  | Free                 | Premium       | Lifetime      |
+|------------------|----------------------|---------------|---------------|
+| Daily Fast Notes | Limited (default: 2) | Unlimited     | Unlimited     |
+| API Requests     | Limited (default: 5) | High limit    | Unlimited     |
+| Caching          | 5 minutes            | 1 minute      | No caching    |
+| Batch Processing | Small batches (2)    | Medium (5)    | Large (10)    |
+
+### Testing User Tiers
+
+You can create test users for each tier using the provided script:
+
+```bash
+npm run seed:testusers
+```
+
+This will create three test users with different tiers:
+- free@example.com (Free tier)
+- premium@example.com (Premium tier)
+- lifetime@example.com (Lifetime tier)
+
+To test different user tiers, append the email as the `user` query parameter:
+```
+http://localhost:3000/api/blocks/12345?user=premium@example.com
+```
+
+### Environment Variables
+
+The following environment variables control the rate limiting:
+
+```
+LIMIT_NOTION_REFRESH=5  # Maximum API requests for free users
+MAX_NOTES=2             # Maximum daily fast notes for free users
+```

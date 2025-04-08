@@ -1,23 +1,43 @@
 import dotenv from 'dotenv';
 import { NotionAPI } from './services/notion.js';
 import logger from '../logs/index.js';
+import { ACCOUNT_TIERS } from '../middleware/vipMiddleware.js';
 
 dotenv.config();
 
+// Default request limits based on environment variables
 const MAX_REQUEST_COUNT = parseInt(process.env.LIMIT_NOTION_REFRESH, 10) || 10;
-const BATCH_SIZE = 2; // Reduced batch size for better control
 
-async function processBatchWithLimit(items, processor, requestTracker, isVip) {
+// Define batch sizes based on account tier
+const BATCH_SIZES = {
+  [ACCOUNT_TIERS.FREE]: 2,
+  [ACCOUNT_TIERS.PREMIUM]: 5,
+  [ACCOUNT_TIERS.LIFETIME]: 10
+};
+
+/**
+ * Process items in batches with different rate limits based on user tier
+ */
+async function processBatchWithLimit(items, processor, requestTracker, isVip, userTier = ACCOUNT_TIERS.FREE) {
   const allResults = [];
-  // Determine the batch size based on VIP status
-  const effectiveBatchSize = isVip ? items.length : BATCH_SIZE;
 
-  for (let i = 0; i < items.length && (isVip || requestTracker.count < MAX_REQUEST_COUNT); i += effectiveBatchSize) {
+  // Determine the batch size based on user tier
+  const effectiveBatchSize = isVip ?
+    BATCH_SIZES[userTier] || BATCH_SIZES[ACCOUNT_TIERS.PREMIUM] :
+    BATCH_SIZES[ACCOUNT_TIERS.FREE];
+
+  // Determine request limit based on VIP status
+  const requestLimit = isVip ? Number.MAX_SAFE_INTEGER : MAX_REQUEST_COUNT;
+
+  // Log batch processing info
+  logger.debug(`Processing batch with size ${effectiveBatchSize}, tier: ${userTier}, isVip: ${isVip}`);
+
+  for (let i = 0; i < items.length && requestTracker.count < requestLimit; i += effectiveBatchSize) {
     const batch = items.slice(i, i + effectiveBatchSize);
 
     const batchResults = await Promise.all(
       batch.map(item => {
-        if (isVip || requestTracker.count < MAX_REQUEST_COUNT) {
+        if (requestTracker.count < requestLimit) {
           return processor(item);
         }
         return null;
@@ -27,7 +47,7 @@ async function processBatchWithLimit(items, processor, requestTracker, isVip) {
     allResults.push(...batchResults.filter(Boolean));
 
     if (!isVip && requestTracker.count >= MAX_REQUEST_COUNT) {
-      logger.warn(`Request limit ${MAX_REQUEST_COUNT} reached, stopping batch processing.`);
+      logger.warn(`Request limit ${MAX_REQUEST_COUNT} reached for free user, stopping batch processing.`);
       break;
     }
   }
@@ -80,10 +100,14 @@ async function fetchBlockChildrenRecursively(
     }
 
     const isVip = notionAPI.getIsVip();
+    const userTier = notionAPI.getUserTier();
     let nextCursor = null;
     let processedBlocks = 0;
 
-    while ((isVip || requestTracker.count < MAX_REQUEST_COUNT) && !abortSignal?.aborted) {
+    // Determine request limit based on VIP status
+    const requestLimit = isVip ? Number.MAX_SAFE_INTEGER : MAX_REQUEST_COUNT;
+
+    while (requestTracker.count < requestLimit && !abortSignal?.aborted) {
       try {
         // Fetch children blocks
         const { results, has_more, next_cursor } = await notionAPI.fetchBlockChildren(blockId, nextCursor);
@@ -103,7 +127,7 @@ async function fetchBlockChildrenRecursively(
               const childId = elementProcessor.processChild(child, parentId);
 
               // Only recurse if we have a valid childId and haven't hit limits
-              if (childId && (isVip || requestTracker.count < MAX_REQUEST_COUNT) && !abortSignal?.aborted) {
+              if (childId && requestTracker.count < requestLimit && !abortSignal?.aborted) {
                 // Pass the same options to next level, incrementing depth
                 const nextOptions = {
                   ...options,
@@ -130,7 +154,8 @@ async function fetchBlockChildrenRecursively(
             }
           },
           requestTracker,
-          isVip
+          isVip,
+          userTier // Pass the userTier to processBatchWithLimit
         );
 
         // Check rate limits after processing batch
@@ -157,7 +182,7 @@ async function fetchBlockChildrenRecursively(
     // Log performance metrics if enabled
     if (enableMetrics) {
       const endTime = performance.now();
-      logger.debug(`Block ${blockId} processed in ${endTime - startTime}ms, depth: ${currentDepth}, blocks: ${processedBlocks}`);
+      logger.debug(`Block ${blockId} processed in ${endTime - startTime}ms, depth: ${currentDepth}, blocks: ${processedBlocks}, tier: ${userTier}`);
     }
 
     // Only return elements at the top level of recursion

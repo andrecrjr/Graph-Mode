@@ -1,24 +1,49 @@
 import logger from "../../logs/index.js";
 import { RedisController } from "../RedisController/index.js";
+import { getUserTier, ACCOUNT_TIERS } from "../../middleware/vipMiddleware.js";
 
 class NotionAPI {
   constructor(apiUrl = process.env.API_URL, apiKey, userNotion = null) {
     this.apiUrl = apiUrl || process.env.API_URL;
     this.apiKey = apiKey;
     this.count = 0;
-    this.limitNotionRefresh = parseInt(process.env.LIMIT_NOTION_REFRESH) || 30
+    this.limitNotionRefresh = parseInt(process.env.LIMIT_NOTION_REFRESH) || 30;
     this.isVip = false;
+    this.userTier = ACCOUNT_TIERS.FREE;
     this.redis = new RedisController();
     this.userNotion = userNotion;
+    this.cacheEnabled = true;
+    this.cacheTTL = {
+      [ACCOUNT_TIERS.FREE]: 300,     // 5 minutes for free users
+      [ACCOUNT_TIERS.PREMIUM]: 60,   // 1 minute for premium users
+      [ACCOUNT_TIERS.LIFETIME]: 0    // No cache for lifetime users
+    };
   }
 
   async setRateLimit() {
-    const resp = await this.redis.getKey(`notion-${this.userNotion}`)
-    this.isVip = !!resp
+    try {
+      const userData = await this.redis.getKey(`notion-${this.userNotion}`);
+      this.userTier = getUserTier(userData);
+      this.isVip = this.userTier !== ACCOUNT_TIERS.FREE;
+
+      // Adjust cache settings based on tier
+      this.cacheEnabled = this.userTier !== ACCOUNT_TIERS.LIFETIME;
+
+      logger.debug(`User ${this.userNotion} set as tier: ${this.userTier}, VIP: ${this.isVip}`);
+    } catch (error) {
+      logger.error(`Error setting rate limit for user ${this.userNotion}:`, error);
+      // Default to free tier on error
+      this.isVip = false;
+      this.userTier = ACCOUNT_TIERS.FREE;
+    }
   }
 
   getIsVip() {
     return this.isVip;
+  }
+
+  getUserTier() {
+    return this.userTier;
   }
 
   async fetchBlockChildren(blockId, nextCursor = null, children = true) {
@@ -47,11 +72,15 @@ class NotionAPI {
         }
       }
 
-      // Check cache first if Redis is available
+      // Check cache first if Redis is available and caching is enabled for this tier
       const cacheKey = `block_${blockId}_${nextCursor || 'initial'}_${children}`;
-      const cachedData = await this.redis?.getKey(cacheKey);
+      let cachedData = null;
 
-      if (cachedData && !this.isVip) {
+      if (this.cacheEnabled) {
+        cachedData = await this.redis?.getKey(cacheKey);
+      }
+
+      if (cachedData) {
         return JSON.parse(cachedData);
       }
 
@@ -69,9 +98,12 @@ class NotionAPI {
 
       const data = await response.json();
 
-      // Cache the response for future requests (5 min TTL)
-      if (this.redis && !this.isVip) {
-        await this.redis.setKey(cacheKey, JSON.stringify(data), 200);
+      // Cache the response for future requests with TTL based on user tier
+      if (this.redis && this.cacheEnabled) {
+        const ttl = this.cacheTTL[this.userTier];
+        if (ttl > 0) {
+          await this.redis.setKey(cacheKey, JSON.stringify(data), ttl);
+        }
       }
 
       return data;

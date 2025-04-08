@@ -26,11 +26,31 @@ router.get('/blocks/:blockId', authMiddleware, async (req, res) => {
     const elementProcessor = new ElementProcessor();
 
     const firstParent = await req.notionAPI.fetchBlockChildren(blockId, false, false);
-    elementProcessor.processParent(firstParent)
-    const elements = await fetchBlockChildrenRecursively(blockId, req.notionAPI, elementProcessor, firstParent.id);
-    res.json([...elements, { isVip: req.notionAPI.getIsVip() }]);
+    elementProcessor.processParent(firstParent);
+
+    const requestTracker = { count: 0 };
+    const elements = await fetchBlockChildrenRecursively(
+      blockId,
+      req.notionAPI,
+      elementProcessor,
+      firstParent.id,
+      requestTracker,
+      {
+        enableMetrics: true
+      }
+    );
+
+    res.json([
+      ...elements,
+      {
+        isVip: req.notionAPI.getIsVip(),
+        tier: req.notionAPI.getUserTier(),
+        requestCount: requestTracker.count,
+        requestLimit: req.requestLimit || parseInt(process.env.LIMIT_NOTION_REFRESH) || 5
+      }
+    ]);
   } catch (error) {
-    logger.error(`Error to find blockId: ${blockId} with token auth: ${req.headers?.authorization}. Error: ${error}`)
+    logger.error(`Error to find blockId: ${blockId} with token auth: ${req.headers?.authorization}. Error: ${error}`);
     res.status(404).json({ error: `Erro ao buscar filhos do bloco: ${error.message}` });
   }
 });
