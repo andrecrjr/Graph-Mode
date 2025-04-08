@@ -17,7 +17,6 @@ const LoadingDynamicPlaceholder: React.FC<LoadingPlaceholderProps> = ({
     <div className={clsx(baseClassName, className)}>
       <div className="w-12 h-12 border-t-4 border-blue-500 border-solid rounded-full animate-spin mb-4"></div>
       <p className="text-lg text-gray-700">{message}</p>
-      <p className="text-xs italic">Please wait...</p>
     </div>
   );
 };

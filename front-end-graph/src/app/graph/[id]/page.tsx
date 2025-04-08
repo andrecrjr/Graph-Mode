@@ -1,13 +1,10 @@
 import { auth } from "@/components/Auth";
 import { GraphComponent } from "@/components/Graph";
-import { redirect } from "next/navigation";
 import React from "react";
 import type { Metadata } from "next";
 import { fetchNotionServer } from "@/components/service/Notion";
 import { isMock } from "@/components/utils";
-import { FloatButton } from "@/components/Buttons/FloatButton";
-import AdBanner from "@/components/Ads/AdsLayout";
-import { FloatAd } from "@/components/Ads/AdFloat";
+
 
 type Props = {
   params: { id: string };

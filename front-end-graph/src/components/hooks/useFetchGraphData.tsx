@@ -4,10 +4,13 @@ import { fetchAndSaveCacheData, processGraphData } from "../utils/graph";
 import { useGraphContextData } from "../Context/GraphContext";
 import { isMock, saveStorage } from "../utils";
 import { useUserSession } from "../Context/UserSessionContext";
+import { useToast } from "./use-toast";
+import Link from "next/link";
 
 export const useFetchGraphData = (pageId: string) => {
   const { session: authData, status } = useUserSession();
   const { dispatch, state } = useGraphContextData();
+  const { toast } = useToast();
 
   const processGraphDataMemoized = useCallback(
     (data: any) => processGraphData(data, pageId),
@@ -24,6 +27,27 @@ export const useFetchGraphData = (pageId: string) => {
         );
         const processedGraphData = processGraphDataMemoized(data);
         dispatch({ type: "SET_NODES", payload: processedGraphData });
+
+        // Check if user is on free plan and approaching request limits
+        const { tier } = data;
+        const isFreeTier = tier === "free";
+
+        if (isFreeTier &&
+          !authData?.user?.subscriptionId &&
+          !authData?.user?.lifetimePaymentId) {
+          toast({
+            title: "You are on free plan",
+            description: (
+              <>
+                Some notion pages not loaded because you have reached your limit of requests.
+                <Link href="/pricing" className="ml-1 font-bold underline">
+                  Upgrade to Premium
+                </Link>
+              </>
+            ),
+            className: "bg-amber-100 border-amber-400",
+          });
+        }
       } else {
         dispatch({ type: "ERROR_GRAPH", payload: true });
         throw new Error("Problem no data returned from API");
@@ -37,7 +61,7 @@ export const useFetchGraphData = (pageId: string) => {
     } finally {
       dispatch({ type: "LOADED_GRAPH", payload: false });
     }
-  }, [authData, pageId, processGraphDataMemoized, dispatch]);
+  }, [authData, pageId, processGraphDataMemoized, dispatch, toast]);
 
   useEffect(() => {
     if (
