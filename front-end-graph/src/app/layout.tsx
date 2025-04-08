@@ -6,6 +6,7 @@ import { GraphContextProvider } from "@/components/Context/GraphContext";
 import { MainContainer } from "@/components/Layout/MainLayout";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { EditorProvider } from "@/components/Context/EditorContext";
+import { ThemeProvider } from "@/components/Context/ThemeContext";
 import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/Header";
 import ButtonPWA from "@/components/Buttons/InstallPWA";
@@ -60,7 +61,9 @@ export default async function RootLayout({
           <Header />
           <MainContainer>
             <GraphContextProvider>
-              <EditorProvider>{children}</EditorProvider>
+              <ThemeProvider>
+                <EditorProvider>{children}</EditorProvider>
+              </ThemeProvider>
               <ButtonPWA />
             </GraphContextProvider>
           </MainContainer>
