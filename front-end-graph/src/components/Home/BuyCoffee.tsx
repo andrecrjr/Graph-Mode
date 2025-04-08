@@ -13,15 +13,15 @@ export default function BuyMeCoffee() {
   return (
     <section
       id="support"
-      className="w-full flex py-12 min-h-screen items-center md:py-24 z-10 lg:py-32 bg-gray-50"
+      className="w-full flex py-12 min-h-screen items-center md:py-24 z-10 lg:py-32 bg-gray-50 dark:bg-gray-900 transition-colors duration-200"
     >
       <div className="container px-4 md:px-6">
-        <Card className="max-w-2xl mx-auto">
+        <Card className="max-w-2xl mx-auto dark:bg-gray-800 dark:border-gray-700">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">
+            <CardTitle className="text-2xl font-bold text-center dark:text-white">
               Support New Features
             </CardTitle>
-            <CardDescription className="text-center">
+            <CardDescription className="text-center dark:text-gray-300">
               Help us bring exciting new features to Graph Mode
             </CardDescription>
           </CardHeader>

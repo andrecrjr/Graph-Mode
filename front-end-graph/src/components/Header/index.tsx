@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import AuthButton from "../Buttons";
 import { usePathname } from "next/navigation";
+import DarkModeToggle from "../Buttons/DarkModeToggle";
 
 export default function Header() {
   useEffect(() => {
@@ -14,30 +15,30 @@ export default function Header() {
   const router = usePathname();
   if (!router.includes("/graph/"))
     return (
-      <header className="px-4 lg:px-6 h-14 flex items-center z-40 w-full ">
+      <header className="px-4 lg:px-6 h-14 flex items-center z-40 w-full dark:bg-gray-900 transition-colors duration-200">
         <Link
-          className="text-sm font-medium hover:underline underline-offset-4 mr-4"
+          className="text-sm font-medium hover:underline underline-offset-4 mr-4 dark:text-white"
           href="/"
         >
           <h1>Graph Mode</h1>
         </Link>
         <nav className="flex gap-4 sm:gap-6">
           <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
+            className="text-sm font-medium hover:underline underline-offset-4 dark:text-gray-300"
             href="/#features"
           >
             Features
           </Link>
           {process.env.NEXT_PUBLIC_TIER_RELEASED && (
             <Link
-              className="text-sm font-medium hover:underline underline-offset-4"
+              className="text-sm font-medium hover:underline underline-offset-4 dark:text-gray-300"
               href="/#pricing"
             >
               Pricing
             </Link>
           )}
           <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
+            className="text-sm font-medium hover:underline underline-offset-4 dark:text-gray-300"
             href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
             target="_blank"
             rel="noopener noreferrer"
@@ -45,9 +46,17 @@ export default function Header() {
             Contact
           </Link>
         </nav>
-        <div className="absolute l-0 top-12 ml-auto sm:static">
+        <div className="flex items-center ml-auto">
+          <DarkModeToggle className="mr-4" />
           <AuthButton />
         </div>
       </header>
     );
+
+  // Adicionar botão de modo noturno nas páginas de gráfico
+  return (
+    <header className="fixed top-0 right-0 z-50 p-2">
+      <DarkModeToggle />
+    </header>
+  );
 }
