@@ -2,17 +2,17 @@ import logger from "../../logs/index.js";
 import { RedisController } from "../RedisController/index.js";
 
 class NotionAPI {
-  constructor(apiUrl=process.env.API_URL, apiKey, userNotion=null) {
+  constructor(apiUrl = process.env.API_URL, apiKey, userNotion = null) {
     this.apiUrl = apiUrl || process.env.API_URL;
     this.apiKey = apiKey;
-    this.count=0;
-    this.limitNotionRefresh=parseInt(process.env.LIMIT_NOTION_REFRESH)||30
-    this.isVip=false;
+    this.count = 0;
+    this.limitNotionRefresh = parseInt(process.env.LIMIT_NOTION_REFRESH) || 30
+    this.isVip = false;
     this.redis = new RedisController();
-    this.userNotion=userNotion;
+    this.userNotion = userNotion;
   }
 
-  async setRateLimit(){
+  async setRateLimit() {
     const resp = await this.redis.getKey(`notion-${this.userNotion}`)
     this.isVip = !!resp
   }
@@ -22,30 +22,77 @@ class NotionAPI {
   }
 
   async fetchBlockChildren(blockId, nextCursor = null, children = true) {
-    try {
-      const url = `${this.apiUrl}/blocks/${blockId}/${children ? "children?page_size=100" : "?"}${nextCursor ? `&start_cursor=${nextCursor}` : ''}`;
+    if (!blockId) {
+      throw new Error('Block ID is required');
+    }
 
+    try {
+      // Build URL with proper query parameter formatting
+      let url = `${this.apiUrl}/blocks/${blockId}`;
+
+      if (children) {
+        url += '/children';
+
+        // Build query parameters
+        const queryParams = new URLSearchParams();
+        queryParams.append('page_size', '100');
+
+        if (nextCursor) {
+          queryParams.append('start_cursor', nextCursor);
+        }
+
+        // Append query string if there are parameters
+        if (queryParams.toString()) {
+          url += `?${queryParams.toString()}`;
+        }
+      }
+
+      // Check cache first if Redis is available
+      const cacheKey = `block_${blockId}_${nextCursor || 'initial'}_${children}`;
+      const cachedData = await this.redis?.getKey(cacheKey);
+
+      if (cachedData && !this.isVip) {
+        return JSON.parse(cachedData);
+      }
+
+      // Make the request to Notion API
       const response = await fetch(url, {
         method: 'GET',
         headers: this.getHeaders(),
       });
 
+      // Handle HTTP errors
       if (!response.ok) {
-        throw new Error(`Failed to fetch children for block ${blockId}: ${response.statusText}`);
+        const errorData = await response.text();
+        throw new Error(`Failed to fetch children for block ${blockId}: ${response.status} ${response.statusText} - ${errorData}`);
       }
-      return response.json();
+
+      const data = await response.json();
+
+      // Cache the response for future requests (5 min TTL)
+      if (this.redis && !this.isVip) {
+        await this.redis.setKey(cacheKey, JSON.stringify(data), 200);
+      }
+
+      return data;
     } catch (error) {
-      logger.error("Error to access Notion API", error)
+      logger.error(`Error fetching block children for ${blockId}`, {
+        blockId,
+        children,
+        nextCursor,
+        error: error.message,
+        stack: error.stack
+      });
       throw new Error(`Error accessing the Notion API: ${error.message}`);
     }
   }
 
-  async fetchSearch(query){
+  async fetchSearch(query) {
     try {
       let options = {
         method: 'POST',
         headers: {
-            ...this.getHeaders(),
+          ...this.getHeaders(),
         },
         body: `{"query":"${query}","filter":{"value":"page","property":"object"}}`
       };
@@ -127,23 +174,23 @@ class NotionAPI {
   }
 
   async fetchDatabase(databaseId) {
-  try {
-    const url = `${this.apiUrl}/databases/${databaseId}`;
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: this.getHeaders(),
-    });
+    try {
+      const url = `${this.apiUrl}/databases/${databaseId}`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.getHeaders(),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch database ${databaseId}: ${response.statusText}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch database ${databaseId}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching database:', error);
+      throw new Error(`Error fetching database: ${error.message}`);
     }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching database:', error);
-    throw new Error(`Error fetching database: ${error.message}`);
   }
 }
-}
 
-export {NotionAPI}
+export { NotionAPI }

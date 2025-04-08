@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {fetchBlockChildrenRecursively} from "../controller/index.js"
+import { fetchBlockChildrenRecursively } from "../controller/index.js"
 import { fileURLToPath } from 'url';
 
 import ElementProcessor from "../controller/ElementProcessor/index.js"
@@ -16,7 +16,7 @@ const __dirname = path.resolve(path.dirname(__filename), "../../");
 const router = Router()
 
 
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, '/index.html'));
 });
 
@@ -24,18 +24,18 @@ router.get('/blocks/:blockId', authMiddleware, async (req, res) => {
   const { blockId } = req.params;
   try {
     const elementProcessor = new ElementProcessor();
-    
+
     const firstParent = await req.notionAPI.fetchBlockChildren(blockId, false, false);
     elementProcessor.processParent(firstParent)
     const elements = await fetchBlockChildrenRecursively(blockId, req.notionAPI, elementProcessor, firstParent.id);
-    res.json([...elements,{isVip:req.notionAPI.getIsVip()}]);
+    res.json([...elements, { isVip: req.notionAPI.getIsVip() }]);
   } catch (error) {
     logger.error(`Error to find blockId: ${blockId} with token auth: ${req.headers?.authorization}. Error: ${error}`)
     res.status(404).json({ error: `Erro ao buscar filhos do bloco: ${error.message}` });
   }
 });
 
-router.get("/only/:blockId", authMiddleware, async(req, res)=>{
+router.get("/only/:blockId", authMiddleware, async (req, res) => {
   try {
     const { blockId } = req.params;
     const getChildren = req.query.children === "false" ? false : true
@@ -77,8 +77,8 @@ router.get("/databases/:blockId", authMiddleware, async (req, res) => {
   }
 });
 
-router.post("/search", authMiddleware, async (req, res)=>{
-   try {
+router.post("/search", authMiddleware, async (req, res) => {
+  try {
     const elements = await req.notionAPI.fetchSearch(req.body.query);
     res.json(elements);
   } catch (error) {
@@ -87,7 +87,7 @@ router.post("/search", authMiddleware, async (req, res)=>{
   }
 })
 
-router.get("/mock", (req, res)=>{
+router.get("/mock", (req, res) => {
   res.json(mock)
 })
 

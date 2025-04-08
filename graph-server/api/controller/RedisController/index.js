@@ -1,16 +1,16 @@
-import Redis  from 'ioredis'
+import Redis from 'ioredis'
 import logger from '../../logs/index.js';
 
 export class RedisController {
   constructor() {
     this.redis = new Redis({
       host: process.env.REDIS_HOST,
-      port:  process.env.REDIS_PORT,        
+      port: process.env.REDIS_PORT,
       password: process.env.REDIS_PASSWORD
     });
   }
 
-  async healthcheckRedis(){
+  async healthcheckRedis() {
     try {
       const value = await this.redis.keys("*")
       logger.info(value)
@@ -36,7 +36,7 @@ export class RedisController {
     try {
       const value = await this.redis.get(key);
       if (value) {
-        logger.info(`Valor da chave ${key}: ${value}`);
+        logger.info(`Cache hit for ${key}`);
         return JSON.parse(value);
       } else {
         return null;
