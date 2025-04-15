@@ -2,12 +2,18 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import router from './routes/index.js';
+import streamRouter from './routes/streamRouter.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 import { pageRouter } from './routes/CRUDNotion.js';
-import {webhookStriperRouter} from "./routes/webhook.js"
+import { webhookStriperRouter } from "./routes/webhook.js"
 import { UserRouter } from './routes/user.js';
 import { redisRouter } from './routes/redis.js';
 
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 const app = express();
@@ -20,7 +26,7 @@ app.use("/webhook", webhookStriperRouter);
 
 app.use(cors({
   origin: function (origin, callback) {
-    if(!origin){
+    if (!origin) {
       return callback(null, true);
     }
     if (!allowedOrigins.includes(origin)) {
@@ -31,12 +37,15 @@ app.use(cors({
   }
 }));
 
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(express.json());
 app.use("/", router)
 app.use("/user", UserRouter)
 app.use("/translate", pageRouter)
 app.use("/redis", redisRouter)
-
+app.use("/stream", streamRouter)
 
 // Inicializa o servidor Express
 app.listen(PORT, () => {
