@@ -17,24 +17,24 @@ class StreamElementProcessor extends ElementProcessor {
      * @returns {String|null} - The child ID if it has children
      */
     processChildAndStream(child, parentId, metadata = {}) {
+        // Store the current element count to identify new elements
+        const beforeCount = this.elements.length;
+
         // Process using the parent class logic
         const childId = this.processChild(child, parentId);
 
         // Get the latest state after the element was processed
         const currentElements = [...this.getElements()];
 
-        // Find newly added elements since last stream
-        const newElements = currentElements.filter(element => {
-            // For nodes, use a composite key of source+target
+        // Find newly added elements since this processing step
+        const newElements = currentElements.slice(beforeCount);
+
+        // Track elements we've seen to avoid duplicates
+        newElements.forEach(element => {
             const elementKey = element.type === 'node'
                 ? `${element.source}:${element.target}`
                 : element.id;
-
-            if (!this.seenElements.has(elementKey)) {
-                this.seenElements.add(elementKey);
-                return true;
-            }
-            return false;
+            this.seenElements.add(elementKey);
         });
 
         // Increment processed count
@@ -59,10 +59,19 @@ class StreamElementProcessor extends ElementProcessor {
      * @param {Object} parent - The parent element to process
      */
     processParentAndStream(parent) {
+        // Store the current element count to identify new elements
+        const beforeCount = this.elements.length;
+
         super.processParent(parent);
 
-        if (this.sendEvent) {
-            this.sendEvent('parent', parent);
+        // Get all newly added elements
+        const newElements = this.elements.slice(beforeCount);
+
+        if (this.sendEvent && newElements.length > 0) {
+            this.sendEvent('element', {
+                elements: newElements,
+                parent
+            });
         }
     }
 

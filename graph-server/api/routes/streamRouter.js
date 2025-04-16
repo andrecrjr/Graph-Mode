@@ -60,9 +60,18 @@ streamRouter.get('/blocks/:blockId', authMiddleware, async (req, res) => {
             {
                 requestTracker,
                 enableMetrics: true,
-                requestLimit
+                requestLimit,
+                parentId: blockId // Ensure parentId is set for proper edge creation
             }
         );
+
+        // After processing is complete, ensure we have all nodes and edges
+        streamProcessor.streamCompleteState({
+            message: 'Graph processing complete',
+            timestamp: new Date().toISOString(),
+            requestCount: requestTracker.count,
+            requestLimit
+        });
 
         // End the stream with a complete event
         sendEvent('complete', {
