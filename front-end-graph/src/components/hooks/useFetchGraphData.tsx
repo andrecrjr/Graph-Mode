@@ -70,7 +70,9 @@ export const useFetchGraphData = (pageId: string) => {
       state?.nodes?.nodes?.length === 0 &&
       pageId !== "mock"
     ) {
-      fetchGraphData();
+      // fetchGraphData();
+      saveStorage.set("notionKey", authData?.user?.tokens?.access_token || "");
+      saveStorage.set("notionUser", authData?.user[authData?.user?.type as "person"]?.email || "");
     }
 
     if (isMock(pageId) && state.nodes && state?.nodes?.nodes?.length === 0) {
