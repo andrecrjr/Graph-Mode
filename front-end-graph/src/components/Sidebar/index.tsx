@@ -21,6 +21,7 @@ import { useGraphContextData } from "../Context/GraphContext";
 import { useSession } from "next-auth/react";
 import { GraphTheme, useTheme } from "../Context/ThemeContext";
 import { themeConfigs } from "../utils/theme";
+import { StreamButton } from "./StreamButton";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -126,6 +127,28 @@ const Sidebar = () => {
                 </button>
               </li>
             )}
+
+            {!isMock(state.pageId) && (
+              <>
+                <li className="w-full">
+                  <div className="p-4 w-full">
+                    <StreamButton />
+                  </div>
+                </li>
+                <li className="w-full mt-auto self-center">
+                  <button
+                    className="p-4 w-full hover:bg-gray-700 flex"
+                    onClick={(e) => {
+                      syncPage(path);
+                      window.location.reload();
+                    }}
+                  >
+                    <RefreshCcw className="mr-4" /> Syncronize with Notion
+                  </button>
+                </li>
+              </>
+            )}
+
             <li className="w-full mt-auto self-center">
               <a
                 className="p-4 w-full hover:bg-gray-700 flex"
@@ -134,19 +157,7 @@ const Sidebar = () => {
                 <Coffee className="mr-4" /> Buy me a coffee {";)"}
               </a>
             </li>
-            {!isMock(state.pageId) && (
-              <li className="w-full mt-auto self-center">
-                <button
-                  className="p-4 w-full hover:bg-gray-700 flex"
-                  onClick={(e) => {
-                    syncPage(path);
-                    window.location.reload();
-                  }}
-                >
-                  <RefreshCcw className="mr-4" /> Syncronize with Notion
-                </button>
-              </li>
-            )}
+
             <li className="w-full mt-auto self-center">
               <a className="p-4 w-full hover:bg-gray-700 flex" href="/app">
                 <ArrowLeft className="mr-4" /> Back to Home

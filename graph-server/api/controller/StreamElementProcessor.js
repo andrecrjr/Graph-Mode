@@ -42,9 +42,12 @@ class StreamElementProcessor extends ElementProcessor {
 
         // Only stream if we have a sendEvent function
         if (this.sendEvent && newElements.length > 0) {
+            // Format the elements to match front-end graph data structure
+            // This ensures data is compatible with processGraphData in the front-end
             this.sendEvent('element', {
                 newElements,
                 processedCount: this.processedCount,
+                ...metadata
             });
         }
 
@@ -69,10 +72,22 @@ class StreamElementProcessor extends ElementProcessor {
      */
     streamCompleteState(metadata = {}) {
         if (this.sendEvent) {
-            this.sendEvent('completeState', {
-                elements: this.getElements(),
-                processedCount: this.processedCount,
+            const elements = this.getElements();
+
+            // Format the elements to match front-end graph data structure
+            // This ensures data sent from the server can be used directly by processGraphData
+            const graphReadyData = {
+                blocks: elements,
+                tier: metadata.tier || 'free',
+                isVip: metadata.isVip || false,
+                requestCount: metadata.requestCount || 0,
+                requestLimit: metadata.requestLimit || 1000,
                 ...metadata
+            };
+
+            this.sendEvent('completeState', {
+                elements: graphReadyData,
+                processedCount: this.processedCount,
             });
         }
     }

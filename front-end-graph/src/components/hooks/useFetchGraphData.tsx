@@ -25,8 +25,8 @@ export const useFetchGraphData = (pageId: string) => {
           authData?.user?.tokens?.access_token || "",
           authData?.user[authData?.user?.type as "person"]?.email || "",
         );
-        const processedGraphData = processGraphDataMemoized(data);
-        dispatch({ type: "SET_NODES", payload: processedGraphData });
+        // const processedGraphData = processGraphDataMemoized(data);
+        // dispatch({ type: "SET_NODES", payload: processedGraphData });
 
         // Check if user is on free plan and approaching request limits
         const { tier } = data;

@@ -44,6 +44,6 @@ export default async function GraphPage({
   return (
     <div className="overflow-hidden max-w-screen">
       <GraphComponent />
-    </div>
+    </div >
   );
 }

@@ -20,7 +20,7 @@ const SelectEditorBar: React.FC = () => {
   const { editorDispatch } = useEditorContext();
 
   useEffect(() => {
-    if (nodes.nodes) {
+    if (nodes.nodes && nodes.nodes.length > 0) {
       editorDispatch({
         type: "UPDATE_TEMP_EDITOR_NODE",
         payload: {

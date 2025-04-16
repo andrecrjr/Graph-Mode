@@ -81,6 +81,73 @@ export const processGraphData = (data: any, blockId: string) => {
   return { nodes, links };
 };
 
+/**
+ * Process streaming elements specifically for real-time graph updates
+ * This function creates incremental updates that avoid duplicate nodes and links
+ */
+export const processStreamedElements = (
+  newElements: any[],
+  existingNodes: Node[] = [],
+  existingLinks: Link[] = [],
+  blockId: string
+) => {
+  // Track existing node IDs to avoid duplicates
+  const existingNodeIds = new Set(existingNodes.map(node => node.id));
+
+  // Track existing links to avoid duplicates (using composite keys)
+  const existingLinkKeys = new Set(
+    existingLinks.map(link => `${link.source}:${link.target}`)
+  );
+
+  // Filter and create new nodes
+  const newNodes: Node[] = newElements
+    .filter(el => el.type === "page" && !existingNodeIds.has(el.id))
+    .map(el => ({
+      id: el.id,
+      label: el.label,
+      firstParent: el.firstParent,
+    }));
+
+  // Apply saved positions if available
+  const savedPositions = loadNodePositions(blockId);
+  if (savedPositions) {
+    newNodes.forEach(node => {
+      if (savedPositions[node.id]) {
+        node.fx = savedPositions[node.id].x;
+        node.fy = savedPositions[node.id].y;
+      }
+    });
+  }
+
+  // Combine existing and new nodes to validate links against the complete node set
+  const allNodeIds = new Set([...existingNodeIds, ...newNodes.map(node => node.id)]);
+
+  // Filter and create new links
+  const newLinks: Link[] = newElements
+    .filter(el => {
+      if (el.type !== "node") return false;
+
+      // Check if both source and target nodes exist
+      const hasSourceTarget = allNodeIds.has(el.source) && allNodeIds.has(el.target);
+
+      // Check if this link is not already in the graph
+      const linkKey = `${el.source}:${el.target}`;
+      const isNewLink = !existingLinkKeys.has(linkKey);
+
+      return hasSourceTarget && isNewLink;
+    })
+    .map(el => ({
+      source: el.source,
+      target: el.target
+    }));
+
+  return {
+    nodes: newNodes,
+    links: newLinks,
+    hasChanges: newNodes.length > 0 || newLinks.length > 0
+  };
+};
+
 export const saveNodePositions = (
   data: { nodes?: Node[]; links?: Link[] },
   pageId: string,

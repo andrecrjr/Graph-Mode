@@ -27,7 +27,6 @@ export const GraphComponent: React.FC = () => {
       <LoadPageData>
         <div className={`graph overflow-hidden max-w-screen ${themeConfig.backgroundClass || "dark:bg-black bg-white"}`}>
           <Sidebar />
-          <LoadingGraphLazyComponent />
           <GraphSVGLazyComponent />
           <EditorPage />
         </div>

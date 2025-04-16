@@ -30,6 +30,45 @@ export const useGraph = () => {
       theme: GraphTheme = "default",
     ) => {
       if (!data.nodes || !data.links) return;
+
+      // Validate data integrity and log diagnostics
+      console.log(`Mounting graph with ${data.nodes.length} nodes and ${data.links.length} links`);
+
+      // Check for duplicate node IDs
+      const nodeIds = new Set<string>();
+      const duplicateNodeIds = new Set<string>();
+      data.nodes.forEach(node => {
+        if (nodeIds.has(node.id)) {
+          duplicateNodeIds.add(node.id);
+        }
+        nodeIds.add(node.id);
+      });
+
+      if (duplicateNodeIds.size > 0) {
+        console.warn('⚠️ Duplicate node IDs detected:', Array.from(duplicateNodeIds));
+      }
+
+      // Check for links with missing nodes
+      const invalidLinks = data.links.filter(
+        link => !nodeIds.has(typeof link.source === 'object' ? link.source.id : link.source as string) ||
+          !nodeIds.has(typeof link.target === 'object' ? link.target.id : link.target as string)
+      );
+
+      if (invalidLinks.length > 0) {
+        console.warn('⚠️ Links with missing nodes:', invalidLinks);
+      }
+
+      // Deduplicate nodes (just in case)
+      const uniqueNodes = Array.from(
+        new Map(data.nodes.map(node => [node.id, node])).values()
+      );
+
+      // If we had to deduplicate, update the data object
+      if (uniqueNodes.length !== data.nodes.length) {
+        console.warn(`Removed ${data.nodes.length - uniqueNodes.length} duplicate nodes`);
+        data.nodes = uniqueNodes;
+      }
+
       const themeConfig = getThemeConfig(theme);
 
       const svg = d3
@@ -69,7 +108,7 @@ export const useGraph = () => {
             WINDOW.MAX_GRAPH_HEIGHT / 3,
           ),
         )
-        .force("collide", d3.forceCollide().radius(60)); // Ajuste o raio conforme necessário
+        .force("collide", d3.forceCollide().radius(60));
 
       const link = container
         .append("g")
@@ -83,7 +122,7 @@ export const useGraph = () => {
       const node = container
         .append("g")
         .selectAll("a")
-        .data(data.nodes)
+        .data(data.nodes, (d: any) => d.id) // Enforce ID-based identity for updates
         .enter()
         .append("a")
         .attr("xlink:href", (node) => {
@@ -102,7 +141,6 @@ export const useGraph = () => {
         )
         .attr(
           "r",
-
           (d: any) => {
             if (d.firstParent) {
               return WINDOW.GRAPH_BALL_SIZE["master"];
@@ -124,14 +162,13 @@ export const useGraph = () => {
         .append("g")
         .attr("class", "labels")
         .selectAll("text")
-        .data(data.nodes)
+        .data(data.nodes, (d: any) => d.id) // Enforce ID-based identity for updates
         .enter()
         .append("text")
         .attr("class", `label ${themeConfig.labelFill}`)
         .attr("text-anchor", "middle")
         .attr(
           "dy",
-
           WINDOW.GRAPH_BALL_SIZE[
           WINDOW.WINDOW_WIDTH > WINDOW.RESPONSE_BREAKPOINT ? "sm" : "lg"
           ] +
