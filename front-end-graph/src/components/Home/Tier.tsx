@@ -65,8 +65,8 @@ export default function PricingTiers() {
             </CardFooter>
           </Card>
           <Card className="relative border-blue-200 dark:border-blue-800">
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-              <Badge className="bg-blue-500 hover:bg-blue-500 text-white">
+            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
+              <Badge className="bg-blue-500 hover:bg-blue-500 text-white animate-pulse">
                 5 DAYS FREE TRIAL
               </Badge>
             </div>
@@ -75,11 +75,16 @@ export default function PricingTiers() {
               <CardDescription>
                 All the features you need to be productive
               </CardDescription>
+
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="space-y-2">
-                <div className="text-4xl font-bold">
+                <div className="text-4xl font-bold flex items-center gap-2">
+                  <span className="text-gray-400 line-through text-3xl">$3.00</span>
                   $2.59<span className="text-sm font-normal">/month</span>
+                  <span className="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-full">
+                    Save 14%
+                  </span>
                 </div>
                 <p className="text-sm text-blue-600 dark:text-blue-400">
                   Try free for 5 days, then $2.59/month

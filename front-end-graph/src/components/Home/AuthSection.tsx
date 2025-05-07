@@ -10,9 +10,7 @@ export async function AuthSection({ session }: { session: Session | null }) {
           <SearchInput />
         </>
       ) : (
-        <section className="mx-4">
-          <AuthButton />
-        </section>
+        <AuthButton />
       )}
     </section>
   );

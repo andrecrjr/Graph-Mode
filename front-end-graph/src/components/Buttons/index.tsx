@@ -28,7 +28,7 @@ const AuthButton = ({ label = "Login with Notion" }: { label?: string }) => {
               callbackUrl: "/app",
             });
           }}
-          className="w-fit text-white top-0 right-0 mr-4 font-semibold py-2 px-4 rounded-lg shadow mt-2 z-50 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+          className="w-fit text-white top-0 right-0 font-semibold py-2 px-4 rounded-lg shadow mt-2 z-50 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
         >
           {label}
           <img

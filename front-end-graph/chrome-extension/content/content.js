@@ -1,5 +1,43 @@
 // This script runs on Notion pages
 
+// Function to extract Notion page ID from URL
+function extractNotionPageId(notionUrl) {
+    try {
+        const url = new URL(notionUrl);
+
+        // Handle different Notion URL formats
+
+        // Format 1: https://www.notion.so/workspace/Page-Name-123456789abcdef123456789abcdef12
+        // Format 2: https://www.notion.so/Page-Name-123456789abcdef123456789abcdef12
+        const lastPathSegment = url.pathname.split('/').pop();
+
+        // Check if the last segment contains a UUID pattern
+        const uuidMatch = lastPathSegment.match(/[a-f0-9]{32}$/);
+        if (uuidMatch) {
+            return uuidMatch[0];
+        }
+
+        // Format 3: https://www.notion.so/123456789abcdef123456789abcdef12
+        if (/^[a-f0-9]{32}$/.test(lastPathSegment)) {
+            return lastPathSegment;
+        }
+
+        // Format 4: https://www.notion.so/workspace/123456789abcdef123456789abcdef12
+        const allPathSegments = url.pathname.split('/');
+        for (const segment of allPathSegments) {
+            if (/^[a-f0-9]{32}$/.test(segment)) {
+                return segment;
+            }
+        }
+
+        // If no UUID found, return the last path segment as fallback
+        return lastPathSegment || 'mock';
+    } catch (error) {
+        console.error('Error extracting Notion page ID:', error);
+        return 'mock';
+    }
+}
+
 // Function to create and toggle the sidebar iframe
 function createGraphViewSidebar(notionUrl) {
     // Check if the sidebar already exists
@@ -16,10 +54,7 @@ function createGraphViewSidebar(notionUrl) {
     }
 
     // Extract Notion page ID from the URL
-    // This is a simple example and might need to be adjusted based on your URL structure
-    const urlObj = new URL(notionUrl);
-    const pathParts = urlObj.pathname.split('-');
-    const notionPageId = pathParts[pathParts.length - 1];
+    const notionPageId = extractNotionPageId(notionUrl);
 
     // Create the sidebar
     sidebar = document.createElement('div');
@@ -77,8 +112,8 @@ function createGraphViewSidebar(notionUrl) {
     const appBaseUrl = 'http://localhost:3000';  // For development
     // const appBaseUrl = 'https://your-production-url.com';  // For production
 
-    // Use the existing [id] route in your app
-    iframe.src = `${appBaseUrl}/graph/${notionPageId}`;
+    // Use the new extension route
+    iframe.src = `${appBaseUrl}/graph/extension/${notionPageId}?utm_source=notion-chrome-extension`;
 
     // Add the iframe to the sidebar
     sidebar.appendChild(iframe);
@@ -143,6 +178,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const pageInfo = {
             url: window.location.href,
             title: document.title,
+            pageId: extractNotionPageId(window.location.href),
             // Add any other relevant information you can extract
         };
 

@@ -20,7 +20,7 @@ export const fetchAndSaveCacheData = async (
   pageId: string,
   token: string,
   userNotion: string,
-) => {
+): Promise<ApiResponse> => {
   const localStorageKey = `data-block-${pageId}`;
   const tempStorageKey = `temp-data-blocks-${pageId}`;
   const cachedData = saveStorage.get(localStorageKey);
