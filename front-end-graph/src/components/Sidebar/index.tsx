@@ -29,7 +29,9 @@ const Sidebar = () => {
   const { nodes } = state;
   const router = useRouter();
   const data = useSession();
-  const path = usePathname().replace("/graph/", "");
+  const pathExtension = usePathname().includes("/graph/extension/");
+  const path = pathExtension ? usePathname().replace("/graph/extension/", "") : usePathname().replace("/graph/", "");
+
   const { theme, setTheme } = useTheme();
 
   const toggleSidebar = () => {
@@ -108,6 +110,7 @@ const Sidebar = () => {
                   e.preventDefault();
                   saveNodePositions(nodes, path);
                   window.location.reload();
+                  window.location.href = `/graph/${path}`;
                 }}
               >
                 <Pin className="mr-4" /> Pin {nodes && "current"} Positions

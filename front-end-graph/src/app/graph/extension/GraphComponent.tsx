@@ -6,6 +6,7 @@ import { useTheme } from "@/components/Context/ThemeContext";
 import { getThemeConfig } from "@/components/utils/theme";
 import { LoadingGraphLazyComponent } from "@/components/Graph";
 import Sidebar from "@/components/Sidebar";
+import { saveStorage } from "@/components/utils";
 
 interface ExtensionGraphProps {
     notionPageId?: string;
@@ -40,8 +41,12 @@ export default function ExtensionGraphComponent({ notionPageId = "mock" }: Exten
         setError(null);
 
         try {
-            const data = await fetchAndSaveCacheData(notionPageId, token, email);
-
+            let data: any;
+            if (saveStorage.get(`nodePositions-${notionPageId}`)) {
+                data = saveStorage.get(`nodePositions-${notionPageId}`);
+            } else {
+                data = await fetchAndSaveCacheData(notionPageId, token, email);
+            }
 
             const processedData = processGraphData(data, notionPageId);
             setGraphData(processedData);
