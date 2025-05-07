@@ -1,0 +1,155 @@
+// This script runs on Notion pages
+
+// Function to create and toggle the sidebar iframe
+function createGraphViewSidebar(notionUrl) {
+    // Check if the sidebar already exists
+    let sidebar = document.getElementById('graph-view-sidebar');
+
+    // If the sidebar exists, just toggle its visibility
+    if (sidebar) {
+        if (sidebar.style.width === '0px') {
+            sidebar.style.width = '40%';
+        } else {
+            sidebar.style.width = '0px';
+        }
+        return;
+    }
+
+    // Extract Notion page ID from the URL
+    // This is a simple example and might need to be adjusted based on your URL structure
+    const urlObj = new URL(notionUrl);
+    const pathParts = urlObj.pathname.split('-');
+    const notionPageId = pathParts[pathParts.length - 1];
+
+    // Create the sidebar
+    sidebar = document.createElement('div');
+    sidebar.id = 'graph-view-sidebar';
+    sidebar.style.position = 'fixed';
+    sidebar.style.top = '0';
+    sidebar.style.right = '0';
+    sidebar.style.width = '40%';
+    sidebar.style.height = '100%';
+    sidebar.style.zIndex = '10000';
+    sidebar.style.backgroundColor = 'white';
+    sidebar.style.boxShadow = '-5px 0 15px rgba(0, 0, 0, 0.1)';
+    sidebar.style.transition = 'width 0.3s ease';
+    sidebar.style.overflow = 'hidden';
+
+    // Create a header for the sidebar
+    const header = document.createElement('div');
+    header.style.display = 'flex';
+    header.style.justifyContent = 'space-between';
+    header.style.alignItems = 'center';
+    header.style.padding = '10px 15px';
+    header.style.borderBottom = '1px solid #e5e7eb';
+
+    // Add title to the header
+    const title = document.createElement('h3');
+    title.textContent = 'Graph View';
+    title.style.margin = '0';
+    title.style.fontWeight = 'bold';
+
+    // Add close button to the header
+    const closeButton = document.createElement('button');
+    closeButton.textContent = '×';
+    closeButton.style.border = 'none';
+    closeButton.style.background = 'none';
+    closeButton.style.fontSize = '24px';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.padding = '0 5px';
+    closeButton.style.lineHeight = '1';
+    closeButton.onclick = function () {
+        sidebar.style.width = '0px';
+    };
+
+    // Assemble the header
+    header.appendChild(title);
+    header.appendChild(closeButton);
+    sidebar.appendChild(header);
+
+    // Create the iframe
+    const iframe = document.createElement('iframe');
+    iframe.style.width = '100%';
+    iframe.style.height = 'calc(100% - 50px)'; // Subtract header height
+    iframe.style.border = 'none';
+
+    // Set the source to your Next.js app with the Notion page ID
+    const appBaseUrl = 'http://localhost:3000';  // For development
+    // const appBaseUrl = 'https://your-production-url.com';  // For production
+
+    // Use the existing [id] route in your app
+    iframe.src = `${appBaseUrl}/graph/${notionPageId}`;
+
+    // Add the iframe to the sidebar
+    sidebar.appendChild(iframe);
+
+    // Add the sidebar to the page
+    document.body.appendChild(sidebar);
+}
+
+// Optional: You can add a button directly to the Notion UI
+function addGraphViewButton() {
+    // Check if we've already added the button
+    if (document.getElementById('graph-view-button')) {
+        return;
+    }
+
+    // Create a floating button
+    const button = document.createElement('button');
+    button.id = 'graph-view-button';
+    button.textContent = 'Open in Graph-View';
+    button.style.position = 'fixed';
+    button.style.bottom = '20px';
+    button.style.right = '20px';
+    button.style.zIndex = '9999';
+    button.style.padding = '8px 16px';
+    button.style.backgroundColor = '#6366f1';
+    button.style.color = 'white';
+    button.style.border = 'none';
+    button.style.borderRadius = '4px';
+    button.style.fontWeight = 'bold';
+    button.style.cursor = 'pointer';
+    button.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.1)';
+
+    // Add hover effect
+    button.addEventListener('mouseover', function () {
+        button.style.backgroundColor = '#4f46e5';
+    });
+    button.addEventListener('mouseout', function () {
+        button.style.backgroundColor = '#6366f1';
+    });
+
+    // Add click handler
+    button.addEventListener('click', function () {
+        // Instead of sending a message to open a new tab, open the sidebar
+        createGraphViewSidebar(window.location.href);
+    });
+
+    // Add the button to the page
+    document.body.appendChild(button);
+}
+
+// Run the function when the page loads
+window.addEventListener('load', addGraphViewButton);
+
+// Also run it when the DOM is modified, for single-page apps that load content dynamically
+// Using a simple approach for now; you might want to use a MutationObserver for more complex cases
+setInterval(addGraphViewButton, 1000);
+
+// Listen for messages from the background script or popup
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === 'getPageInfo') {
+        // You can gather additional information from the Notion page if needed
+        const pageInfo = {
+            url: window.location.href,
+            title: document.title,
+            // Add any other relevant information you can extract
+        };
+
+        sendResponse(pageInfo);
+    } else if (message.action === 'openSidebar') {
+        createGraphViewSidebar(window.location.href);
+        sendResponse({ success: true });
+    }
+    return true; // Keep the message channel open for async response
+}); 

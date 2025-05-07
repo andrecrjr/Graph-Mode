@@ -4,6 +4,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { fetchNotionServer } from "@/components/service/Notion";
 import { isMock } from "@/components/utils";
+import { redirect } from "next/navigation";
 
 
 type Props = {

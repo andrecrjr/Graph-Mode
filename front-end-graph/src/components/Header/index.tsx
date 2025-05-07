@@ -15,9 +15,9 @@ export default function Header() {
   const router = usePathname();
   if (!router.includes("/graph/"))
     return (
-      <header className="px-4 lg:px-6 h-14 flex items-center z-40 w-full dark:bg-gray-900 transition-colors duration-200">
+      <header className="px-4 lg:px-6 h-14 flex flex-col md:flex-row items-center z-40 w-full pt-4 md:pt-0 gap-4 md:gap-0 dark:bg-gray-900 transition-colors duration-200">
         <Link
-          className="text-sm font-medium hover:underline underline-offset-4 mr-4 dark:text-white"
+          className="hidden md:block text-sm font-medium hover:underline underline-offset-4 mr-4 dark:text-white"
           href="/"
         >
           <h1>Graph Mode</h1>
