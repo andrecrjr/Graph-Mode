@@ -16,6 +16,7 @@ chrome.action.onClicked.addListener((tab) => {
 // Optional: Listen for messages from the popup or content scripts
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     // Handle the legacy 'openInGraphView' action by redirecting it to the content script
+    console.log('message', message);
     if (message.action === 'openInGraphView' && message.notionUrl) {
         // Extract tab id from the sender
         const tabId = sender.tab?.id;
@@ -33,4 +34,32 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }
     }
     return true; // Keep the message channel open for async response
-}); 
+});
+
+// background.js
+let pendingUrls = {}; // Store URLs during "loading" phase
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    // 1. Capture URL early during "loading"
+    if (changeInfo.url) {
+        pendingUrls[tabId] = changeInfo.url;
+    }
+
+    // 2. Handle completion using the stored URL
+    if (changeInfo.status === "complete" && pendingUrls[tabId]) {
+        const newUrl = pendingUrls[tabId];
+        delete pendingUrls[tabId]; // Clean up
+
+        chrome.storage.local.get("lastUrl", (result) => {
+            const lastUrl = result.lastUrl;
+            console.log('lastUrl', lastUrl);
+            console.log('newUrl', newUrl);
+
+            if (newUrl !== lastUrl) {
+                chrome.storage.local.set({ lastUrl: newUrl }, () => {
+                    chrome.tabs.sendMessage(tabId, { action: "urlChanged", url: newUrl });
+                });
+            }
+        });
+    }
+});

@@ -1,10 +1,11 @@
 import React from "react";
-import ExtensionGraphComponent from "../GraphComponent";
 import type { Metadata } from "next";
+import ExtensionGraphComponent from "@/components/Graph/ExtensionGraphComponent";
 
 type Props = {
     params: { id: string };
 };
+
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {

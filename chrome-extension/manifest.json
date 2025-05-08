@@ -22,7 +22,8 @@
             ],
             "js": [
                 "content/content.js"
-            ]
+            ],
+            "run_at": "document_end"
         }
     ],
     "host_permissions": [

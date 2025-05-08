@@ -1,4 +1,4 @@
-// This script runs on Notion pages
+const appBaseUrl = 'http://localhost:3000';
 
 // Function to extract Notion page ID from URL
 function extractNotionPageId(notionUrl) {
@@ -39,7 +39,7 @@ function extractNotionPageId(notionUrl) {
 }
 
 // Function to create and toggle the sidebar iframe
-function createGraphViewSidebar(notionUrl) {
+function createGraphModeSidebar(notionUrl) {
     // Check if the sidebar already exists
     let sidebar = document.getElementById('graph-view-sidebar');
 
@@ -107,10 +107,9 @@ function createGraphViewSidebar(notionUrl) {
     iframe.style.width = '100%';
     iframe.style.height = 'calc(100% - 50px)'; // Subtract header height
     iframe.style.border = 'none';
+    iframe.id = 'graph-view-iframe';
 
     // Set the source to your Next.js app with the Notion page ID
-    const appBaseUrl = 'http://localhost:3000';  // For development
-    // const appBaseUrl = 'https://your-production-url.com';  // For production
 
     // Use the new extension route
     iframe.src = `${appBaseUrl}/graph/extension/${notionPageId}?utm_source=notion-chrome-extension`;
@@ -120,6 +119,17 @@ function createGraphViewSidebar(notionUrl) {
 
     // Add the sidebar to the page
     document.body.appendChild(sidebar);
+    chrome.storage.local.set({ lastUrl: notionUrl }, () => {
+        console.log('lastUrl set to', notionUrl);
+    });
+}
+
+const updateGraphModeIframe = () => {
+    const iframe = document.getElementById('graph-view-iframe');
+    if (iframe) {
+        console.log('Updating iframe');
+        iframe.src = `${appBaseUrl}/graph/extension/${extractNotionPageId(window.location.href)}?utm_source=notion-chrome-extension`;
+    }
 }
 
 // Optional: You can add a button directly to the Notion UI
@@ -157,7 +167,7 @@ function addGraphViewButton() {
     // Add click handler
     button.addEventListener('click', function () {
         // Instead of sending a message to open a new tab, open the sidebar
-        createGraphViewSidebar(window.location.href);
+        createGraphModeSidebar(window.location.href);
     });
 
     // Add the button to the page
@@ -166,10 +176,6 @@ function addGraphViewButton() {
 
 // Run the function when the page loads
 window.addEventListener('load', addGraphViewButton);
-
-// Also run it when the DOM is modified, for single-page apps that load content dynamically
-// Using a simple approach for now; you might want to use a MutationObserver for more complex cases
-setInterval(addGraphViewButton, 1000);
 
 // Listen for messages from the background script or popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -184,8 +190,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         sendResponse(pageInfo);
     } else if (message.action === 'openSidebar') {
-        createGraphViewSidebar(window.location.href);
+        createGraphModeSidebar(window.location.href);
         sendResponse({ success: true });
+    } else if (message.action === 'urlChanged') {
+        console.log('URL changed to:', message.url);
+        // Perform actions here (e.g., update iframe, save data)
     }
-    return true; // Keep the message channel open for async response
+
 }); 

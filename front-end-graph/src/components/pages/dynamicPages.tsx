@@ -6,7 +6,7 @@ import LoadingDynamicPlaceholder from "../Loading";
 export const GraphComponent = dynamic(
   () => import("@/components/Graph/GraphComponent"),
   {
-    loading: () => <LoadingDynamicPlaceholder />,
+    loading: () => <LoadingDynamicPlaceholder message="Your Cool Graph is loading" />,
     ssr: false,
   },
 );
@@ -25,6 +25,14 @@ export const PricingTierComponent = dynamic(
   () => import("@/components/Home/Tier"),
   {
     loading: () => <LoadingDynamicPlaceholder message="Loading Plans" />,
+    ssr: false,
+  },
+);
+
+export const ExtensionGraphComponent = dynamic(
+  () => import("@/components/Graph/ExtensionGraphComponent"),
+  {
+    loading: () => <LoadingDynamicPlaceholder message="You are entering into the graph" />,
     ssr: false,
   },
 );

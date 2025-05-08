@@ -137,7 +137,7 @@ const Sidebar = () => {
                 <Coffee className="mr-4" /> Buy me a coffee {";)"}
               </a>
             </li>
-            {!isMock(state.pageId) && (
+            {(!isMock(state.pageId) || pathExtension) && (
               <li className="w-full mt-auto self-center">
                 <button
                   className="p-4 w-full hover:bg-gray-700 flex"

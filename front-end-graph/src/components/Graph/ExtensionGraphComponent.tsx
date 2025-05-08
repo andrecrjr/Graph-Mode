@@ -7,6 +7,7 @@ import { getThemeConfig } from "@/components/utils/theme";
 import { LoadingGraphLazyComponent } from "@/components/Graph";
 import Sidebar from "@/components/Sidebar";
 import { saveStorage } from "@/components/utils";
+import Link from "next/link";
 
 interface ExtensionGraphProps {
     notionPageId?: string;
@@ -91,7 +92,11 @@ export default function ExtensionGraphComponent({ notionPageId = "mock" }: Exten
                     ) : (
                         <form onSubmit={handleSubmit} className="w-full max-w-md p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
                             <h2 className="text-xl font-bold mb-6 text-center dark:text-white">Graph View Authentication</h2>
-
+                            <Link href="/app/extension" target="_blank" rel="noopener noreferrer">
+                                <p className="text-sm text-gray-500 mb-4">
+                                    First time using this? <span className="text-indigo-500">Click here to learn how to use this extension</span>
+                                </p>
+                            </Link>
                             {error && (
                                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                                     {error}
