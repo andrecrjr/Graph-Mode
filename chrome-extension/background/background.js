@@ -57,7 +57,11 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
             if (newUrl !== lastUrl) {
                 chrome.storage.local.set({ lastUrl: newUrl }, () => {
-                    chrome.tabs.sendMessage(tabId, { action: "urlChanged", url: newUrl });
+                    chrome.tabs.sendMessage(tabId, { action: "urlChanged", url: newUrl }, () => {
+                        if (chrome.runtime.lastError) {
+                            console.warn('Error sending message:', chrome.runtime.lastError);
+                        }
+                    });
                 });
             }
         });

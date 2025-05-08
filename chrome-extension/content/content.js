@@ -123,7 +123,6 @@ function createGraphModeSidebar(notionUrl) {
         console.log('lastUrl set to', notionUrl);
     });
 }
-
 const updateGraphModeIframe = () => {
     const iframe = document.getElementById('graph-view-iframe');
     if (iframe) {
@@ -194,7 +193,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         sendResponse({ success: true });
     } else if (message.action === 'urlChanged') {
         console.log('URL changed to:', message.url);
+        updateGraphModeIframe();
         // Perform actions here (e.g., update iframe, save data)
     }
 
-}); 
+});
