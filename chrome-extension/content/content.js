@@ -1,5 +1,7 @@
 const appBaseUrl = 'http://localhost:3000';
 
+const sidebarWidth = '75%'; // 75% of the width of the page
+
 // Function to extract Notion page ID from URL
 function extractNotionPageId(notionUrl) {
     try {
@@ -38,6 +40,14 @@ function extractNotionPageId(notionUrl) {
     }
 }
 
+function setNotionAppSidebarWidth() {
+    document.body.style.display = 'flex';
+    document.querySelector('#notion-app').style.width = '100%';
+    document.querySelector('#notion-app .notion-cursor-listener').style.width = '100%';
+    document.querySelector('#notion-app .notion-frame').style.width = `100%`;
+
+}
+
 // Function to create and toggle the sidebar iframe
 function createGraphModeSidebar(notionUrl) {
     // Check if the sidebar already exists
@@ -46,7 +56,7 @@ function createGraphModeSidebar(notionUrl) {
     // If the sidebar exists, just toggle its visibility
     if (sidebar) {
         if (sidebar.style.width === '0px') {
-            sidebar.style.width = '40%';
+            sidebar.style.width = sidebarWidth;
         } else {
             sidebar.style.width = '0px';
         }
@@ -59,7 +69,7 @@ function createGraphModeSidebar(notionUrl) {
     // Create the sidebar
     sidebar = document.createElement('div');
     sidebar.id = 'graph-view-sidebar';
-    sidebar.style.width = '75%';
+    sidebar.style.width = sidebarWidth;
     sidebar.style.height = '100%';
     sidebar.style.zIndex = '10000';
     sidebar.style.backgroundColor = 'white';
@@ -98,9 +108,7 @@ function createGraphModeSidebar(notionUrl) {
     header.appendChild(title);
     header.appendChild(closeButton);
     sidebar.appendChild(header);
-    document.body.style.display = 'flex';
-    document.querySelector('#notion-app').style.width = '100%';
-    document.querySelector('#notion-app .notion-cursor-listener').style.width = '100%';
+
 
     // Create the iframe
     const iframe = document.createElement('iframe');
@@ -116,6 +124,7 @@ function createGraphModeSidebar(notionUrl) {
 
     // Add the iframe to the sidebar
     sidebar.appendChild(iframe);
+    setNotionAppSidebarWidth();
 
     // Add the sidebar to the page
     document.body.appendChild(sidebar);
@@ -124,6 +133,7 @@ function createGraphModeSidebar(notionUrl) {
     });
 }
 const updateGraphModeIframe = () => {
+    setNotionAppSidebarWidth();
     const iframe = document.getElementById('graph-view-iframe');
     if (iframe) {
         console.log('Updating iframe');
