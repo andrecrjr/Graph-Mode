@@ -59,10 +59,7 @@ function createGraphModeSidebar(notionUrl) {
     // Create the sidebar
     sidebar = document.createElement('div');
     sidebar.id = 'graph-view-sidebar';
-    sidebar.style.position = 'fixed';
-    sidebar.style.top = '0';
-    sidebar.style.right = '0';
-    sidebar.style.width = '40%';
+    sidebar.style.width = '75%';
     sidebar.style.height = '100%';
     sidebar.style.zIndex = '10000';
     sidebar.style.backgroundColor = 'white';
@@ -101,6 +98,9 @@ function createGraphModeSidebar(notionUrl) {
     header.appendChild(title);
     header.appendChild(closeButton);
     sidebar.appendChild(header);
+    document.body.style.display = 'flex';
+    document.querySelector('#notion-app').style.width = '100%';
+    document.querySelector('#notion-app .notion-cursor-listener').style.width = '100%';
 
     // Create the iframe
     const iframe = document.createElement('iframe');
