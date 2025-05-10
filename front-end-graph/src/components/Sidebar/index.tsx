@@ -27,11 +27,9 @@ const Sidebar = () => {
   const [showThemeSelector, setShowThemeSelector] = useState(false);
   const { state } = useGraphContextData();
   const { nodes } = state;
-  const router = useRouter();
-  const data = useSession();
-  const pathExtension = usePathname().includes("/graph/extension/");
-  const path = pathExtension ? usePathname().replace("/graph/extension/", "") : usePathname().replace("/graph/", "");
-
+  const path = usePathname();
+  const isPathExtension = path.includes("/graph/extension/");
+  const pageId = isPathExtension ? path.replace("/graph/extension/", "") : path;
   const { theme, setTheme } = useTheme();
 
   const toggleSidebar = () => {
@@ -108,21 +106,20 @@ const Sidebar = () => {
                 title="You can fix positions to arrange the graphs later"
                 onClick={(e) => {
                   e.preventDefault();
-                  saveNodePositions(nodes, path);
+                  saveNodePositions(nodes, pageId);
                   window.location.reload();
-                  window.location.href = `/graph/${path}`;
                 }}
               >
                 <Pin className="mr-4" /> Pin {nodes && "current"} Positions
               </button>
             </li>
-            {saveStorage.get(`nodePositions-${path}`) && (
+            {saveStorage.get(`nodePositions-${pageId}`) && (
               <li className="w-full">
                 <button
                   className="p-4 w-full hover:bg-gray-700 flex"
                   title="You can fix positions to arrange the graphs later"
                   onClick={() => {
-                    clearNodePositions(path);
+                    clearNodePositions(pageId);
                   }}
                 >
                   <PinOff className="mr-4" /> Reset Pinned Positions
@@ -137,12 +134,12 @@ const Sidebar = () => {
                 <Coffee className="mr-4" /> Buy me a coffee {";)"}
               </a>
             </li>
-            {(!isMock(state.pageId) || pathExtension) && (
+            {(!isMock(state.pageId) || isPathExtension) && (
               <li className="w-full mt-auto self-center">
                 <button
                   className="p-4 w-full hover:bg-gray-700 flex"
                   onClick={(e) => {
-                    syncPage(path);
+                    syncPage(isPathExtension ? path.replace("/graph/extension/", "") : path);
                     window.location.reload();
                   }}
                 >

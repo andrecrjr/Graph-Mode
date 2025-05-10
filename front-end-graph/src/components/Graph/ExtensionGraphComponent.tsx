@@ -8,12 +8,20 @@ import { LoadingGraphLazyComponent } from "@/components/Graph";
 import Sidebar from "@/components/Sidebar";
 import { saveStorage } from "@/components/utils";
 import Link from "next/link";
+import { useGraphContextData } from "../Context/GraphContext";
 
 interface ExtensionGraphProps {
     notionPageId?: string;
 }
 
 export default function ExtensionGraphComponent({ notionPageId = "mock" }: ExtensionGraphProps) {
+    const { dispatch, state } = useGraphContextData();
+
+    const processGraphDataMemoized = useCallback(
+        (data: any) => processGraphData(data, notionPageId),
+        [notionPageId],
+    );
+
     const svgRef = useRef<SVGSVGElement | null>(null);
     const { mountGraph } = useGraph();
 
@@ -22,7 +30,6 @@ export default function ExtensionGraphComponent({ notionPageId = "mock" }: Exten
     const [email, setEmail] = useState<string>(localStorage.getItem("notion_email") || "");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const [graphData, setGraphData] = useState<any>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
     // Get theme config safely
@@ -43,14 +50,15 @@ export default function ExtensionGraphComponent({ notionPageId = "mock" }: Exten
 
         try {
             let data: any;
-            if (saveStorage.get(`nodePositions-${notionPageId}`)) {
-                data = saveStorage.get(`nodePositions-${notionPageId}`);
-            } else {
-                data = await fetchAndSaveCacheData(notionPageId, token, email);
-            }
 
-            const processedData = processGraphData(data, notionPageId);
-            setGraphData(processedData);
+            data = await fetchAndSaveCacheData(notionPageId, token, email);
+
+            const processedData = processGraphDataMemoized(data);
+            dispatch({
+                type: "UPDATE_NODES",
+                payload: processedData,
+            });
+
             setIsAuthenticated(true);
         } catch (err) {
             console.error("Failed to load graph data:", err);
@@ -68,10 +76,10 @@ export default function ExtensionGraphComponent({ notionPageId = "mock" }: Exten
     }, []);
 
     useEffect(() => {
-        if (graphData && svgRef.current) {
-            mountGraph(graphData, svgRef, theme);
+        if (state.nodes && svgRef.current) {
+            mountGraph(state.nodes, svgRef, theme);
         }
-    }, [graphData, mountGraph, theme]);
+    }, [state.nodes, mountGraph, theme]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
