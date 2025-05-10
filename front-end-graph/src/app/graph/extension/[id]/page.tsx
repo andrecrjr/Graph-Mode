@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import ExtensionGraphComponent from "@/components/Graph/ExtensionGraphComponent";
+import { ExtensionGraphComponent } from "@/components/pages/dynamicPages";
 
 type Props = {
     params: { id: string };
