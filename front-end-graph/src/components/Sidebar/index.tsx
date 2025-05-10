@@ -10,7 +10,7 @@ import {
   X,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { isMock, saveStorage } from "../utils";
 import {
   clearNodePositions,
@@ -18,7 +18,6 @@ import {
   syncPage,
 } from "../utils/graph";
 import { useGraphContextData } from "../Context/GraphContext";
-import { useSession } from "next-auth/react";
 import { GraphTheme, useTheme } from "../Context/ThemeContext";
 import { themeConfigs } from "../utils/theme";
 
@@ -59,36 +58,91 @@ const Sidebar = () => {
     }
   };
 
+  // Get background color from current theme
+  const getSidebarBgColor = (): string => {
+    try {
+      const themeColor = getThemeColorClass(theme);
+      return `${themeColor} bg-opacity-20`;
+    } catch (error) {
+      console.error("Error getting sidebar background color:", error);
+      return 'bg-brown-500 bg-opacity-20'; // Default fallback
+    }
+  };
+
+  // Get button hover color from current theme
+  const getButtonHoverColor = (): string => {
+    try {
+      const baseColor = themeConfigs[theme as GraphTheme]?.nodeFill?.primary || 'fill-blue-500';
+      return baseColor.replace('fill-', 'hover:bg-') + '/50';
+    } catch (error) {
+      console.error("Error getting button hover color:", error);
+      return 'hover:bg-gray-700'; // Default fallback
+    }
+  };
+
+  // Get icon color from current theme
+  const getIconColorClass = (): string => {
+    try {
+      const baseColor = themeConfigs[theme as GraphTheme]?.nodeFill?.primary || '';
+      return baseColor.replace('fill-', 'text-');
+    } catch (error) {
+      console.error("Error getting icon color:", error);
+      return 'text-white'; // Default fallback
+    }
+  };
+
+  const buttonHoverClass = getButtonHoverColor();
+  const iconColorClass = theme === 'default' ? 'text-white' : getIconColorClass();
+
   return (
     <>
       <button
-        className={`fixed top-4 left-4 z-40 p-2 flex justify-center ${isOpen ? "bg-gray-700" : "bg-gray-800"} text-white rounded-full focus:outline-none`}
+        className={`opacity-1 md:opacity-25 fixed top-4 ${isPathExtension ? "right-0" : "left-0"} z-40 p-2 flex justify-center ${isOpen ? getSidebarBgColor() : "bg-gray-800"} text-white bg-transparent`}
         onClick={toggleSidebar}
       >
-        {isOpen ? <X /> : <Menu />}
+        {isOpen ? <X className={`w-10 h-6 ${iconColorClass}`} /> : <Menu className={`w-12 h-6 ${iconColorClass}`} />}
       </button>
-
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-gray-900 text-white transform ${isOpen ? "translate-x-0" : "-translate-x-full"
-          } transition-transform duration-300 ease-in-out z-30`}
+        className={`fixed top-0 ${getSidebarBgColor()} rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm border ${isPathExtension ?
+          "right-0" : "left-0"} h-full ${isOpen ? "w-64" : "w-16"} text-white transition-all duration-300 ease-in-out z-30 overflow-hidden`}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
       >
         <div className="mt-20">
           <ul className="flex flex-col">
+            {(!isMock(state.pageId) || isPathExtension) && (
+              <li className="w-full mt-auto self-center bg-green-700">
+                <button
+                  className="p-4 w-full flex items-center"
+                  title="Synchronize with Notion"
+                  onClick={(e) => {
+                    syncPage(isPathExtension ? path.replace("/graph/extension/", "") : path);
+                    window.location.reload();
+                  }}
+                >
+                  <RefreshCcw className={`${isOpen ? "mr-4" : "mx-auto"}`} />
+                  {isOpen && <span>Syncronize with Notion</span>}
+                </button>
+              </li>
+            )}
             <li className="w-full">
               <button
-                className="p-4 w-full hover:bg-gray-700 flex"
+                className={`p-4 w-full ${buttonHoverClass} flex items-center`}
                 title="Change graph theme"
-                onClick={() => setShowThemeSelector(!showThemeSelector)}
+                onClick={() => {
+                  setIsOpen(true);
+                  setShowThemeSelector(!showThemeSelector);
+                }}
               >
-                <Palette className="mr-4" /> Change Graph Theme
+                <Palette className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
+                {isOpen && <span>Change Graph Theme</span>}
               </button>
-              {showThemeSelector && (
+              {showThemeSelector && isOpen && (
                 <div className="ml-4 pl-4 border-l border-gray-700">
                   {Object.keys(themeConfigs).map((themeName) => (
                     <button
                       key={themeName}
-                      className={`p-2 w-full text-left flex items-center ${theme === themeName ? "bg-gray-700" : "hover:bg-gray-800"
-                        }`}
+                      className={`p-2 w-full text-left flex items-center ${theme === themeName ? "bg-gray-700" : buttonHoverClass}`}
                       onClick={() => handleThemeChange(themeName as GraphTheme)}
                     >
                       <div
@@ -102,7 +156,7 @@ const Sidebar = () => {
             </li>
             <li className="w-full">
               <button
-                className="p-4 w-full hover:bg-gray-700 flex"
+                className={`p-4 w-full ${buttonHoverClass} flex items-center`}
                 title="You can fix positions to arrange the graphs later"
                 onClick={(e) => {
                   e.preventDefault();
@@ -110,46 +164,43 @@ const Sidebar = () => {
                   window.location.reload();
                 }}
               >
-                <Pin className="mr-4" /> Pin {nodes && "current"} Positions
+                <Pin className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
+                {isOpen && <span>Pin {nodes && "current"} Positions</span>}
               </button>
             </li>
             {saveStorage.get(`nodePositions-${pageId}`) && (
               <li className="w-full">
                 <button
-                  className="p-4 w-full hover:bg-gray-700 flex"
+                  className={`p-4 w-full ${buttonHoverClass} flex items-center`}
                   title="You can fix positions to arrange the graphs later"
                   onClick={() => {
                     clearNodePositions(pageId);
                   }}
                 >
-                  <PinOff className="mr-4" /> Reset Pinned Positions
+                  <PinOff className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
+                  {isOpen && <span>Reset Pinned Positions</span>}
                 </button>
               </li>
             )}
             <li className="w-full mt-auto self-center">
               <a
-                className="p-4 w-full hover:bg-gray-700 flex"
+                className={`p-4 w-full ${buttonHoverClass} flex items-center`}
                 href="https://ko-fi.com/B0B812WECP"
+                title="Buy me a coffee"
               >
-                <Coffee className="mr-4" /> Buy me a coffee {";)"}
+                <Coffee className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
+                {isOpen && <span>Buy me a coffee {";)"}</span>}
               </a>
             </li>
-            {(!isMock(state.pageId) || isPathExtension) && (
-              <li className="w-full mt-auto self-center">
-                <button
-                  className="p-4 w-full hover:bg-gray-700 flex"
-                  onClick={(e) => {
-                    syncPage(isPathExtension ? path.replace("/graph/extension/", "") : path);
-                    window.location.reload();
-                  }}
-                >
-                  <RefreshCcw className="mr-4" /> Syncronize with Notion
-                </button>
-              </li>
-            )}
+
             <li className="w-full mt-auto self-center">
-              <a className="p-4 w-full hover:bg-gray-700 flex" href="/app">
-                <ArrowLeft className="mr-4" /> Back to Home
+              <a
+                className={`p-4 w-full ${buttonHoverClass} flex items-center`}
+                href="/app"
+                title="Back to Home"
+              >
+                <ArrowLeft className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
+                {isOpen && <span>Back to Home</span>}
               </a>
             </li>
           </ul>
@@ -159,4 +210,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default memo(Sidebar);
