@@ -35,7 +35,7 @@ export const fetchAndSaveCacheData = async (
   const response = await fetchServer(`/blocks/${pageId}?user=${userNotion}`, token) as ApiResponse;
 
   // Extract blocks data and metadata from response
-  const blocksData = response.graph || response;
+  const blocksData = response.blocks || response.graph || response;
 
   // Create enriched data object that includes metadata
   const enrichedData = Array.isArray(blocksData) ? {
