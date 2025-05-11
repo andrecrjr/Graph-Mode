@@ -50,6 +50,7 @@ export const useEditorActionPage = () => {
       editorDocument.document.length > 0 &&
       !!tempNodeChoiceEditorId
     ) {
+      // Create or Update nodes in the graph using Editor, dispatch the action
       dispatch({
         type: "UPDATE_NODES",
         payload: createOrUpdateNode(tempNodeChoiceEditorId, data, pageId),
