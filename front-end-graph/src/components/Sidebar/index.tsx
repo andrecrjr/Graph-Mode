@@ -116,7 +116,7 @@ const Sidebar = () => {
                   className="p-4 w-full flex items-center"
                   title="Synchronize with Notion"
                   onClick={(e) => {
-                    syncPage(isPathExtension ? path.replace("/graph/extension/", "") : path);
+                    syncPage(isPathExtension ? path.replace("/graph/extension/", "") : path.replace("/graph/", ""));
                     window.location.reload();
                   }}
                 >
