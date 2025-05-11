@@ -67,12 +67,19 @@ export default function Landing() {
               <div className="relative w-full max-w-3xl mx-auto aspect-video">
                 <iframe
                   src="https://acjr.notion.site/ebd/1f0b5e58148c803fb994cce92d21134d "
-                  className="w-full h-[600px] md:h-[650px] rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-200"
+                  className="w-full min-h-[325px] md:h-[750px] rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-200"
+                  height={800}
                   title="Waitlist Signup Form"
                   loading="lazy"
                 />
               </div>
             </div>
+            <p className="text-gray-500 md:text-xl dark:text-gray-400 max-w-2xl mx-auto transition-colors duration-200">
+              Ready to unlock the full power of Graph Mode? Sign up for the waitlist to be among the first to know when it's live.
+            </p>
+            <p className="text-gray-500 md:text-xl dark:text-gray-400 max-w-2xl mx-auto transition-colors duration-200">
+              Keep an eye on our <Link href="https://ko-fi.com/post/Great-Cool-Surprise-for-Graph-Mode-X8X31ET4W2" className="text-blue-500 hover:underline">Ko-fi</Link> for updates.
+            </p>
           </div>
         </div>
       </section>

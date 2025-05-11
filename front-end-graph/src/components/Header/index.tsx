@@ -41,7 +41,7 @@ export default function Header() {
           )}
           <Link
             className="text-sm font-medium hover:underline underline-offset-4 dark:text-gray-300"
-            href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
+            href="/contact"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Contact"
