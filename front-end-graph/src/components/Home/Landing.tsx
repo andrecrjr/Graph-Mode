@@ -57,10 +57,10 @@ export default function Landing() {
           <div className="flex flex-col items-center text-center space-y-6">
             <div className="space-y-4">
               <h3 className="text-xl font-bold tracking-tight sm:text-5xl dark:text-white transition-colors duration-200">
-                🚀 Be First to Know When It's Live
+                🚀 Be First to Know When It{"'"}s Live
               </h3>
               <p className="text-gray-500 md:text-xl dark:text-gray-400 max-w-2xl mx-auto transition-colors duration-200">
-                The <strong>Graph Mode Chrome extension</strong> is coming soon — bringing the same powerful visualization you love from the web app, now directly "aside" Notion.
+                The <strong>Graph Mode Chrome extension</strong> is coming soon {"—"} bringing the same powerful visualization you love from the web app, now directly aside Notion.
               </p>
             </div>
             <div className="w-full mt-8">
@@ -75,7 +75,7 @@ export default function Landing() {
               </div>
             </div>
             <p className="text-gray-500 md:text-xl dark:text-gray-400 max-w-2xl mx-auto transition-colors duration-200">
-              Ready to unlock the full power of Graph Mode? Sign up for the waitlist to be among the first to know when it's live.
+              Ready to unlock the full power of Graph Mode? Sign up for the waitlist to be among the first to know when it{"'"}s live.
             </p>
             <p className="text-gray-500 md:text-xl dark:text-gray-400 max-w-2xl mx-auto transition-colors duration-200">
               Keep an eye on our <Link href="https://ko-fi.com/post/Great-Cool-Surprise-for-Graph-Mode-X8X31ET4W2" className="text-blue-500 hover:underline">Ko-fi</Link> for updates.
