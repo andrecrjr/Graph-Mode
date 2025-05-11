@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import BuyMeCoffee from "./BuyCoffee";
 import { NotionHome } from "../svg/NotionHome";
-import { ArrowRight, LucideChartNetwork } from "lucide-react";
+import { ArrowRight, LucideChartNetwork, Puzzle } from "lucide-react";
 import { PricingTierComponent } from "../pages/dynamicPages";
 import ZettelkastenComparison from "./ZeltekastenWay";
 
@@ -29,6 +29,11 @@ export default function Landing() {
                   View Demo Now <LucideChartNetwork className="ml-1" />
                 </Button>
               </Link>
+              <Link href="#chrome-extension">
+                <Button variant={"secondary"} className="dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600">
+                  Chrome Extension Soon <Puzzle className="ml-2" />
+                </Button>
+              </Link>
               <Link href="/app">
                 <Button className="bg-green-700 hover:bg-green-700 dark:text-white dark:hover:bg-green-600">
                   Go to Graph Mode <ArrowRight className="ml-1" />
@@ -43,6 +48,33 @@ export default function Landing() {
         >
           <NotionHome />
         </Link>
+      </section>
+      <section
+        className="w-full py-12 md:py-24 z-50 min-h-screen lg:py-32 bg-white dark:bg-gray-800 flex items-center justify-center transition-colors duration-200"
+        id="chrome-extension"
+      >
+        <div className="px-4 md:px-6 max-w-4xl">
+          <div className="flex flex-col items-center text-center space-y-6">
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold tracking-tight sm:text-5xl dark:text-white transition-colors duration-200">
+                🚀 Be First to Know When It's Live
+              </h3>
+              <p className="text-gray-500 md:text-xl dark:text-gray-400 max-w-2xl mx-auto transition-colors duration-200">
+                The <strong>Graph Mode Chrome extension</strong> is coming soon — bringing the same powerful visualization you love from the web app, now directly "aside" Notion.
+              </p>
+            </div>
+            <div className="w-full mt-8">
+              <div className="relative w-full max-w-3xl mx-auto aspect-video">
+                <iframe
+                  src="https://acjr.notion.site/ebd/1f0b5e58148c803fb994cce92d21134d "
+                  className="w-full h-[600px] md:h-[650px] rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-200"
+                  title="Waitlist Signup Form"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
       <section className="w-full py-12 md:py-24 z-50 h-screen lg:py-32 bg-white dark:bg-gray-800 flex items-center justify-center transition-colors duration-200">
         <div className="container px-4 md:px-6">

@@ -76,36 +76,28 @@ function createGraphModeSidebar(notionUrl) {
     sidebar.style.boxShadow = '-5px 0 15px rgba(0, 0, 0, 0.1)';
     sidebar.style.transition = 'width 0.3s ease';
     sidebar.style.overflow = 'hidden';
+    sidebar.style.position = 'relative';
 
     // Create a header for the sidebar
     const header = document.createElement('div');
     header.style.display = 'flex';
-    header.style.justifyContent = 'space-between';
-    header.style.alignItems = 'center';
-    header.style.padding = '10px 15px';
-    header.style.borderBottom = '1px solid #e5e7eb';
-
-    // Add title to the header
-    const title = document.createElement('h3');
-    title.textContent = 'Graph View';
-    title.style.margin = '0';
-    title.style.fontWeight = 'bold';
-
+    header.style.position = 'absolute';
+    header.style.backgroundColor = 'white';
+    header.style.zIndex = '999';
     // Add close button to the header
     const closeButton = document.createElement('button');
     closeButton.textContent = '×';
     closeButton.style.border = 'none';
     closeButton.style.background = 'none';
-    closeButton.style.fontSize = '24px';
+    closeButton.style.fontSize = '2rem';
     closeButton.style.cursor = 'pointer';
     closeButton.style.padding = '0 5px';
+    closeButton.style.color = 'black';
     closeButton.style.lineHeight = '1';
     closeButton.onclick = function () {
         sidebar.style.width = '0px';
     };
 
-    // Assemble the header
-    header.appendChild(title);
     header.appendChild(closeButton);
     sidebar.appendChild(header);
 
@@ -113,7 +105,7 @@ function createGraphModeSidebar(notionUrl) {
     // Create the iframe
     const iframe = document.createElement('iframe');
     iframe.style.width = '100%';
-    iframe.style.height = 'calc(100% - 50px)'; // Subtract header height
+    iframe.style.height = '100%'; // Subtract header height
     iframe.style.border = 'none';
     iframe.id = 'graph-view-iframe';
 

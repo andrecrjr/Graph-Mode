@@ -8,11 +8,13 @@ export const loadNodePositions = (blockId: string) => {
 };
 
 interface ApiResponse {
-  blocks?: any[];
-  tier?: string;
-  isVip?: boolean;
-  requestCount?: number;
-  requestLimit?: number;
+  graph?: any[];
+  metadata?: {
+    tier?: string;
+    isVip?: boolean;
+    requestCount?: number;
+    requestLimit?: number;
+  };
   [key: string]: any;
 }
 
@@ -33,15 +35,15 @@ export const fetchAndSaveCacheData = async (
   const response = await fetchServer(`/blocks/${pageId}?user=${userNotion}`, token) as ApiResponse;
 
   // Extract blocks data and metadata from response
-  const blocksData = response.blocks || response;
+  const blocksData = response.graph || response;
 
   // Create enriched data object that includes metadata
   const enrichedData = Array.isArray(blocksData) ? {
     blocks: blocksData,
-    tier: response.tier || "free",
-    isVip: response.isVip || false,
-    requestCount: response.requestCount || 0,
-    requestLimit: response.requestLimit || 1000
+    tier: response.metadata?.tier || "free",
+    isVip: response.metadata?.isVip || false,
+    requestCount: response.metadata?.requestCount || 0,
+    requestLimit: response.metadata?.requestLimit || 1000
   } : blocksData;
 
   saveStorage.set(localStorageKey, enrichedData);

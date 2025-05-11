@@ -8,6 +8,7 @@ import {
   RefreshCcw,
   Palette,
   X,
+  CreditCard,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { memo, useState } from "react";
@@ -97,14 +98,13 @@ const Sidebar = () => {
   return (
     <>
       <button
-        className={`opacity-1 md:opacity-25 fixed top-4 ${isPathExtension ? "right-0" : "left-0"} z-40 p-2 flex justify-center ${isOpen ? getSidebarBgColor() : "bg-gray-800"} text-white bg-transparent`}
+        className={`opacity-1 md:opacity-25 fixed top-4 right-0 z-40 p-2 flex justify-center ${isOpen ? getSidebarBgColor() : "bg-gray-800"} text-white bg-transparent`}
         onClick={toggleSidebar}
       >
         {isOpen ? <X className={`w-10 h-6 ${iconColorClass}`} /> : <Menu className={`w-12 h-6 ${iconColorClass}`} />}
       </button>
       <div
-        className={`fixed top-0 ${getSidebarBgColor()} rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm border ${isPathExtension ?
-          "right-0" : "left-0"} h-full ${isOpen ? "w-64" : "w-16"} text-white transition-all duration-300 ease-in-out z-30 overflow-hidden`}
+        className={`fixed top-0 ${getSidebarBgColor()} rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm border ${"right-0"} h-full ${isOpen ? "w-64" : "w-16"} text-white transition-all duration-300 ease-in-out z-30 overflow-hidden`}
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
       >
@@ -193,7 +193,7 @@ const Sidebar = () => {
               </a>
             </li>
 
-            <li className="w-full mt-auto self-center">
+            {!isPathExtension && <li className="w-full mt-auto self-center">
               <a
                 className={`p-4 w-full ${buttonHoverClass} flex items-center`}
                 href="/app"
@@ -202,7 +202,19 @@ const Sidebar = () => {
                 <ArrowLeft className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
                 {isOpen && <span>Back to Home</span>}
               </a>
+            </li>}
+            <li className="w-full mt-auto self-center">
+              <a
+                className={`p-4 w-full ${buttonHoverClass} flex items-center`}
+                href={"/pricing"}
+                title="Pricing"
+                target="_blank"
+              >
+                <CreditCard className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
+                {isOpen && <span>Pricing</span>}
+              </a>
             </li>
+
           </ul>
         </div>
       </div>
