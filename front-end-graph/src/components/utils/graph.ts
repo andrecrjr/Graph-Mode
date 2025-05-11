@@ -46,8 +46,8 @@ export const fetchAndSaveCacheData = async (
     requestLimit: response.metadata?.requestLimit || 1000
   } : blocksData;
 
-  saveStorage.set(localStorageKey, enrichedData);
-  saveStorage.set(tempStorageKey, enrichedData);
+  saveStorage.set(localStorageKey, enrichedData.blocks);
+  saveStorage.set(tempStorageKey, enrichedData.blocks);
   return enrichedData;
 };
 

@@ -43,9 +43,9 @@ export const createOrUpdateNode = (
 ): { nodes: Node[]; links: Link[] } => {
   let existingData;
   if (pageId === mockIdPage) {
-    existingData = saveStorage.get(localStorageKey("mock")).blocks || [];
+    existingData = saveStorage.get(localStorageKey("mock")) || [];
   } else {
-    existingData = saveStorage.get(localStorageKey(pageId)).blocks || [];
+    existingData = saveStorage.get(localStorageKey(pageId)) || [];
   }
 
   const nodes = {
