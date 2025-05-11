@@ -27,7 +27,7 @@ export const useFetchGraphData = (pageId: string) => {
         );
         const processedGraphData = processGraphDataMemoized(data);
         dispatch({ type: "SET_NODES", payload: processedGraphData });
-
+        dispatch({ type: "SET_IS_VIP", payload: processedGraphData.isVip });
         // Check if user is on free plan and approaching request limits
         const { tier } = data;
         const isFreeTier = tier === "free";
@@ -56,6 +56,7 @@ export const useFetchGraphData = (pageId: string) => {
       const tempData = saveStorage.get(`temp-data-blocks-${pageId}`);
       const processedGraphData = processGraphDataMemoized(tempData);
       dispatch({ type: "SET_NODES", payload: processedGraphData });
+      dispatch({ type: "SET_IS_VIP", payload: processedGraphData.isVip });
       dispatch({ type: "ERROR_GRAPH", payload: true });
       console.error("Error fetching graph data:", error);
     } finally {

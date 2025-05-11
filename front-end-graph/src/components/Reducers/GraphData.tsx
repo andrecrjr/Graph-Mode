@@ -11,6 +11,7 @@ interface GraphState {
   errorFetchGraph: boolean;
   graphMode: "DRAW" | "WATCH";
   pageId: string;
+  isVip: boolean;
 }
 
 export interface GraphContextType {
@@ -20,32 +21,33 @@ export interface GraphContextType {
 
 type Action =
   | {
-      type: "SET_NODES";
-      payload: {
-        nodes?: Node[];
-        links?: Link[];
-      };
-    }
-  | { type: "SET_GRAPH_MODE"; payload: "DRAW" | "WATCH" }
-  | {
-      type: "UPDATE_NODES";
-      payload: {
-        nodes: Node[];
-        links: Link[];
-      };
-    }
-  | {
-      type: "ERROR_GRAPH";
-      payload: boolean;
-    }
-  | {
-      type: "LOADED_GRAPH";
-      payload: boolean;
-    }
-  | {
-      type: "SET_PAGE_ID";
-      payload: string;
+    type: "SET_NODES";
+    payload: {
+      nodes?: Node[];
+      links?: Link[];
     };
+  }
+  | { type: "SET_GRAPH_MODE"; payload: "DRAW" | "WATCH" }
+  | { type: "SET_IS_VIP"; payload: boolean }
+  | {
+    type: "UPDATE_NODES";
+    payload: {
+      nodes: Node[];
+      links: Link[];
+    };
+  }
+  | {
+    type: "ERROR_GRAPH";
+    payload: boolean;
+  }
+  | {
+    type: "LOADED_GRAPH";
+    payload: boolean;
+  }
+  | {
+    type: "SET_PAGE_ID";
+    payload: string;
+  };
 
 export const initialState: GraphState = {
   nodes: {
@@ -56,6 +58,7 @@ export const initialState: GraphState = {
   graphMode: "WATCH",
   loadingFetchGraph: true,
   errorFetchGraph: false,
+  isVip: false,
 };
 
 export function graphReducer(state: GraphState, action: Action): GraphState {
@@ -93,6 +96,11 @@ export function graphReducer(state: GraphState, action: Action): GraphState {
       return {
         ...state,
         pageId: action.payload,
+      };
+    case "SET_IS_VIP":
+      return {
+        ...state,
+        isVip: action.payload,
       };
     default:
       return state;

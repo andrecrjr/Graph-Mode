@@ -80,7 +80,7 @@ export const processGraphData = (data: any, blockId: string) => {
       }
     });
 
-  return { nodes, links };
+  return { nodes, links, isVip: data.isVip };
 };
 
 export const saveNodePositions = (

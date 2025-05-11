@@ -192,7 +192,17 @@ const Sidebar = () => {
                 {isOpen && <span>Buy me a coffee {";)"}</span>}
               </a>
             </li>
-
+            {!state.isVip && <li className="w-full mt-auto self-center">
+              <a
+                className={`p-4 w-full ${buttonHoverClass} flex items-center`}
+                href={"/pricing"}
+                title="Pricing"
+                target="_blank"
+              >
+                <CreditCard className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
+                {isOpen && <span>Upgrade to Pro</span>}
+              </a>
+            </li>}
             {!isPathExtension && <li className="w-full mt-auto self-center">
               <a
                 className={`p-4 w-full ${buttonHoverClass} flex items-center`}
@@ -203,17 +213,7 @@ const Sidebar = () => {
                 {isOpen && <span>Back to Home</span>}
               </a>
             </li>}
-            <li className="w-full mt-auto self-center">
-              <a
-                className={`p-4 w-full ${buttonHoverClass} flex items-center`}
-                href={"/pricing"}
-                title="Pricing"
-                target="_blank"
-              >
-                <CreditCard className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-                {isOpen && <span>Pricing</span>}
-              </a>
-            </li>
+
 
           </ul>
         </div>
