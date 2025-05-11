@@ -40,15 +40,17 @@ router.get('/blocks/:blockId', authMiddleware, async (req, res) => {
       }
     );
 
-    res.json([
-      ...elements,
-      {
+    res.json({
+      graph: [
+        ...elements,
+      ],
+      metadata: {
         isVip: req.notionAPI.getIsVip(),
         tier: req.notionAPI.getUserTier(),
         requestCount: requestTracker.count,
         requestLimit: req.requestLimit || parseInt(process.env.LIMIT_NOTION_REFRESH) || 5
       }
-    ]);
+    });
   } catch (error) {
     logger.error(`Error to find blockId: ${blockId} with token auth: ${req.headers?.authorization}. Error: ${error}`);
     res.status(404).json({ error: `Erro ao buscar filhos do bloco: ${error.message}` });

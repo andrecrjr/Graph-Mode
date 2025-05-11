@@ -19,6 +19,9 @@ run-dev:
 down:
 	@$(COMPOSE) down
 
+build-front-end:
+	cd $(FRONT_END_DIR) && pnpm run clean && pnpm run build
+
 # Comando para reconstruir os serviços
 build:
 	# Derrubando os containers existentes

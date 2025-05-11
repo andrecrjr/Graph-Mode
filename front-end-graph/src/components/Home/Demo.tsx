@@ -4,7 +4,7 @@ import { KofiDonate } from "../Donate";
 import { Session } from "next-auth";
 import { ChartLineIcon, Trophy, Unlock } from "lucide-react";
 
-export async function DemoSection({ data }: { data: Session | null }) {
+export async function AppManagementSection({ data }: { data: Session | null }) {
   return (
     <section className="flex justify-center items-center">
       {data?.user.subscriptionId || data?.user.lifetimePaymentId ? (
@@ -26,16 +26,11 @@ export async function DemoSection({ data }: { data: Session | null }) {
             <Link href="/pricing">
               <Button variant={"outline"} className="font-bold dark:text-white dark:bg-green-700">
                 <Unlock className="mr-2" />
-                Unlock Full Potential: Upgrade to PRO Today
+                Unlock Full Potential
               </Button>
             </Link>
           )}
         </>
-      )}
-      {!data && (
-        <Link href="/graph/mock" className="ml-4">
-          <Button className="flex items-center space-x-2">View Demo Now</Button>
-        </Link>
       )}
     </section>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import { AuthSection } from "@/components/Home/AuthSection";
-import { DemoSection } from "@/components/Home/Demo";
+import { AppManagementSection } from "@/components/Home/Demo";
 import { GeneralFooter } from "@/components/Footer";
 import { BGParticle } from "@/components/Home/BgParticle";
 import { LazyHistory } from "@/components/History";
@@ -17,7 +17,7 @@ export default async function AppPage() {
           Graph Mode
         </h1>
         <AuthSection session={data} />
-        <DemoSection data={data} />
+        <AppManagementSection data={data} />
         <LazyHistory />
       </section>
       <GeneralFooter />

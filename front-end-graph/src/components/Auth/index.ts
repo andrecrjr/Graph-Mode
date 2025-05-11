@@ -49,6 +49,18 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   },
 
   debug: process.env.NODE_ENV === "development",
+  cookies: {
+    csrfToken: {
+      name: "next-auth.csrf-token",
+      options: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+      },
+    },
+  },
 });
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);

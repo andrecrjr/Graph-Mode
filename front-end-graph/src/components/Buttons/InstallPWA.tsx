@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState, MouseEvent } from "react";
 import { Button } from "../ui/button";
-import { X } from "lucide-react";
+import { Puzzle, X } from "lucide-react";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
 interface DeferredPrompt extends Event {
   prompt: () => void;
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
@@ -15,6 +15,7 @@ function ButtonPWA() {
   );
   const [isInstallable, setIsInstallable] = useState<boolean>(false);
   const [isHidden, setIsHidden] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     const hideDate = localStorage.getItem("hideDate");
@@ -46,18 +47,20 @@ function ButtonPWA() {
   }, []);
 
   const handleInstallClick = (e: MouseEvent<HTMLButtonElement>) => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === "accepted") {
-          console.log("User accepted the install prompt");
-        } else {
-          console.log("User dismissed the install prompt");
-        }
-        setDeferredPrompt(null);
-        setIsInstallable(false);
-      });
-    }
+    e.preventDefault();
+    router.push("/#chrome-extension");
+    // if (deferredPrompt) {
+    //   deferredPrompt.prompt();
+    //   deferredPrompt.userChoice.then((choiceResult) => {
+    //     if (choiceResult.outcome === "accepted") {
+    //       console.log("User accepted the install prompt");
+    //     } else {
+    //       console.log("User dismissed the install prompt");
+    //     }
+    //     setDeferredPrompt(null);
+    //     setIsInstallable(false);
+    //   });
+    // }
   };
 
   const handleClose = () => {
@@ -76,20 +79,20 @@ function ButtonPWA() {
       <span className="self-end cursor-pointer" onClick={handleClose}>
         <X />
       </span>
-      <Link
-        className="font-bold text-sm underline pb-3"
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105&utm_source=click-float"
-      >
-        Send feedbacks in our Contact form!
-      </Link>
       <Button
         className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full mx-auto"
         onClick={handleInstallClick}
       >
-        Add Graph Mode to Home Screen
+        Chrome Extension is Coming Soon <Puzzle className="ml-2" />
       </Button>
+      <Link
+        className="font-bold text-sm underline pb-3 text-center text-gray-500"
+        target="_blank"
+        rel="noopener noreferrer"
+        href="/contact"
+      >
+        Send feedbacks in our Contact form!
+      </Link>
     </section>
   );
 }
