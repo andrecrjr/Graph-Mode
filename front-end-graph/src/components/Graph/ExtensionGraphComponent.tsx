@@ -26,7 +26,7 @@ export default function ExtensionGraphComponent({ notionPageId = "mock" }: Exten
     const { mountGraph } = useGraph();
 
     const { theme } = useTheme();
-    const [token, setToken] = useState<string>(localStorage.getItem("notion_access_token") || "");
+    const [token, setToken] = useState<string>(localStorage.getItem("notionKey") || "");
     const [email, setEmail] = useState<string>(localStorage.getItem("notion_email") || "");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -58,6 +58,10 @@ export default function ExtensionGraphComponent({ notionPageId = "mock" }: Exten
                 type: "UPDATE_NODES",
                 payload: processedData,
             });
+            dispatch({
+                type: "SET_PAGE_ID",
+                payload: notionPageId,
+            });
 
             setIsAuthenticated(true);
         } catch (err) {
@@ -70,7 +74,7 @@ export default function ExtensionGraphComponent({ notionPageId = "mock" }: Exten
     }, [token, email, notionPageId]);
 
     useEffect(() => {
-        if (localStorage.getItem("notion_access_token") && localStorage.getItem("notion_email")) {
+        if (localStorage.getItem("notionKey") && localStorage.getItem("notion_email")) {
             loadGraphData();
         }
     }, []);
@@ -87,8 +91,8 @@ export default function ExtensionGraphComponent({ notionPageId = "mock" }: Exten
     };
 
     return (
-        <div className={`graph-extension overflow-hidden w-full h-full ${themeConfig.backgroundClass || "dark:bg-black bg-white"}`}>
-            <Sidebar />
+        <div className={`graph-extension overflow-hidden w-full h-full ${themeConfig.backgroundClass}`}>
+            {isAuthenticated && <Sidebar />}
 
             {!isAuthenticated ? (
                 <div className="flex flex-col items-center justify-center h-full p-4">
@@ -98,11 +102,11 @@ export default function ExtensionGraphComponent({ notionPageId = "mock" }: Exten
                             <p className="mt-4 text-lg">Loading graph data...</p>
                         </div>
                     ) : (
-                        <form onSubmit={handleSubmit} className="w-full max-w-md p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-                            <h2 className="text-xl font-bold mb-6 text-center dark:text-white">Graph View Authentication</h2>
+                        <form onSubmit={handleSubmit} className="w-full max-w-md p-6 rounded-lg shadow-md">
+                            <h2 className="text-xl font-bold mb-6 text-center dark:text-white">Graph Mode Authentication</h2>
                             <Link href="/app/extension" target="_blank" rel="noopener noreferrer">
                                 <p className="text-sm text-gray-500 mb-4">
-                                    First time using this? <span className="text-indigo-500">Click here to learn how to use this extension</span>
+                                    First time using this? <span className="text-indigo-500">Click here to get your Notion Secret Key and E-mail</span>
                                 </p>
                             </Link>
                             {error && (
@@ -111,27 +115,10 @@ export default function ExtensionGraphComponent({ notionPageId = "mock" }: Exten
                                 </div>
                             )}
 
-                            <div className="mb-4">
-                                <label htmlFor="token" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Notion Access Token
-                                </label>
-                                <input
-                                    type="text"
-                                    id="token"
-                                    value={token}
-                                    onChange={(e) => {
-                                        setToken(e.target.value);
-                                        localStorage.setItem("notion_access_token", e.target.value);
-                                    }}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                    placeholder="Enter your Notion access token"
-                                    required
-                                />
-                            </div>
 
                             <div className="mb-6">
                                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Email
+                                    Notion E-mail
                                 </label>
                                 <input
                                     type="email"
@@ -143,6 +130,23 @@ export default function ExtensionGraphComponent({ notionPageId = "mock" }: Exten
                                     }}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                     placeholder="Enter your email"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="token" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Notion Secret Key
+                                </label>
+                                <input
+                                    type="password"
+                                    id="token"
+                                    value={token}
+                                    onChange={(e) => {
+                                        setToken(e.target.value);
+                                        localStorage.setItem("notionKey", e.target.value);
+                                    }}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    placeholder="Enter your Notion access token"
                                     required
                                 />
                             </div>

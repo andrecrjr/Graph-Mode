@@ -7,7 +7,7 @@ import Landing from "@/components/Home/Landing";
 
 export default async function Home() {
   return (
-    <div className="flex flex-col mt-5 h-full">
+    <div className="flex flex-col min-h-full">
       <BGParticle />
       <Landing />
       <CreatorSection />

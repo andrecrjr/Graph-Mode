@@ -93,12 +93,12 @@ const Sidebar = () => {
   };
 
   const buttonHoverClass = getButtonHoverColor();
-  const iconColorClass = theme === 'default' ? 'text-white' : getIconColorClass();
+  const iconColorClass = theme === 'default' ? 'text-black dark:text-white' : getIconColorClass();
 
   return (
     <>
       <button
-        className={`opacity-1 md:opacity-25 fixed top-4 right-0 z-40 p-2 flex justify-center ${isOpen ? getSidebarBgColor() : "bg-gray-800"} text-white bg-transparent`}
+        className={`opacity-1 md:opacity-25 fixed top-4 right-0 z-40 p-2 flex justify-center ${isOpen ? getSidebarBgColor() : "bg-gray-800"} ${iconColorClass} bg-transparent`}
         onClick={toggleSidebar}
       >
         {isOpen ? <X className={`w-10 h-6 ${iconColorClass}`} /> : <Menu className={`w-12 h-6 ${iconColorClass}`} />}
@@ -120,8 +120,8 @@ const Sidebar = () => {
                     window.location.reload();
                   }}
                 >
-                  <RefreshCcw className={`${isOpen ? "mr-4" : "mx-auto"}`} />
-                  {isOpen && <span>Syncronize with Notion</span>}
+                  <RefreshCcw className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
+                  {isOpen && <span className={iconColorClass}>Syncronize with Notion</span>}
                 </button>
               </li>
             )}
@@ -135,14 +135,14 @@ const Sidebar = () => {
                 }}
               >
                 <Palette className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-                {isOpen && <span>Change Graph Theme</span>}
+                {isOpen && <span className={iconColorClass}>Change Graph Theme</span>}
               </button>
               {showThemeSelector && isOpen && (
                 <div className="ml-4 pl-4 border-l border-gray-700">
                   {Object.keys(themeConfigs).map((themeName) => (
                     <button
                       key={themeName}
-                      className={`p-2 w-full text-left flex items-center ${theme === themeName ? "bg-gray-700" : buttonHoverClass}`}
+                      className={`p-2 w-full text-left flex items-center ${iconColorClass} ${theme === themeName ? "bg-gray-300 dark:bg-gray-700" : buttonHoverClass}`}
                       onClick={() => handleThemeChange(themeName as GraphTheme)}
                     >
                       <div
@@ -165,7 +165,7 @@ const Sidebar = () => {
                 }}
               >
                 <Pin className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-                {isOpen && <span>Pin {nodes && "current"} Positions</span>}
+                {isOpen && <span className={iconColorClass}>Pin {nodes && "current"} Positions</span>}
               </button>
             </li>
             {saveStorage.get(`nodePositions-${pageId}`) && (
@@ -178,7 +178,7 @@ const Sidebar = () => {
                   }}
                 >
                   <PinOff className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-                  {isOpen && <span>Reset Pinned Positions</span>}
+                  {isOpen && <span className={iconColorClass}>Reset Pinned Positions</span>}
                 </button>
               </li>
             )}
@@ -189,7 +189,7 @@ const Sidebar = () => {
                 title="Buy me a coffee"
               >
                 <Coffee className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-                {isOpen && <span>Buy me a coffee {";)"}</span>}
+                {isOpen && <span className={iconColorClass}>Buy me a coffee {";)"}</span>}
               </a>
             </li>
             {!state.isVip && <li className="w-full mt-auto self-center">
@@ -200,7 +200,7 @@ const Sidebar = () => {
                 target="_blank"
               >
                 <CreditCard className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-                {isOpen && <span>Upgrade to Pro</span>}
+                {isOpen && <span className={iconColorClass}>Upgrade to Pro</span>}
               </a>
             </li>}
             {!isPathExtension && <li className="w-full mt-auto self-center">
@@ -210,7 +210,7 @@ const Sidebar = () => {
                 title="Back to Home"
               >
                 <ArrowLeft className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-                {isOpen && <span>Back to Home</span>}
+                {isOpen && <span className={iconColorClass}>Back to Home</span>}
               </a>
             </li>}
 

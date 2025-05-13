@@ -48,6 +48,8 @@ function setNotionAppSidebarWidth() {
 
 }
 
+
+
 // Function to create and toggle the sidebar iframe
 function createGraphModeSidebar(notionUrl) {
     // Check if the sidebar already exists
@@ -181,12 +183,10 @@ window.addEventListener('load', addGraphViewButton);
 // Listen for messages from the background script or popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'getPageInfo') {
-        // You can gather additional information from the Notion page if needed
         const pageInfo = {
             url: window.location.href,
             title: document.title,
             pageId: extractNotionPageId(window.location.href),
-            // Add any other relevant information you can extract
         };
 
         sendResponse(pageInfo);
@@ -194,9 +194,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         createGraphModeSidebar(window.location.href);
         sendResponse({ success: true });
     } else if (message.action === 'urlChanged') {
+        // Perform actions here (e.g., update iframe, save data)
         console.log('URL changed to:', message.url);
         updateGraphModeIframe();
-        // Perform actions here (e.g., update iframe, save data)
     }
 
+});
+
+window.addEventListener('message', function (e) {
+
+    if (!e.origin.includes('https://graph-mode.com') && !e.origin.includes('http://localhost:3000')) return;
+    if (e.data && e.data.redirectGraphModeUrl) {
+        window.location.href = e.data.redirectGraphModeUrl;
+    }
 });

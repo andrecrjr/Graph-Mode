@@ -6,12 +6,17 @@ import { Link, Node } from "../../../types/graph";
 import { isNodeOrLink } from "../utils";
 import { GraphTheme } from "../Context/ThemeContext";
 import { getThemeConfig } from "../utils/theme";
+import { usePathname } from "next/navigation";
 
 export const useGraph = () => {
   const {
     dispatch,
     state: { pageId },
   } = useGraphContextData();
+  const pathname = usePathname();
+  const isExtension = pathname.includes("extension");
+  console.log("pageId", pageId);
+  console.log("pathname", pathname);
 
   const WINDOW = {
     MAX_GRAPH_WIDTH: 6000,
@@ -87,7 +92,19 @@ export const useGraph = () => {
         .enter()
         .append("a")
         .attr("xlink:href", (node) => {
-          return `https://notion.so/${(pageId !== "mock" && node.id?.replaceAll("-", "")) || "#"}`;
+          return isExtension ? "#" : `https://notion.so/${(pageId !== "mock" && node.id?.replaceAll("-", "")) || "#"}`;
+        })
+        .attr("id", (node) => {
+          return node.id;
+        })
+        .on("click", (e, node) => {
+          e.preventDefault();
+          const notionUrl = `https://notion.so/${(pageId !== "mock" && node.id?.replaceAll("-", "")) || "#"}`;
+          if (isExtension) {
+            window.parent.postMessage({ redirectGraphModeUrl: notionUrl }, '*');
+          } else {
+            window.open(notionUrl, "_blank");
+          }
         })
         .attr("target", "_blank")
         .append("circle")
