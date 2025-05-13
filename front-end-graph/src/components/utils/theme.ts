@@ -17,8 +17,8 @@ const defaultTheme: ThemeConfig = {
         secondary: "fill-gray-600 dark:fill-gray-200",
     },
     linkStroke: "stroke-gray-700 dark:stroke-gray-100",
-    labelFill: "fill-gray-800 dark:fill-yellow-300",
-    backgroundClass: "dark:bg-black bg-white",
+    labelFill: "fill-black dark:fill-yellow-300",
+    backgroundClass: "bg-white dark:bg-background",
 };
 
 export const themeConfigs: Record<GraphTheme, ThemeConfig> = {
@@ -30,16 +30,7 @@ export const themeConfigs: Record<GraphTheme, ThemeConfig> = {
         },
         linkStroke: "stroke-gray-300",
         labelFill: "fill-yellow-300",
-        backgroundClass: "bg-gray-900",
-    },
-    light: {
-        nodeFill: {
-            primary: "fill-blue-600",
-            secondary: "fill-gray-700",
-        },
-        linkStroke: "stroke-gray-800",
-        labelFill: "fill-gray-900",
-        backgroundClass: "bg-gray-100",
+        backgroundClass: "bg-background",
     },
     blue: {
         nodeFill: {

@@ -6,7 +6,7 @@ import AdBanner from "../Ads/AdsLayout";
 
 export const GeneralFooter = () => {
   return (
-    <footer className="mt-auto h-auto pt-5 bg-gray-50 dark:bg-gray-900 text-center flex justify-center flex-col items-center z-50 transition-colors duration-200">
+    <footer className="mt-auto h-auto pt-5 dark:bg-gray-800 text-center flex justify-center flex-col items-center z-50 transition-colors duration-200">
       <div className="pb-2">
         <NotionHome />
       </div>
@@ -26,7 +26,7 @@ export const GeneralFooter = () => {
         MVP. While we strive for a smooth experience, some features may still
         have minor bugs. If you encounter any issues, feel free to{" "}
         <a
-          href="https://acjr.notion.site/12db5e58148c80c19144ce5f22f3f392?pvs=105"
+          href="/contact"
           className="bold dark:text-blue-300"
         >
           contact me via Contact Support Form

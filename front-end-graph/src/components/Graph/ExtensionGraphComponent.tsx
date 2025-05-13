@@ -91,7 +91,7 @@ export default function ExtensionGraphComponent({ notionPageId = "mock" }: Exten
     };
 
     return (
-        <div className={`graph-extension overflow-hidden w-full h-full ${themeConfig.backgroundClass || "dark:bg-black bg-white"}`}>
+        <div className={`graph-extension overflow-hidden w-full h-full ${themeConfig.backgroundClass}`}>
             {isAuthenticated && <Sidebar />}
 
             {!isAuthenticated ? (
@@ -102,7 +102,7 @@ export default function ExtensionGraphComponent({ notionPageId = "mock" }: Exten
                             <p className="mt-4 text-lg">Loading graph data...</p>
                         </div>
                     ) : (
-                        <form onSubmit={handleSubmit} className="w-full max-w-md p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+                        <form onSubmit={handleSubmit} className="w-full max-w-md p-6 rounded-lg shadow-md">
                             <h2 className="text-xl font-bold mb-6 text-center dark:text-white">Graph Mode Authentication</h2>
                             <Link href="/app/extension" target="_blank" rel="noopener noreferrer">
                                 <p className="text-sm text-gray-500 mb-4">

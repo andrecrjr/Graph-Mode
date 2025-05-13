@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { saveStorage } from "../utils";
 
-export type GraphTheme = "default" | "dark" | "light" | "blue" | "green";
+export type GraphTheme = "default" | "dark" | "blue" | "green";
 
 type ThemeContextType = {
     theme: GraphTheme;
