@@ -19,12 +19,15 @@ const roboto = Roboto({
   weight: ["100", "300", "400"],
 });
 export const metadata: Metadata = {
-  title: "Graph Mode - Interactive Zettelkasten for Notion",
+  title: "Graph Mode - Browser Extension for Interactive Zettelkasten in Notion",
   description:
-    "Transform your Notion pages into an interactive Zettelkasten/Graph view. Boost your productivity and note organization with Graph Mode.",
+    "Transform your Notion pages into an interactive Zettelkasten/Graph view with Graph Mode Browser Extension. Boost your productivity and note organization with this Extension.",
   keywords:
-    "Graph Mode, Notion, Zettelkasten, Interactive Graph, Productivity App, Note-Taking, Knowledge Management",
+    "Graph Mode, Notion, Zettelkasten, Interactive Graph, Productivity App, Note-Taking, Knowledge Management, Browser Extension, Chrome Extension, Google Chrome Extension, Notion Chrome Extension",
   robots: "index, follow",
+  icons: {
+    icon: "/images/icons/icon-72x72.png",
+  },
 };
 
 export default async function RootLayout({
@@ -34,10 +37,10 @@ export default async function RootLayout({
 }>) {
   const ldJSON = {
     "@context": "https://schema.org",
-    "@type": ["WebApplication", "MobileApplication"],
+    "@type": ["WebApplication", "MobileApplication", "BrowserExtension"],
     name: "Graph Mode",
     description:
-      "Transform your Notion pages into an interactive Zettelkasten/Graph view, with the power of Graph Mode!",
+      "Transform your Notion pages into an interactive Zettelkasten/Graph view, with Graph Mode Browser Extension!",
     operatingSystem: "All",
     applicationCategory: "ProductivityApplication",
   };

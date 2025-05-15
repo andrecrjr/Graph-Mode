@@ -15,28 +15,27 @@ export default function Landing() {
         <div className="container mt-auto px-4 md:px-6">
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-3">
-              <h1 className="text-4xl font-bold sm:text-8xl tracking-tight dark:text-white">
-                Unlock Graph Mode
+              <h1 className="text-4xl font-bold sm:text-7xl tracking-tight dark:text-white">
+                Unlock the Power of Graph Mode
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-500 sm:text-xl dark:text-gray-400">
-                Transform your Notion pages into an interactive graph inspired
-                by Zettelkasten/Obsidian. Start exploring connections today.
+                Enhance your Notion workflow with our browser extension offering a Zettelkasten-style graph view—just like Obsidian. Build, visualize, and explore relationships across all your notes.
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
               <Link href="/graph/mock">
                 <Button variant={"secondary"} className="dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600">
-                  View Demo Now <LucideChartNetwork className="ml-1" />
+                  View Demo <LucideChartNetwork className="ml-1" />
                 </Button>
               </Link>
               <Link href="#chrome-extension">
-                <Button variant={"secondary"} className="dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600">
-                  Chrome Extension Soon <Puzzle className="ml-2" />
+                <Button variant={"secondary"} className="dark:bg-green-700 dark:text-gray-100 dark:hover:bg-green-600">
+                  Chrome Extension <Puzzle className="ml-2" />
                 </Button>
               </Link>
               <Link href="/app">
                 <Button className="bg-green-700 hover:bg-green-700 dark:text-white dark:hover:bg-green-600">
-                  Go to Graph Mode <ArrowRight className="ml-1" />
+                  Go to Graph Mode
                 </Button>
               </Link>
             </div>
