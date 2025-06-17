@@ -83,7 +83,7 @@ function ButtonPWA() {
         className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full mx-auto"
         onClick={handleInstallClick}
       >
-        Chrome Extension is Coming Soon <Puzzle className="ml-2" />
+        Chrome Extension <Puzzle className="ml-2" />
       </Button>
       <Link
         className="font-bold text-sm underline pb-3 text-center text-gray-500"
