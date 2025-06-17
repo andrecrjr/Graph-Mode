@@ -274,17 +274,21 @@ class BlockStreamer {
      * Process the parent block
      */
     async processParentBlock() {
-        // Fetch with integrated rate limiting
-        const firstParent = await this.processor.fetchBlockChildren(
+        // First, fetch the parent block itself
+        const parentBlock = await this.processor.fetchBlockChildren(
             this.blockId,
-            false,
-            false
+            null,
+            false  // Don't fetch children, just the block itself
         );
 
         // Exit if limit reached during fetch
         if (this.processor.hasReachedLimit()) return;
 
-        this.processor.processParent(firstParent);
+        // Add the parent block as a page
+        if (parentBlock && parentBlock.id) {
+            const parentTitle = this.getBlockTitle(parentBlock);
+            this.processor.addPage(parentBlock.id, parentTitle);
+        }
 
         // Emit the parent page immediately
         const initialElements = this.processor.getNewElements();
@@ -295,6 +299,33 @@ class BlockStreamer {
                 batchId: 'parent'
             });
         }
+    }
+
+    /**
+     * Extract title from a block object
+     * @param {Object} block - The block object
+     * @returns {string} The block title
+     */
+    getBlockTitle(block) {
+        if (!block) return 'Untitled';
+
+        // For pages, try to get the title from properties
+        if (block.object === 'page' && block.properties) {
+            const titleProperty = Object.values(block.properties).find(
+                prop => prop.type === 'title'
+            );
+            if (titleProperty && titleProperty.title && titleProperty.title[0]) {
+                return titleProperty.title[0].plain_text || 'Untitled';
+            }
+        }
+
+        // For blocks, try to get title from child_page
+        if (block.type === 'child_page' && block.child_page) {
+            return block.child_page.title || 'Untitled';
+        }
+
+        // Fallback to block id or 'Untitled'
+        return block.id || 'Untitled';
     }
 
     /**

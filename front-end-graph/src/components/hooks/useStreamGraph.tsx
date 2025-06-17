@@ -1,0 +1,336 @@
+"use client";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { io, Socket } from "socket.io-client";
+import * as d3 from "d3";
+import { Node, Link } from "../../../types/graph";
+import { GraphTheme } from "../Context/ThemeContext";
+import { getThemeConfig } from "../utils/theme";
+import { isNodeOrLink } from "../utils";
+import { usePathname } from "next/navigation";
+
+interface BlockElement {
+    id: string;
+    label?: string;
+    type: "page" | "node";
+    firstParent?: boolean;
+    source?: string;
+    target?: string;
+}
+
+interface StreamGraphOptions {
+    pageId: string;
+    token: string;
+    email: string;
+    theme?: GraphTheme;
+}
+
+export const useStreamGraph = ({ pageId, token, email, theme = "default" }: StreamGraphOptions) => {
+    const pathname = usePathname();
+    const isExtension = pathname.includes("extension");
+
+    // State
+    const [nodes, setNodes] = useState<Node[]>([]);
+    const [links, setLinks] = useState<Link[]>([]);
+    const [isConnected, setIsConnected] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    // Refs
+    const socketRef = useRef<Socket | null>(null);
+    const simulationRef = useRef<d3.Simulation<Node, Link> | null>(null);
+    const svgRef = useRef<SVGSVGElement | null>(null);
+
+    // Constants
+    const WINDOW = {
+        MAX_GRAPH_WIDTH: 6000,
+        MAX_GRAPH_HEIGHT: 6000,
+        RESPONSE_BREAKPOINT: 600,
+        WINDOW_WIDTH: typeof window !== 'undefined' ? window.innerWidth : 1200,
+        WINDOW_HEIGHT: typeof window !== 'undefined' ? window.innerHeight : 800,
+        GRAPH_BALL_SIZE: { sm: 10, lg: 15, master: 20 },
+        GRAPH_BALL_LABEL_MARGIN: { sm: -35, lg: -45, master: -50 },
+    };
+
+    // Process socket elements
+    const processElements = useCallback((elements: BlockElement[]) => {
+        const newNodes: Node[] = [];
+        const newLinks: Link[] = [];
+
+        elements.forEach((element) => {
+            if (element.type === "page") {
+                newNodes.push({
+                    id: element.id,
+                    label: element.label || "Untitled",
+                    firstParent: element.firstParent || false
+                });
+            } else if (element.type === "node" && element.source && element.target) {
+                newLinks.push({
+                    source: element.source,
+                    target: element.target
+                });
+            }
+        });
+
+        setNodes(prev => {
+            const existingIds = new Set(prev.map(n => n.id));
+            const uniqueNewNodes = newNodes.filter(n => !existingIds.has(n.id));
+            return [...prev, ...uniqueNewNodes];
+        });
+
+        setLinks(prev => {
+            const existingLinks = new Set(prev.map(l => `${l.source}-${l.target}`));
+            const uniqueNewLinks = newLinks.filter(l => !existingLinks.has(`${l.source}-${l.target}`));
+            return [...prev, ...uniqueNewLinks];
+        });
+    }, []);
+
+    // Mount D3 graph
+    const mountGraph = useCallback(() => {
+        if (!svgRef.current || nodes.length === 0) return;
+
+        const themeConfig = getThemeConfig(theme);
+        const svg = d3.select(svgRef.current)
+            .attr("width", WINDOW.MAX_GRAPH_WIDTH)
+            .attr("height", WINDOW.MAX_GRAPH_HEIGHT);
+
+        // Clear and setup container
+        svg.selectAll("*").remove();
+        const container = svg.append("g").attr("class", "graph-container");
+
+        // Initial position
+        const initialX = WINDOW.WINDOW_WIDTH / 2 - WINDOW.MAX_GRAPH_WIDTH / 3;
+        const initialY = WINDOW.WINDOW_HEIGHT / 2 - WINDOW.MAX_GRAPH_HEIGHT / 3;
+        container.attr("transform", `translate(${initialX},${initialY})`);
+
+        // Create simulation
+        const simulation = d3.forceSimulation<Node>(nodes)
+            .force("charge", d3.forceManyBody().strength(-(nodes.length > 0 ? nodes.length * 4 : 100)))
+            .force("center", d3.forceCenter(WINDOW.MAX_GRAPH_WIDTH / 3, WINDOW.MAX_GRAPH_HEIGHT / 3))
+            .force("collide", d3.forceCollide().radius(60));
+
+        if (links.length > 0) {
+            simulation.force("link", d3.forceLink<Node, Link>(links)
+                .id((d) => d.id)
+                .distance(280)
+                .strength(2));
+        }
+
+        simulationRef.current = simulation;
+
+        // Create links
+        const linkElements = container
+            .append("g")
+            .attr("class", "links")
+            .selectAll("line")
+            .data(links)
+            .enter()
+            .append("line")
+            .attr("class", `link ${themeConfig.linkStroke}`);
+
+        // Create nodes
+        const nodeElements = container
+            .append("g")
+            .attr("class", "nodes")
+            .selectAll("circle")
+            .data(nodes)
+            .enter()
+            .append("circle")
+            .attr("class", (d) =>
+                `node hover:fill-blue-700 dark:hover:fill-blue-500 cursor-pointer ${d.firstParent ? themeConfig.nodeFill.primary : themeConfig.nodeFill.secondary
+                }`
+            )
+            .attr("r", (d) =>
+                d.firstParent ? WINDOW.GRAPH_BALL_SIZE.master :
+                    WINDOW.GRAPH_BALL_SIZE[WINDOW.WINDOW_WIDTH > WINDOW.RESPONSE_BREAKPOINT ? "sm" : "lg"]
+            )
+            .on("click", (e, node) => {
+                e.preventDefault();
+                const notionUrl = `https://notion.so/${pageId !== "mock" && node.id ? node.id.replaceAll("-", "") : "#"}`;
+                if (isExtension) {
+                    window.parent.postMessage({ redirectGraphModeUrl: notionUrl }, '*');
+                } else {
+                    window.open(notionUrl, "_blank");
+                }
+            })
+            .call(d3.drag<SVGCircleElement, Node>()
+                .on("start", (event, d) => {
+                    if (!event.active) simulation.alphaTarget(0.3).restart();
+                    d.fx = d.x;
+                    d.fy = d.y;
+                })
+                .on("drag", (event, d) => {
+                    d.fx = event.x;
+                    d.fy = event.y;
+                    simulation.alpha(0.4).restart();
+                })
+                .on("end", (event, d) => {
+                    if (!event.active) simulation.alphaTarget(0.3);
+                    d.fx = event.x;
+                    d.fy = event.y;
+                    simulation.alpha(0.3).restart();
+                })
+            );
+
+        // Create labels
+        const labelElements = container
+            .append("g")
+            .attr("class", "labels")
+            .selectAll("text")
+            .data(nodes)
+            .enter()
+            .append("text")
+            .attr("class", `label ${themeConfig.labelFill}`)
+            .attr("text-anchor", "middle")
+            .attr("dy", WINDOW.GRAPH_BALL_SIZE[WINDOW.WINDOW_WIDTH > WINDOW.RESPONSE_BREAKPOINT ? "sm" : "lg"] +
+                WINDOW.GRAPH_BALL_LABEL_MARGIN[WINDOW.WINDOW_WIDTH > WINDOW.RESPONSE_BREAKPOINT ? "sm" : "lg"])
+            .text((d) => d.label);
+
+        // Simulation tick
+        simulation.on("tick", () => {
+            linkElements
+                .attr("x1", (d: any) => isNodeOrLink(d.source) ? d.source.x! : 0)
+                .attr("y1", (d: any) => isNodeOrLink(d.source) ? d.source.y! : 0)
+                .attr("x2", (d: any) => isNodeOrLink(d.target) ? d.target.x! : 0)
+                .attr("y2", (d: any) => isNodeOrLink(d.target) ? d.target.y! : 0);
+
+            nodeElements
+                .attr("cx", (d) => {
+                    if (isNodeOrLink(d)) {
+                        return d.x = Math.max(10, Math.min(WINDOW.MAX_GRAPH_WIDTH - 10, d.x!));
+                    }
+                    return 0;
+                })
+                .attr("cy", (d) => {
+                    if (isNodeOrLink(d)) {
+                        return d.y = Math.max(10, Math.min(WINDOW.MAX_GRAPH_HEIGHT - 10, d.y!));
+                    }
+                    return 0;
+                });
+
+            labelElements
+                .attr("x", (d) => isNodeOrLink(d) ? d.x! : 0)
+                .attr("y", (d) => isNodeOrLink(d) ? d.y! : 0);
+        });
+
+        // Zoom behavior
+        const zoom = d3.zoom<SVGSVGElement, unknown>()
+            .scaleExtent([0.5, 5])
+            .on("zoom", (event) => {
+                const { k, x, y } = event.transform;
+                const newWidth = Math.max(WINDOW.MAX_GRAPH_WIDTH, Math.abs(x) * 2);
+                const newHeight = Math.max(WINDOW.MAX_GRAPH_HEIGHT, Math.abs(y) * 2);
+                svg.attr("width", newWidth).attr("height", newHeight);
+                container.attr("transform", `translate(${x},${y}) scale(${k})`);
+            });
+
+        svg.call(zoom).call(zoom.transform, d3.zoomIdentity.translate(initialX, initialY));
+
+        return () => {
+            simulation.stop();
+            svg.selectAll("*").remove();
+        };
+    }, [nodes, links, theme, pageId, isExtension, WINDOW]);
+
+    // Socket connection
+    const connectSocket = useCallback(() => {
+        if (!token || !email || !pageId) return;
+
+        setIsLoading(true);
+        setError(null);
+        setNodes([]);
+        setLinks([]);
+
+        const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:8000", {
+            auth: { token },
+            query: { email, user: email },
+            transports: ["websocket"]
+        });
+
+        socketRef.current = socket;
+
+        socket.on("connect", () => {
+            setIsConnected(true);
+            socket.emit("fetchBlocks", { blockId: pageId });
+        });
+
+        socket.on("disconnect", () => {
+            setIsConnected(false);
+        });
+
+        socket.on("fetchStart", () => {
+            setNodes([]);
+            setLinks([]);
+        });
+
+        socket.on("blockData", (data: { elements: BlockElement[] }) => {
+            if (data.elements && Array.isArray(data.elements)) {
+                processElements(data.elements);
+            }
+        });
+
+        socket.on("newElement", (data: { element: BlockElement }) => {
+            if (data.element) {
+                processElements([data.element]);
+            }
+        });
+
+        socket.on("fetchComplete", () => {
+            setIsLoading(false);
+        });
+
+        socket.on("error", (data: { message: string }) => {
+            setError(data.message || "Socket connection error");
+            setIsLoading(false);
+        });
+
+        socket.on("connect_error", (error: Error) => {
+            setError("Failed to connect to server");
+            setIsLoading(false);
+        });
+
+    }, [token, email, pageId, processElements]);
+
+    const disconnectSocket = useCallback(() => {
+        if (socketRef.current) {
+            socketRef.current.disconnect();
+            socketRef.current = null;
+            setIsConnected(false);
+        }
+        if (simulationRef.current) {
+            simulationRef.current.stop();
+            simulationRef.current = null;
+        }
+    }, []);
+
+    // Mount graph when data changes
+    useEffect(() => {
+        if (nodes.length > 0) {
+            mountGraph();
+        }
+    }, [mountGraph]);
+
+    // Cleanup
+    useEffect(() => {
+        return () => {
+            disconnectSocket();
+        };
+    }, [disconnectSocket]);
+
+    const setSVGRef = useCallback((ref: SVGSVGElement | null) => {
+        svgRef.current = ref;
+    }, []);
+
+    return {
+        // State
+        isConnected,
+        isLoading,
+        error,
+        nodeCount: nodes.length,
+        linkCount: links.length,
+
+        // Actions
+        connectSocket,
+        disconnectSocket,
+        setSVGRef
+    };
+}; 

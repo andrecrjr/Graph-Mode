@@ -74,11 +74,26 @@ export function graphReducer(state: GraphState, action: Action): GraphState {
         graphMode: action.payload,
       };
     case "UPDATE_NODES":
+      const existingNodes = state.nodes?.nodes ?? [];
+      const existingLinks = state.nodes?.links ?? [];
+
+      // Filter out duplicate nodes
+      const newUniqueNodes = action.payload.nodes.filter(
+        newNode => !existingNodes.some(existingNode => existingNode.id === newNode.id)
+      );
+
+      // Filter out duplicate links
+      const newUniqueLinks = action.payload.links.filter(
+        newLink => !existingLinks.some(existingLink =>
+          existingLink.source === newLink.source && existingLink.target === newLink.target
+        )
+      );
+
       return {
         ...state,
         nodes: {
-          nodes: [...(state.nodes?.nodes ?? []), ...action.payload.nodes],
-          links: [...(state.nodes?.links ?? []), ...action.payload.links],
+          nodes: [...existingNodes, ...newUniqueNodes],
+          links: [...existingLinks, ...newUniqueLinks],
         },
       };
 
