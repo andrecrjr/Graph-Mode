@@ -10,8 +10,6 @@ export default function useToastNotification() {
     state: { errorFetchGraph, loadingFetchGraph, metadata },
   } = useGraphContextData();
 
-  const pathname = usePathname();
-  const isExtension = pathname.includes("extension");
 
   const { toast } = useToast();
 
@@ -35,25 +33,6 @@ export default function useToastNotification() {
     }
   }, [loadingFetchGraph, toast]);
 
-  useEffect(() => {
-    if (!metadata?.isVip && !loadingFetchGraph && isExtension) {
-      toast({
-        title: "Graph Mode",
-        description: `You can get full experience with Graph Mode in VIP Tier!`,
-        action: (
-          <Link href="/pricing" target="_blank" className="flex">
-            <ToastAction
-              altText="Premium"
-              className="hover:opacity-65 hover:bg-primary"
-            >
-              Get VIP Tier
-            </ToastAction>
-          </Link>
-        ),
-        className: "bg-red-800 text-white",
-      });
-    }
-  }, [metadata, toast, loadingFetchGraph]);
 
   return;
 }

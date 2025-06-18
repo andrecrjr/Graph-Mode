@@ -2,13 +2,14 @@ import React from "react";
 import type { Metadata } from "next";
 import { SocketGraphComponent } from "@/components/socket";
 import dynamic from "next/dynamic";
+import LoadingDynamicPlaceholder from "@/components/Loading";
 
 type Props = {
     params: { id: string };
 };
 
 export const DynamicLazySocketGraphPage = dynamic(() => import("@/components/socket/SocketGraphComponent"), {
-    loading: () => <div>Loading...</div>,
+    loading: () => <LoadingDynamicPlaceholder message="Boosting your Notion..." />,
     ssr: false,
 });
 

@@ -5,8 +5,7 @@ import { useTheme } from "@/components/Context/ThemeContext";
 import { getThemeConfig } from "@/components/utils/theme";
 import Link from "next/link";
 import Sidebar from "../Sidebar";
-import { useGraphContextData } from "../Context/GraphContext";
-import useToastNotification from "../hooks/useToastNotification";
+import { useExtensionToastNotification } from "../hooks/useExtensionToastNotification";
 
 interface NewSocketGraphProps {
     notionPageId?: string;
@@ -19,7 +18,8 @@ export default function SocketGraphComponent({ notionPageId = "mock" }: NewSocke
     const [token, setToken] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    useToastNotification()
+    useExtensionToastNotification()
+
     // Initialize credentials from localStorage
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -155,7 +155,7 @@ export default function SocketGraphComponent({ notionPageId = "mock" }: NewSocke
     return (
         <div className={`min-h-screen ${themeConfig.backgroundClass}`}>
             {/* Header */}
-            <Sidebar />
+            {!isLoading && <Sidebar />}
 
             {/* Graph Container */}
             <div className="relative w-full h-screen overflow-hidden">

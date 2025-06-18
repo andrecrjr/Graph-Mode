@@ -104,7 +104,7 @@ const Sidebar = () => {
     >
       <ul className="flex flex-col justify-center">
         {(!isMock(state.pageId) || isPathExtension) && (
-          <li className="w-full bg-green-700">
+          <li className="w-full">
             <button
               className="p-4 w-full flex items-center"
               title="Synchronize with Notion"
