@@ -10,7 +10,7 @@ interface NewSocketGraphProps {
     notionPageId?: string;
 }
 
-export default function NewSocketGraphComponent({ notionPageId = "mock" }: NewSocketGraphProps) {
+export function SocketGraphComponent({ notionPageId = "mock" }: NewSocketGraphProps) {
     const { theme } = useTheme();
     const themeConfig = getThemeConfig(theme);
 

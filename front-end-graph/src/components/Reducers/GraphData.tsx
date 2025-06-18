@@ -12,6 +12,12 @@ interface GraphState {
   graphMode: "DRAW" | "WATCH";
   pageId: string;
   isVip: boolean;
+  metadata?: {
+    isVip: boolean;
+    tier: string;
+    requestCount: number;
+    requestLimit: number;
+  };
 }
 
 export interface GraphContextType {
@@ -47,6 +53,15 @@ type Action =
   | {
     type: "SET_PAGE_ID";
     payload: string;
+  }
+  | {
+    type: "SET_METADATA";
+    payload: {
+      isVip: boolean;
+      tier: string;
+      requestCount: number;
+      requestLimit: number;
+    };
   };
 
 export const initialState: GraphState = {
@@ -116,6 +131,11 @@ export function graphReducer(state: GraphState, action: Action): GraphState {
       return {
         ...state,
         isVip: action.payload,
+      };
+    case "SET_METADATA":
+      return {
+        ...state,
+        metadata: action.payload,
       };
     default:
       return state;

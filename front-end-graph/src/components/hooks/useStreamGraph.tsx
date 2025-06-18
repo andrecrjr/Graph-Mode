@@ -7,6 +7,7 @@ import { GraphTheme } from "../Context/ThemeContext";
 import { getThemeConfig } from "../utils/theme";
 import { isNodeOrLink } from "../utils";
 import { usePathname } from "next/navigation";
+import { useGraphContextData } from "../Context/GraphContext";
 
 interface BlockElement {
     id: string;
@@ -27,6 +28,7 @@ interface StreamGraphOptions {
 export const useStreamGraph = ({ pageId, token, email, theme = "default" }: StreamGraphOptions) => {
     const pathname = usePathname();
     const isExtension = pathname.includes("extension");
+    const { dispatch } = useGraphContextData();
 
     // State
     const [nodes, setNodes] = useState<Node[]>([]);
@@ -378,8 +380,14 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
             }
         });
 
-        socket.on("fetchComplete", () => {
+        socket.on("fetchComplete", (data: { blockId: string; metadata?: { isVip: boolean; tier: string; requestCount: number; requestLimit: number } }) => {
             setIsLoading(false);
+            if (data.metadata) {
+                dispatch({
+                    type: "SET_METADATA",
+                    payload: data.metadata
+                });
+            }
         });
 
         socket.on("error", (data: { message: string }) => {
@@ -392,7 +400,7 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
             setIsLoading(false);
         });
 
-    }, [token, email, pageId, processElements]);
+    }, [token, email, pageId, processElements, dispatch]);
 
     const disconnectSocket = useCallback(() => {
         if (socketRef.current) {

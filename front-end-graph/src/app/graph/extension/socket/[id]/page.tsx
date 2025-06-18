@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import { NewSocketGraphComponent } from "@/components/socket";
+import { SocketGraphComponent } from "@/components/socket";
 
 type Props = {
     params: { id: string };
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default function SocketGraphPage({ params }: Props) {
     return (
         <div className="overflow-hidden w-full h-screen">
-            <NewSocketGraphComponent notionPageId={params.id} />
+            <SocketGraphComponent notionPageId={params.id} />
         </div>
     );
 }
