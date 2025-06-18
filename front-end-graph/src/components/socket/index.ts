@@ -1,1 +1,1 @@
-export { SocketGraphComponent } from './SocketGraphComponent';
+export { default as SocketGraphComponent } from './SocketGraphComponent';

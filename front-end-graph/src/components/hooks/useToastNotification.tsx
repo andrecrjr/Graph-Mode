@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useToast } from "./use-toast";
 import { useGraphContextData } from "../Context/GraphContext";
-import { Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { ToastAction } from "../ui/toast";
 import Link from "next/link";
