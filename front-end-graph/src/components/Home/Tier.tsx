@@ -52,11 +52,7 @@ export default function PricingTiers() {
               <ul className="grid gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-4 w-4" />
-                  Up to 5 Notion requests to access your pages as graphs
-                </li>
-                <li className="flex items-center">
-                  <CheckIcon className="mr-2 h-4 w-4" />
-                  Up to 5 fast notes per day
+                  Few Notion requests to access your pages as graphs
                 </li>
               </ul>
             </CardContent>
@@ -101,21 +97,7 @@ export default function PricingTiers() {
                       Unlimited Notion Requests
                     </strong>
                     <p className="text-gray-600 dark:text-gray-400">
-                      Access your entire Notion workspace without limits
-                    </p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckIcon
-                    className="h-5 w-5 flex-shrink-0 text-green-600"
-                    aria-hidden="true"
-                  />
-                  <div className="space-y-1">
-                    <strong className="block font-semibold text-green-700 dark:text-green-500">
-                      Unlimited Fast Notes
-                    </strong>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      Create and organize unlimited notes with instant access
+                      Access your entire Notion Pages without limits
                     </p>
                   </div>
                 </li>

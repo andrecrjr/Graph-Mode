@@ -42,7 +42,7 @@ export default function useToastNotification() {
         title: "Graph Mode",
         description: `You can get full experience with Graph Mode in VIP Tier!`,
         action: (
-          <Link href="/pricing" className="flex">
+          <Link href="/pricing" target="_blank" className="flex">
             <ToastAction
               altText="Premium"
               className="hover:opacity-65 hover:bg-primary"
