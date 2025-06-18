@@ -5,6 +5,8 @@ import { useTheme } from "@/components/Context/ThemeContext";
 import { getThemeConfig } from "@/components/utils/theme";
 import Link from "next/link";
 import Sidebar from "../Sidebar";
+import { useGraphContextData } from "../Context/GraphContext";
+import useToastNotification from "../hooks/useToastNotification";
 
 interface NewSocketGraphProps {
     notionPageId?: string;
@@ -17,7 +19,7 @@ export function SocketGraphComponent({ notionPageId = "mock" }: NewSocketGraphPr
     const [token, setToken] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-
+    useToastNotification()
     // Initialize credentials from localStorage
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -174,7 +176,7 @@ export function SocketGraphComponent({ notionPageId = "mock" }: NewSocketGraphPr
                 )}
 
                 {isLoading && (
-                    <div className="absolute top-4 right-4 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                    <div className="absolute top-4 left-4 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
                         Streaming data...
                     </div>
                 )}

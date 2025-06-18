@@ -9,8 +9,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
-        title: `Graph View - ${params.id}`,
-        description: "View your Notion page as a graph",
+        title: `Graph Mode`,
+        description: "View your Notion page as a graph like Obsidian",
     };
 }
 

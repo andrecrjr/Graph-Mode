@@ -19,11 +19,11 @@ const roboto = Roboto({
   weight: ["100", "300", "400"],
 });
 export const metadata: Metadata = {
-  title: "Graph Mode - Browser Extension for Interactive Zettelkasten in Notion",
+  title: "Graph Mode - Browser Extension for Interactive Graph View in Notion",
   description:
-    "Transform your Notion pages into an interactive Zettelkasten/Graph view with Graph Mode Browser Extension. Boost your productivity and note organization with this Extension.",
+    "Transform your Notion pages into an interactive Graph View with Graph Mode Browser Extension. Boost your productivity and note organization with this Extension.",
   keywords:
-    "Graph Mode, Notion, Zettelkasten, Interactive Graph, Productivity App, Note-Taking, Knowledge Management, Browser Extension, Chrome Extension, Google Chrome Extension, Notion Chrome Extension",
+    "Graph Mode, Graph View, Notion, Zettelkasten, Interactive Graph, Productivity App, Note-Taking, Knowledge Management, Browser Extension, Chrome Extension, Google Chrome Extension, Notion Chrome Extension",
   robots: "index, follow",
   icons: {
     icon: "/images/icons/icon-72x72.png",

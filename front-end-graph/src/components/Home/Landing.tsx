@@ -121,7 +121,7 @@ export default function Landing() {
         </div>
       </section>
       <ZettelkastenComparison />
-      {process.env.NEXT_PUBLIC_TIER_RELEASED && <PricingTierComponent />}
+      <PricingTierComponent />
       <BuyMeCoffee />
     </div>
   );

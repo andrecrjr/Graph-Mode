@@ -346,7 +346,7 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
         setNodes([]);
         setLinks([]);
 
-        const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:8000", {
+        const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "ADD_SOCKET_URL", {
             auth: { token },
             query: { email, user: email },
             transports: ["websocket"]
@@ -370,12 +370,14 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
 
         socket.on("blockData", (data: { elements: BlockElement[] }) => {
             if (data.elements && Array.isArray(data.elements)) {
+                dispatch({ type: "LOADED_GRAPH", payload: true });
                 processElements(data.elements);
             }
         });
 
         socket.on("newElement", (data: { element: BlockElement }) => {
             if (data.element) {
+                dispatch({ type: "LOADED_GRAPH", payload: true });
                 processElements([data.element]);
             }
         });
@@ -383,6 +385,7 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
         socket.on("fetchComplete", (data: { blockId: string; metadata?: { isVip: boolean; tier: string; requestCount: number; requestLimit: number } }) => {
             setIsLoading(false);
             if (data.metadata) {
+                dispatch({ type: "LOADED_GRAPH", payload: false });
                 dispatch({
                     type: "SET_METADATA",
                     payload: data.metadata
@@ -392,12 +395,16 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
 
         socket.on("error", (data: { message: string }) => {
             setError(data.message || "Socket connection error");
+            dispatch({ type: "ERROR_GRAPH", payload: true });
             setIsLoading(false);
+            dispatch({ type: "LOADED_GRAPH", payload: false });
         });
 
         socket.on("connect_error", (error: Error) => {
             setError("Failed to connect to server");
+            dispatch({ type: "ERROR_GRAPH", payload: true });
             setIsLoading(false);
+            dispatch({ type: "LOADED_GRAPH", payload: false });
         });
 
     }, [token, email, pageId, processElements, dispatch]);
