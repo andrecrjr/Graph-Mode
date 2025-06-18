@@ -129,8 +129,8 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
     const mountGraph = useCallback(() => {
         if (!svgRef.current || nodes.length === 0) return;
 
-        // Cleanup previous graph
-        cleanupGraph();
+        // Check if this is the first mount or an update
+        const isUpdate = simulationRef.current !== null;
 
         // Filter links to only include those where both source and target nodes exist
         const nodeIds = new Set(nodes.map(n => n.id));
@@ -146,14 +146,7 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
             nodeCount: nodes.length,
             totalLinks: links.length,
             validLinks: validLinks.length,
-            nodeIds: Array.from(nodeIds),
-            invalidLinks: links.filter(link => {
-                const sourceId = typeof link.source === 'string' ? link.source :
-                    typeof link.source === 'object' && link.source && 'id' in link.source ? link.source.id : '';
-                const targetId = typeof link.target === 'string' ? link.target :
-                    typeof link.target === 'object' && link.target && 'id' in link.target ? link.target.id : '';
-                return !nodeIds.has(sourceId) || !nodeIds.has(targetId);
-            })
+            isUpdate
         });
 
         const themeConfig = getThemeConfig(theme);
@@ -161,57 +154,104 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
             .attr("width", WINDOW.MAX_GRAPH_WIDTH)
             .attr("height", WINDOW.MAX_GRAPH_HEIGHT);
 
-        // Clear and setup container
-        svg.selectAll("*").remove();
-        const container = svg.append("g").attr("class", "graph-container");
+        // For updates, don't clear the entire SVG
+        if (!isUpdate) {
+            svg.selectAll("*").remove();
+        }
 
-        // Initial position
-        const initialX = WINDOW.WINDOW_WIDTH / 2 - WINDOW.MAX_GRAPH_WIDTH / 3;
-        const initialY = WINDOW.WINDOW_HEIGHT / 2 - WINDOW.MAX_GRAPH_HEIGHT / 3;
-        container.attr("transform", `translate(${initialX},${initialY})`);
+        // Setup container
+        let container = svg.select(".graph-container");
+        if (container.empty()) {
+            container = svg.append("g").attr("class", "graph-container") as any;
+            const initialX = WINDOW.WINDOW_WIDTH / 2 - WINDOW.MAX_GRAPH_WIDTH / 3;
+            const initialY = WINDOW.WINDOW_HEIGHT / 2 - WINDOW.MAX_GRAPH_HEIGHT / 3;
+            container.attr("transform", `translate(${initialX},${initialY})`);
+        }
 
-        // Create simulation
-        const simulation = d3.forceSimulation<Node>(nodes)
-            .force("charge", d3.forceManyBody().strength(-(nodes.length > 0 ? nodes.length * 4 : 100)))
-            .force("center", d3.forceCenter(WINDOW.MAX_GRAPH_WIDTH / 3, WINDOW.MAX_GRAPH_HEIGHT / 3))
-            .force("collide", d3.forceCollide().radius(60));
+        // Create or update simulation
+        if (!simulationRef.current) {
+            const simulation = d3.forceSimulation<Node>(nodes)
+                .force("charge", d3.forceManyBody().strength(-(nodes.length > 0 ? nodes.length * 4 : 100)))
+                .force("center", d3.forceCenter(WINDOW.MAX_GRAPH_WIDTH / 3, WINDOW.MAX_GRAPH_HEIGHT / 3))
+                .force("collide", d3.forceCollide().radius(60));
 
-        // Only add link force if we have valid links
+            simulationRef.current = simulation;
+        } else {
+            // Update existing simulation with new nodes
+            simulationRef.current.nodes(nodes);
+            simulationRef.current.force("charge", d3.forceManyBody().strength(-(nodes.length > 0 ? nodes.length * 4 : 100)));
+        }
+
+        // Update or add link force
         if (validLinks.length > 0) {
-            simulation.force("link", d3.forceLink<Node, Link>(validLinks)
+            simulationRef.current.force("link", d3.forceLink<Node, Link>(validLinks)
                 .id((d) => d.id)
                 .distance(280)
                 .strength(2));
+        } else {
+            simulationRef.current.force("link", null);
         }
 
-        simulationRef.current = simulation;
+        // Animation settings
+        const transitionDuration = 800;
+        const centerX = WINDOW.MAX_GRAPH_WIDTH / 3;
+        const centerY = WINDOW.MAX_GRAPH_HEIGHT / 3;
 
-        // Create links (only valid ones)
+        // Create links with smooth entry animations
         const linkElements = container
-            .append("g")
+            .selectAll(".links")
+            .data([null])
+            .join("g")
             .attr("class", "links")
             .selectAll("line")
-            .data(validLinks)
-            .enter()
-            .append("line")
-            .attr("class", `link ${themeConfig.linkStroke}`);
+            .data(validLinks, (d: any) => `${d.source.id || d.source}-${d.target.id || d.target}`);
 
-        // Create nodes
+        linkElements.exit()
+            .transition()
+            .duration(transitionDuration)
+            .style("opacity", 0)
+            .remove();
+
+        const newLinks = linkElements.enter()
+            .append("line")
+            .attr("class", `link ${themeConfig.linkStroke}`)
+            .attr("x1", centerX)
+            .attr("y1", centerY)
+            .attr("x2", centerX)
+            .attr("y2", centerY)
+            .style("opacity", 0);
+
+        newLinks.transition()
+            .duration(transitionDuration)
+            .style("opacity", 1);
+
+        const allLinks = newLinks.merge(linkElements as any);
+
+        // Create nodes with smooth entry animations
         const nodeElements = container
-            .append("g")
+            .selectAll(".nodes")
+            .data([null])
+            .join("g")
             .attr("class", "nodes")
             .selectAll("circle")
-            .data(nodes)
-            .enter()
+            .data(nodes, (d: any) => d.id);
+
+        nodeElements.exit()
+            .transition()
+            .duration(transitionDuration)
+            .attr("r", 0)
+            .style("opacity", 0)
+            .remove();
+
+        const newNodes = nodeElements.enter()
             .append("circle")
             .attr("class", (d) =>
-                `node hover:fill-blue-700 dark:hover:fill-blue-500 cursor-pointer ${d.firstParent ? themeConfig.nodeFill.primary : themeConfig.nodeFill.secondary
-                }`
+                `node hover:fill-blue-700 dark:hover:fill-blue-500 cursor-pointer ${d.firstParent ? themeConfig.nodeFill.primary : themeConfig.nodeFill.secondary}`
             )
-            .attr("r", (d) =>
-                d.firstParent ? WINDOW.GRAPH_BALL_SIZE.master :
-                    WINDOW.GRAPH_BALL_SIZE[WINDOW.WINDOW_WIDTH > WINDOW.RESPONSE_BREAKPOINT ? "sm" : "lg"]
-            )
+            .attr("cx", centerX)
+            .attr("cy", centerY)
+            .attr("r", 0)
+            .style("opacity", 0)
             .on("click", (e, node) => {
                 e.preventDefault();
                 const notionUrl = `https://notion.so/${pageId !== "mock" && node.id ? node.id.replaceAll("-", "") : "#"}`;
@@ -248,23 +288,51 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
                 })
             );
 
-        // Create labels
+        newNodes.transition()
+            .duration(transitionDuration)
+            .attr("r", (d) =>
+                d.firstParent ? WINDOW.GRAPH_BALL_SIZE.master :
+                    WINDOW.GRAPH_BALL_SIZE[WINDOW.WINDOW_WIDTH > WINDOW.RESPONSE_BREAKPOINT ? "sm" : "lg"]
+            )
+            .style("opacity", 1);
+
+        const allNodes = newNodes.merge(nodeElements as any);
+
+        // Create labels with smooth entry animations
         const labelElements = container
-            .append("g")
+            .selectAll(".labels")
+            .data([null])
+            .join("g")
             .attr("class", "labels")
             .selectAll("text")
-            .data(nodes)
-            .enter()
+            .data(nodes, (d: any) => d.id);
+
+        labelElements.exit()
+            .transition()
+            .duration(transitionDuration)
+            .style("opacity", 0)
+            .remove();
+
+        const newLabels = labelElements.enter()
             .append("text")
             .attr("class", `label ${themeConfig.labelFill}`)
             .attr("text-anchor", "middle")
             .attr("dy", WINDOW.GRAPH_BALL_SIZE[WINDOW.WINDOW_WIDTH > WINDOW.RESPONSE_BREAKPOINT ? "sm" : "lg"] +
                 WINDOW.GRAPH_BALL_LABEL_MARGIN[WINDOW.WINDOW_WIDTH > WINDOW.RESPONSE_BREAKPOINT ? "sm" : "lg"])
+            .attr("x", centerX)
+            .attr("y", centerY)
+            .style("opacity", 0)
             .text((d) => d.label);
 
+        newLabels.transition()
+            .duration(transitionDuration)
+            .style("opacity", 1);
+
+        const allLabels = newLabels.merge(labelElements as any);
+
         // Simulation tick
-        simulation.on("tick", () => {
-            linkElements
+        simulationRef.current.on("tick", () => {
+            allLinks
                 .attr("x1", (d: any) => {
                     if (isNodeOrLink(d.source) && typeof d.source.x === 'number') {
                         return d.source.x;
@@ -290,7 +358,7 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
                     return 0;
                 });
 
-            nodeElements
+            allNodes
                 .attr("cx", (d) => {
                     if (isNodeOrLink(d) && typeof d.x === 'number') {
                         return d.x = Math.max(10, Math.min(WINDOW.MAX_GRAPH_WIDTH - 10, d.x));
@@ -304,7 +372,7 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
                     return 0;
                 });
 
-            labelElements
+            allLabels
                 .attr("x", (d) => {
                     if (isNodeOrLink(d) && typeof d.x === 'number') {
                         return d.x;
@@ -319,7 +387,7 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
                 });
         });
 
-        // Zoom behavior
+        // Setup zoom behavior
         const zoom = d3.zoom<SVGSVGElement, unknown>()
             .scaleExtent([0.5, 5])
             .on("zoom", (event) => {
@@ -327,10 +395,22 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
                 const newWidth = Math.max(WINDOW.MAX_GRAPH_WIDTH, Math.abs(x) * 2);
                 const newHeight = Math.max(WINDOW.MAX_GRAPH_HEIGHT, Math.abs(y) * 2);
                 svg.attr("width", newWidth).attr("height", newHeight);
-                container.attr("transform", `translate(${x},${y}) scale(${k})`);
+                (container as any).attr("transform", `translate(${x},${y}) scale(${k})`);
             });
 
-        svg.call(zoom).call(zoom.transform, d3.zoomIdentity.translate(initialX, initialY));
+        // Apply zoom behavior and initial transform only if not already set
+        if (!svg.property('__zoom_initialized__')) {
+            const initialX = WINDOW.WINDOW_WIDTH / 2 - WINDOW.MAX_GRAPH_WIDTH / 3;
+            const initialY = WINDOW.WINDOW_HEIGHT / 2 - WINDOW.MAX_GRAPH_HEIGHT / 3;
+            svg.call(zoom).call(zoom.transform, d3.zoomIdentity.translate(initialX, initialY));
+            svg.property('__zoom_initialized__', true);
+        } else {
+            // Re-apply zoom behavior for updates (this ensures camera movement still works)
+            svg.call(zoom);
+        }
+
+        // Start simulation with gentle alpha for smooth animation
+        simulationRef.current.alpha(0.5).restart();
 
         return () => {
             cleanupGraph();
