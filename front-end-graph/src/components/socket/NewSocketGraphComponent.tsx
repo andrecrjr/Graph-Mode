@@ -4,6 +4,7 @@ import { useStreamGraph } from "@/components/hooks/useStreamGraph";
 import { useTheme } from "@/components/Context/ThemeContext";
 import { getThemeConfig } from "@/components/utils/theme";
 import Link from "next/link";
+import Sidebar from "../Sidebar";
 
 interface NewSocketGraphProps {
     notionPageId?: string;
@@ -152,39 +153,7 @@ export default function NewSocketGraphComponent({ notionPageId = "mock" }: NewSo
     return (
         <div className={`min-h-screen ${themeConfig.backgroundClass}`}>
             {/* Header */}
-            <div className={`p-4 border-b ${themeConfig.backgroundClass}`}>
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className={`text-xl font-bold ${themeConfig.labelFill}`}>
-                            Socket Graph - {notionPageId}
-                        </h1>
-                        <div className="flex items-center space-x-4 mt-2">
-                            <span className={`text-sm ${isConnected ? 'text-green-600' : 'text-red-600'}`}>
-                                {isConnected ? '● Connected' : '● Disconnected'}
-                            </span>
-                            {isLoading && (
-                                <span className="text-sm text-blue-600">Streaming...</span>
-                            )}
-                            <span className={`text-sm ${themeConfig.labelFill}`}>
-                                Nodes: {nodeCount} | Links: {linkCount}
-                            </span>
-                        </div>
-                    </div>
-
-                    <button
-                        onClick={handleDisconnect}
-                        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                    >
-                        Disconnect
-                    </button>
-                </div>
-
-                {error && (
-                    <div className="mt-2 p-2 bg-red-100 border border-red-400 text-red-700 rounded">
-                        {error}
-                    </div>
-                )}
-            </div>
+            <Sidebar />
 
             {/* Graph Container */}
             <div className="relative w-full h-screen overflow-hidden">

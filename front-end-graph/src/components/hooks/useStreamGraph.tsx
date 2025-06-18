@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import { io, Socket } from "socket.io-client";
 import * as d3 from "d3";
 import { Node, Link } from "../../../types/graph";
@@ -40,8 +40,8 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
     const simulationRef = useRef<d3.Simulation<Node, Link> | null>(null);
     const svgRef = useRef<SVGSVGElement | null>(null);
 
-    // Constants
-    const WINDOW = {
+    // Constants - memoized to prevent unnecessary re-renders
+    const WINDOW = useMemo(() => ({
         MAX_GRAPH_WIDTH: 6000,
         MAX_GRAPH_HEIGHT: 6000,
         RESPONSE_BREAKPOINT: 600,
@@ -49,7 +49,7 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
         WINDOW_HEIGHT: typeof window !== 'undefined' ? window.innerHeight : 800,
         GRAPH_BALL_SIZE: { sm: 10, lg: 15, master: 20 },
         GRAPH_BALL_LABEL_MARGIN: { sm: -35, lg: -45, master: -50 },
-    };
+    }), []);
 
     // Process socket elements
     const processElements = useCallback((elements: BlockElement[]) => {
@@ -71,22 +71,88 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
             }
         });
 
+        console.log('Processing elements:', {
+            totalElements: elements.length,
+            newNodes: newNodes.length,
+            newLinks: newLinks.length,
+            nodeIds: newNodes.map(n => n.id),
+            linkPairs: newLinks.map(l => `${l.source}->${l.target}`)
+        });
+
         setNodes(prev => {
             const existingIds = new Set(prev.map(n => n.id));
             const uniqueNewNodes = newNodes.filter(n => !existingIds.has(n.id));
-            return [...prev, ...uniqueNewNodes];
+            const result = [...prev, ...uniqueNewNodes];
+            console.log('Nodes updated:', {
+                previous: prev.length,
+                new: uniqueNewNodes.length,
+                total: result.length,
+                allNodeIds: result.map(n => n.id)
+            });
+            return result;
         });
 
         setLinks(prev => {
-            const existingLinks = new Set(prev.map(l => `${l.source}-${l.target}`));
+            const existingLinks = new Set(prev.map(l => {
+                const sourceId = typeof l.source === 'string' ? l.source :
+                    typeof l.source === 'object' && l.source && 'id' in l.source ? l.source.id : '';
+                const targetId = typeof l.target === 'string' ? l.target :
+                    typeof l.target === 'object' && l.target && 'id' in l.target ? l.target.id : '';
+                return `${sourceId}-${targetId}`;
+            }));
             const uniqueNewLinks = newLinks.filter(l => !existingLinks.has(`${l.source}-${l.target}`));
-            return [...prev, ...uniqueNewLinks];
+            const result = [...prev, ...uniqueNewLinks];
+            console.log('Links updated:', {
+                previous: prev.length,
+                new: uniqueNewLinks.length,
+                total: result.length
+            });
+            return result;
         });
+    }, []);
+
+    // Cleanup function
+    const cleanupGraph = useCallback(() => {
+        if (simulationRef.current) {
+            simulationRef.current.stop();
+            simulationRef.current = null;
+        }
+        if (svgRef.current) {
+            const svg = d3.select(svgRef.current);
+            svg.selectAll("*").remove();
+        }
     }, []);
 
     // Mount D3 graph
     const mountGraph = useCallback(() => {
         if (!svgRef.current || nodes.length === 0) return;
+
+        // Cleanup previous graph
+        cleanupGraph();
+
+        // Filter links to only include those where both source and target nodes exist
+        const nodeIds = new Set(nodes.map(n => n.id));
+        const validLinks = links.filter(link => {
+            const sourceId = typeof link.source === 'string' ? link.source :
+                typeof link.source === 'object' && link.source && 'id' in link.source ? link.source.id : '';
+            const targetId = typeof link.target === 'string' ? link.target :
+                typeof link.target === 'object' && link.target && 'id' in link.target ? link.target.id : '';
+            return nodeIds.has(sourceId) && nodeIds.has(targetId);
+        });
+
+        console.log('Mounting graph with:', {
+            nodeCount: nodes.length,
+            totalLinks: links.length,
+            validLinks: validLinks.length,
+            nodeIds: Array.from(nodeIds),
+            invalidLinks: links.filter(link => {
+                const sourceId = typeof link.source === 'string' ? link.source :
+                    typeof link.source === 'object' && link.source && 'id' in link.source ? link.source.id : '';
+                const targetId = typeof link.target === 'string' ? link.target :
+                    typeof link.target === 'object' && link.target && 'id' in link.target ? link.target.id : '';
+                return !nodeIds.has(sourceId) || !nodeIds.has(targetId);
+            })
+        });
 
         const themeConfig = getThemeConfig(theme);
         const svg = d3.select(svgRef.current)
@@ -108,8 +174,9 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
             .force("center", d3.forceCenter(WINDOW.MAX_GRAPH_WIDTH / 3, WINDOW.MAX_GRAPH_HEIGHT / 3))
             .force("collide", d3.forceCollide().radius(60));
 
-        if (links.length > 0) {
-            simulation.force("link", d3.forceLink<Node, Link>(links)
+        // Only add link force if we have valid links
+        if (validLinks.length > 0) {
+            simulation.force("link", d3.forceLink<Node, Link>(validLinks)
                 .id((d) => d.id)
                 .distance(280)
                 .strength(2));
@@ -117,12 +184,12 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
 
         simulationRef.current = simulation;
 
-        // Create links
+        // Create links (only valid ones)
         const linkElements = container
             .append("g")
             .attr("class", "links")
             .selectAll("line")
-            .data(links)
+            .data(validLinks)
             .enter()
             .append("line")
             .attr("class", `link ${themeConfig.linkStroke}`);
@@ -154,20 +221,28 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
             })
             .call(d3.drag<SVGCircleElement, Node>()
                 .on("start", (event, d) => {
-                    if (!event.active) simulation.alphaTarget(0.3).restart();
+                    if (!event.active && simulationRef.current) {
+                        simulationRef.current.alphaTarget(0.3).restart();
+                    }
                     d.fx = d.x;
                     d.fy = d.y;
                 })
                 .on("drag", (event, d) => {
                     d.fx = event.x;
                     d.fy = event.y;
-                    simulation.alpha(0.4).restart();
+                    if (simulationRef.current) {
+                        simulationRef.current.alpha(0.4).restart();
+                    }
                 })
                 .on("end", (event, d) => {
-                    if (!event.active) simulation.alphaTarget(0.3);
+                    if (!event.active && simulationRef.current) {
+                        simulationRef.current.alphaTarget(0.3);
+                    }
                     d.fx = event.x;
                     d.fy = event.y;
-                    simulation.alpha(0.3).restart();
+                    if (simulationRef.current) {
+                        simulationRef.current.alpha(0.3).restart();
+                    }
                 })
             );
 
@@ -188,28 +263,58 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
         // Simulation tick
         simulation.on("tick", () => {
             linkElements
-                .attr("x1", (d: any) => isNodeOrLink(d.source) ? d.source.x! : 0)
-                .attr("y1", (d: any) => isNodeOrLink(d.source) ? d.source.y! : 0)
-                .attr("x2", (d: any) => isNodeOrLink(d.target) ? d.target.x! : 0)
-                .attr("y2", (d: any) => isNodeOrLink(d.target) ? d.target.y! : 0);
+                .attr("x1", (d: any) => {
+                    if (isNodeOrLink(d.source) && typeof d.source.x === 'number') {
+                        return d.source.x;
+                    }
+                    return 0;
+                })
+                .attr("y1", (d: any) => {
+                    if (isNodeOrLink(d.source) && typeof d.source.y === 'number') {
+                        return d.source.y;
+                    }
+                    return 0;
+                })
+                .attr("x2", (d: any) => {
+                    if (isNodeOrLink(d.target) && typeof d.target.x === 'number') {
+                        return d.target.x;
+                    }
+                    return 0;
+                })
+                .attr("y2", (d: any) => {
+                    if (isNodeOrLink(d.target) && typeof d.target.y === 'number') {
+                        return d.target.y;
+                    }
+                    return 0;
+                });
 
             nodeElements
                 .attr("cx", (d) => {
-                    if (isNodeOrLink(d)) {
-                        return d.x = Math.max(10, Math.min(WINDOW.MAX_GRAPH_WIDTH - 10, d.x!));
+                    if (isNodeOrLink(d) && typeof d.x === 'number') {
+                        return d.x = Math.max(10, Math.min(WINDOW.MAX_GRAPH_WIDTH - 10, d.x));
                     }
                     return 0;
                 })
                 .attr("cy", (d) => {
-                    if (isNodeOrLink(d)) {
-                        return d.y = Math.max(10, Math.min(WINDOW.MAX_GRAPH_HEIGHT - 10, d.y!));
+                    if (isNodeOrLink(d) && typeof d.y === 'number') {
+                        return d.y = Math.max(10, Math.min(WINDOW.MAX_GRAPH_HEIGHT - 10, d.y));
                     }
                     return 0;
                 });
 
             labelElements
-                .attr("x", (d) => isNodeOrLink(d) ? d.x! : 0)
-                .attr("y", (d) => isNodeOrLink(d) ? d.y! : 0);
+                .attr("x", (d) => {
+                    if (isNodeOrLink(d) && typeof d.x === 'number') {
+                        return d.x;
+                    }
+                    return 0;
+                })
+                .attr("y", (d) => {
+                    if (isNodeOrLink(d) && typeof d.y === 'number') {
+                        return d.y;
+                    }
+                    return 0;
+                });
         });
 
         // Zoom behavior
@@ -226,10 +331,9 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
         svg.call(zoom).call(zoom.transform, d3.zoomIdentity.translate(initialX, initialY));
 
         return () => {
-            simulation.stop();
-            svg.selectAll("*").remove();
+            cleanupGraph();
         };
-    }, [nodes, links, theme, pageId, isExtension, WINDOW]);
+    }, [nodes, links, theme, pageId, isExtension, WINDOW, cleanupGraph]);
 
     // Socket connection
     const connectSocket = useCallback(() => {
@@ -296,20 +400,18 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
             socketRef.current = null;
             setIsConnected(false);
         }
-        if (simulationRef.current) {
-            simulationRef.current.stop();
-            simulationRef.current = null;
-        }
-    }, []);
+        cleanupGraph();
+    }, [cleanupGraph]);
 
     // Mount graph when data changes
     useEffect(() => {
-        if (nodes.length > 0) {
-            mountGraph();
+        if (nodes.length > 0 && svgRef.current) {
+            const cleanup = mountGraph();
+            return cleanup;
         }
-    }, [mountGraph]);
+    }, [nodes, mountGraph]);
 
-    // Cleanup
+    // Cleanup on unmount
     useEffect(() => {
         return () => {
             disconnectSocket();
