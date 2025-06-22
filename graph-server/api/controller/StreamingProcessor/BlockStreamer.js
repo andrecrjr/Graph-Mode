@@ -58,7 +58,7 @@ export class BlockStreamer {
      * Process the parent block
      */
     async processParentBlock() {
-        // First, fetch the parent block itself
+        // First, fetch the parent block itself (returns single block object, not results array)
         const parentBlock = await this.processor.fetchBlockChildren(
             this.blockId,
             null,
@@ -69,9 +69,14 @@ export class BlockStreamer {
         if (this.processor.hasReachedLimit()) return;
 
         // Add the parent block as a page
+        // When children=false, the API returns the block directly, not wrapped in results
         if (parentBlock && parentBlock.id) {
             const parentTitle = this.getBlockTitle(parentBlock);
             this.processor.addPage(parentBlock.id, parentTitle);
+        } else {
+            // Fallback: if we can't fetch the parent block details, use the blockId
+            console.log('Using blockId as fallback for parent:', this.blockId);
+            this.processor.addPage(this.blockId, 'Parent Page');
         }
 
         // Emit the parent page immediately
@@ -185,8 +190,12 @@ export class BlockStreamer {
         // Skip processing for types we want to ignore
         if (this.options.skipTypes.includes(child.type)) return;
 
+        // For root level children, use the blockId as parentId to create parent-child links
+        // For deeper levels, use this.parentId
+        const parentIdForChild = this.options.currentDepth === 0 ? this.blockId : this.parentId;
+
         // Process the child
-        const childId = this.processor.processChild(child, this.parentId);
+        const childId = this.processor.processChild(child, parentIdForChild);
 
         // Get and emit new elements if any were added
         const newElements = this.processor.getNewElements();

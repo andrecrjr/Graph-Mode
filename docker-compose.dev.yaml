@@ -42,7 +42,7 @@ services:
       - app-network
     environment:
       - REDIS_PASSWORD=root  # Configurando a senha
-    command: ["redis-server", "--requirepass", "root", "--appendonly", "yes", "--appendfsync", "always", "--save", "60 1000"]
+    command: ["redis-server"]
 
 networks:
   app-network:

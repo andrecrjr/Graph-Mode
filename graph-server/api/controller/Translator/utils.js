@@ -1,11 +1,11 @@
 
 export function removeFirstHeading(blocks) {
-  
+
   const headingIndex = blocks.findIndex(block => block.type.startsWith('heading'));
   if (headingIndex !== -1) {
     return [
-      ...blocks.slice(0, headingIndex),  
-      ...blocks.slice(headingIndex + 1)  
+      ...blocks.slice(0, headingIndex),
+      ...blocks.slice(headingIndex + 1)
     ];
   }
 

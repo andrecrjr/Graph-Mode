@@ -158,6 +158,8 @@ export class RateLimitedElementProcessor extends ElementProcessor {
             });
 
             return newElement;
+        } else {
+            console.log('addNode: source is null/undefined, no link created');
         }
         return null;
     }
