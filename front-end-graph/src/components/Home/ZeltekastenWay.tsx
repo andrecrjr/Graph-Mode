@@ -172,15 +172,6 @@ const ZettelkastenComparison = () => {
                 Structure your Notion pages in a more intuitive way
               </p>
             </div>
-            <div className="space-y-2">
-              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto">
-                <Pencil className="w-6 h-6 text-blue-600 dark:text-blue-300" />
-              </div>
-              <h4 className="font-semibold text-gray-800 dark:text-white">Fast Notes</h4>
-              <p className="text-gray-600 dark:text-gray-300">
-                Quickly create ideas within your knowledge graph
-              </p>
-            </div>
           </div>
         </div>
       </div>
