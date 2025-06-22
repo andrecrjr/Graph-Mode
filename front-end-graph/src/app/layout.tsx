@@ -19,7 +19,7 @@ const roboto = Roboto({
   weight: ["100", "300", "400"],
 });
 export const metadata: Metadata = {
-  title: "Graph Mode - Browser Extension for Interactive Graph View in Notion",
+  title: "Graph Mode - Browser Extension for Graph View in Notion",
   description:
     "Transform your Notion pages into an interactive Graph View with Graph Mode Browser Extension. Boost your productivity and note organization with this Extension.",
   keywords:
