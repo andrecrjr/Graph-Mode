@@ -1,5 +1,7 @@
 const appBaseUrl = 'http://localhost:3000';
 
+const pathExtension = '/graph/socket-extension';
+
 const sidebarWidth = '75%'; // 75% of the width of the page
 
 // Function to extract Notion page ID from URL
@@ -114,7 +116,7 @@ function createGraphModeSidebar(notionUrl) {
     // Set the source to your Next.js app with the Notion page ID
 
     // Use the new extension route
-    iframe.src = `${appBaseUrl}/graph/extension/socket/${notionPageId}?utm_source=notion-chrome-extension`;
+    iframe.src = `${appBaseUrl}${pathExtension}/${notionPageId}?utm_source=notion-chrome-extension`;
 
     // Add the iframe to the sidebar
     sidebar.appendChild(iframe);
@@ -131,7 +133,7 @@ const updateGraphModeIframe = () => {
     const iframe = document.getElementById('graph-view-iframe');
     if (iframe) {
         console.log('Updating iframe');
-        iframe.src = `${appBaseUrl}/graph/extension/socket/${extractNotionPageId(window.location.href)}?utm_source=notion-chrome-extension`;
+        iframe.src = `${appBaseUrl}${pathExtension}/${extractNotionPageId(window.location.href)}?utm_source=notion-chrome-extension`;
     }
 }
 

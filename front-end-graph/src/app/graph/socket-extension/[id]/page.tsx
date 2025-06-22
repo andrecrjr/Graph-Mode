@@ -1,17 +1,12 @@
 import React from "react";
 import type { Metadata } from "next";
-import { SocketGraphComponent } from "@/components/socket";
-import dynamic from "next/dynamic";
-import LoadingDynamicPlaceholder from "@/components/Loading";
+import { DynamicLazySocketGraphPage } from "@/components/pages/dynamicPages";
 
 type Props = {
     params: { id: string };
 };
 
-export const DynamicLazySocketGraphPage = dynamic(() => import("@/components/socket/SocketGraphComponent"), {
-    loading: () => <LoadingDynamicPlaceholder message="Boosting your Notion..." />,
-    ssr: false,
-});
+
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
