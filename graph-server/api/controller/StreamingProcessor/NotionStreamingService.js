@@ -79,7 +79,8 @@ export class NotionStreamingService {
                 socket: this.socket,
                 notionAPI,
                 parentId: null,
-                maxRequests: this.getRequestLimit(notionAPI)
+                maxRequests: this.getRequestLimit(notionAPI),
+                socketMode: true
             });
         }
     }

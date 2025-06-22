@@ -2,11 +2,16 @@ import { convertToUid } from "../../utils/index.js";
 import { ElementHandler } from "./ElementHandler.js";
 
 export class ChildPageHandler extends ElementHandler {
+  constructor(processor, socketMode) {
+    super(processor);
+    this.socketMode = socketMode;
+  }
+
   handle(child, parentId) {
     const childId = child.id;
 
-    this.processor.addPage(convertToUid(childId), child.child_page.title);
-    this.processor.addNode(convertToUid(parentId), convertToUid(childId));
+    this.processor.addPage(this.socketMode ? convertToUid(childId) : childId, child.child_page.title);
+    this.processor.addNode(this.socketMode ? convertToUid(parentId) : parentId, this.socketMode ? convertToUid(childId) : childId);
 
     const insideColumn = this.processor.insideColumn.find(item => item.idColumn === parentId);
     const insideToggle = this.processor.toggleList.find(item => item.idToggle === parentId);

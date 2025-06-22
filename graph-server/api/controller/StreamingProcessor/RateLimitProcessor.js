@@ -10,7 +10,7 @@ export class RateLimitedElementProcessor extends ElementProcessor {
      * @param {Object} config - Configuration options
      */
     constructor({ socket, notionAPI, parentId, maxRequests }) {
-        super(notionAPI);
+        super(notionAPI, true);
 
         this.socket = socket;
         this.notionAPI = notionAPI;
@@ -151,7 +151,6 @@ export class RateLimitedElementProcessor extends ElementProcessor {
         if (source) {
             const newElement = { source, target, type: 'node' };
             this.elements.push(newElement);
-
             this.safeEmit('newElement', {
                 element: newElement,
                 parentId: this.parentId

@@ -29,7 +29,7 @@ export const GraphComponent: React.FC = () => {
           <Sidebar />
           <LoadingGraphLazyComponent />
           <GraphSVGLazyComponent />
-          <EditorPage />
+          {/* <EditorPage /> */}
         </div>
       </LoadPageData>
     </MockPage>
