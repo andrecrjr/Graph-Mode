@@ -52,6 +52,7 @@ router.get('/blocks/:blockId', authMiddleware, async (req, res) => {
       }
     });
   } catch (error) {
+    console.log(error)
     logger.error(`Error to find blockId: ${blockId} with token auth: ${req.headers?.authorization}. Error: ${error}`);
     res.status(404).json({ error: `Erro ao buscar filhos do bloco: ${error.message}` });
   }

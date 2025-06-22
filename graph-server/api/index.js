@@ -1,18 +1,27 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import http from 'http';
 import router from './routes/index.js';
 
+// Load environment variables first
+dotenv.config();
+
 import { pageRouter } from './routes/CRUDNotion.js';
-import {webhookStriperRouter} from "./routes/webhook.js"
+import { webhookStriperRouter } from "./routes/webhook.js"
 import { UserRouter } from './routes/user.js';
 import { redisRouter } from './routes/redis.js';
+import { socketRouter } from './routes/socket.js';
+import SocketController from './controller/SocketController/index.js';
 
-
-dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Create HTTP server instance
+const server = http.createServer(app);
+
+// Initialize Socket.io server
+SocketController.initSocketServer(server);
 
 const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS.split(",");
 
@@ -20,7 +29,7 @@ app.use("/webhook", webhookStriperRouter);
 
 app.use(cors({
   origin: function (origin, callback) {
-    if(!origin){
+    if (!origin) {
       return callback(null, true);
     }
     if (!allowedOrigins.includes(origin)) {
@@ -36,9 +45,9 @@ app.use("/", router)
 app.use("/user", UserRouter)
 app.use("/translate", pageRouter)
 app.use("/redis", redisRouter)
+app.use("/socket", socketRouter)
 
-
-// Inicializa o servidor Express
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+// Inicializa o servidor HTTP com Express e Socket.io
+server.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT} com suporte a WebSockets`);
 });

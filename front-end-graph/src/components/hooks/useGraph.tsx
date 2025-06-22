@@ -15,8 +15,6 @@ export const useGraph = () => {
   } = useGraphContextData();
   const pathname = usePathname();
   const isExtension = pathname.includes("extension");
-  console.log("pageId", pageId);
-  console.log("pathname", pathname);
 
   const WINDOW = {
     MAX_GRAPH_WIDTH: 6000,

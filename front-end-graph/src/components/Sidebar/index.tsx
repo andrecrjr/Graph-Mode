@@ -8,7 +8,7 @@ import {
   RefreshCcw,
   Palette,
   X,
-  CreditCard,
+  ArrowUp,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { memo, useState } from "react";
@@ -26,10 +26,10 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showThemeSelector, setShowThemeSelector] = useState(false);
   const { state } = useGraphContextData();
-  const { nodes } = state;
+  const { nodes, metadata } = state;
   const path = usePathname();
-  const isPathExtension = path.includes("/graph/extension/");
-  const pageId = isPathExtension ? path.replace("/graph/extension/", "") : path;
+  const isPathExtension = path.includes("/graph/extension/socket/");
+  const pageId = isPathExtension ? path.replace("/graph/extension/socket/", "") : path;
   const { theme, setTheme } = useTheme();
 
   const toggleSidebar = () => {
@@ -96,129 +96,120 @@ const Sidebar = () => {
   const iconColorClass = theme === 'default' ? 'text-black dark:text-white' : getIconColorClass();
 
   return (
-    <>
-      <button
-        className={`opacity-1 md:opacity-25 fixed top-4 right-0 z-40 p-2 flex justify-center ${isOpen ? getSidebarBgColor() : "bg-gray-800"} ${iconColorClass} bg-transparent`}
-        onClick={toggleSidebar}
-      >
-        {isOpen ? <X className={`w-10 h-6 ${iconColorClass}`} /> : <Menu className={`w-12 h-6 ${iconColorClass}`} />}
-      </button>
-      <div
-        className={`fixed top-0 ${getSidebarBgColor()} rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm border ${"right-0"} h-full ${isOpen ? "w-64" : "w-16"} text-white transition-all duration-300 ease-in-out z-30 overflow-hidden`}
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
-      >
-        <div className="mt-20">
-          <ul className="flex flex-col">
-            {(!isMock(state.pageId) || isPathExtension) && (
-              <li className="w-full mt-auto self-center bg-green-700">
+    <div
+      className={`fixed top-0 ${getSidebarBgColor()} flex rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm border ${isOpen ? "side-open" : "side-closed"} ${"right-0"} h-full ${isOpen ? "w-60" : "w-14"} 
+        text-white transition-all duration-300 ease-in-out z-30 overflow-hidden`}
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
+      <ul className="flex flex-col justify-center">
+        {(!isMock(state.pageId) || isPathExtension) && (
+          <li className="w-full">
+            <button
+              className="p-4 w-full flex items-center"
+              title="Synchronize with Notion"
+              onClick={(e) => {
+                syncPage(isPathExtension ? path.replace("/graph/extension/socket/", "") : path.replace("/graph/", ""));
+                window.location.reload();
+              }}
+            >
+              <RefreshCcw className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
+              {isOpen && <span className={iconColorClass}>Syncronize with Notion</span>}
+            </button>
+          </li>
+        )}
+        <li className="w-full">
+          <button
+            className={`p-4 w-full ${buttonHoverClass} flex items-center`}
+            title="Change graph theme"
+            onClick={() => {
+              setIsOpen(true);
+              setShowThemeSelector(!showThemeSelector);
+            }}
+          >
+            <Palette className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
+            {isOpen && <span className={iconColorClass}>Change Graph Theme</span>}
+          </button>
+          {showThemeSelector && isOpen && (
+            <div className="ml-4 pl-4 border-l border-gray-700">
+              {Object.keys(themeConfigs).map((themeName) => (
                 <button
-                  className="p-4 w-full flex items-center"
-                  title="Synchronize with Notion"
-                  onClick={(e) => {
-                    syncPage(isPathExtension ? path.replace("/graph/extension/", "") : path.replace("/graph/", ""));
-                    window.location.reload();
-                  }}
+                  key={themeName}
+                  className={`p-2 w-full text-left flex items-center ${iconColorClass} ${theme === themeName ? "bg-gray-300 dark:bg-gray-700" : buttonHoverClass}`}
+                  onClick={() => handleThemeChange(themeName as GraphTheme)}
                 >
-                  <RefreshCcw className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-                  {isOpen && <span className={iconColorClass}>Syncronize with Notion</span>}
+                  <div
+                    className={`w-4 h-4 mr-2 rounded-full ${getThemeColorClass(themeName)}`}
+                  ></div>
+                  {themeName.charAt(0).toUpperCase() + themeName.slice(1)}
                 </button>
-              </li>
-            )}
-            <li className="w-full">
-              <button
-                className={`p-4 w-full ${buttonHoverClass} flex items-center`}
-                title="Change graph theme"
-                onClick={() => {
-                  setIsOpen(true);
-                  setShowThemeSelector(!showThemeSelector);
-                }}
-              >
-                <Palette className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-                {isOpen && <span className={iconColorClass}>Change Graph Theme</span>}
-              </button>
-              {showThemeSelector && isOpen && (
-                <div className="ml-4 pl-4 border-l border-gray-700">
-                  {Object.keys(themeConfigs).map((themeName) => (
-                    <button
-                      key={themeName}
-                      className={`p-2 w-full text-left flex items-center ${iconColorClass} ${theme === themeName ? "bg-gray-300 dark:bg-gray-700" : buttonHoverClass}`}
-                      onClick={() => handleThemeChange(themeName as GraphTheme)}
-                    >
-                      <div
-                        className={`w-4 h-4 mr-2 rounded-full ${getThemeColorClass(themeName)}`}
-                      ></div>
-                      {themeName.charAt(0).toUpperCase() + themeName.slice(1)}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </li>
-            <li className="w-full">
-              <button
-                className={`p-4 w-full ${buttonHoverClass} flex items-center`}
-                title="You can fix positions to arrange the graphs later"
-                onClick={(e) => {
-                  e.preventDefault();
-                  saveNodePositions(nodes, pageId);
-                  window.location.reload();
-                }}
-              >
-                <Pin className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-                {isOpen && <span className={iconColorClass}>Pin {nodes && "current"} Positions</span>}
-              </button>
-            </li>
-            {saveStorage.get(`nodePositions-${pageId}`) && (
-              <li className="w-full">
-                <button
-                  className={`p-4 w-full ${buttonHoverClass} flex items-center`}
-                  title="You can fix positions to arrange the graphs later"
-                  onClick={() => {
-                    clearNodePositions(pageId);
-                  }}
-                >
-                  <PinOff className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-                  {isOpen && <span className={iconColorClass}>Reset Pinned Positions</span>}
-                </button>
-              </li>
-            )}
-            <li className="w-full mt-auto self-center">
-              <a
-                className={`p-4 w-full ${buttonHoverClass} flex items-center`}
-                href="https://ko-fi.com/B0B812WECP"
-                title="Buy me a coffee"
-              >
-                <Coffee className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-                {isOpen && <span className={iconColorClass}>Buy me a coffee {";)"}</span>}
-              </a>
-            </li>
-            {!state.isVip && <li className="w-full mt-auto self-center">
-              <a
-                className={`p-4 w-full ${buttonHoverClass} flex items-center`}
-                href={"/pricing"}
-                title="Pricing"
-                target="_blank"
-              >
-                <CreditCard className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-                {isOpen && <span className={iconColorClass}>Upgrade to Pro</span>}
-              </a>
-            </li>}
-            {!isPathExtension && <li className="w-full mt-auto self-center">
-              <a
-                className={`p-4 w-full ${buttonHoverClass} flex items-center`}
-                href="/app"
-                title="Back to Home"
-              >
-                <ArrowLeft className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-                {isOpen && <span className={iconColorClass}>Back to Home</span>}
-              </a>
-            </li>}
+              ))}
+            </div>
+          )}
+        </li>
+        <li className="w-full">
+          <button
+            className={`p-4 w-full ${buttonHoverClass} flex items-center`}
+            title="You can fix positions to arrange the graphs later"
+            onClick={(e) => {
+              e.preventDefault();
+              saveNodePositions(nodes, pageId);
+              window.location.reload();
+            }}
+          >
+            <Pin className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
+            {isOpen && <span className={iconColorClass}>Pin {nodes && "current"} Positions</span>}
+          </button>
+        </li>
+        {saveStorage.get(`nodePositions-${pageId}`) && (
+          <li className="w-full">
+            <button
+              className={`p-4 w-full ${buttonHoverClass} flex items-center`}
+              title="You can fix positions to arrange the graphs later"
+              onClick={() => {
+                clearNodePositions(pageId);
+              }}
+            >
+              <PinOff className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
+              {isOpen && <span className={iconColorClass}>Reset Pinned Positions</span>}
+            </button>
+          </li>
+        )}
+        {!metadata?.isVip && <li className="w-full">
+          <a
+            className={`p-4 w-full ${buttonHoverClass} flex items-center`}
+            href={"/pricing"}
+            title="Pricing"
+            target="_blank"
+          >
+            <ArrowUp className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass} animate-pulse`} />
+            {isOpen && <span className={iconColorClass}>Boost your productivity</span>}
+          </a>
+        </li>}
+        <li className="w-full self-end">
+          <a
+            className={`p-4 w-full ${buttonHoverClass} flex items-center`}
+            href="https://ko-fi.com/B0B812WECP"
+            title="Buy me a coffee"
+          >
+            <Coffee className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
+            {isOpen && <span className={iconColorClass}>Buy me a coffee {";)"}</span>}
+          </a>
+        </li>
 
+        {!isPathExtension && <li className="w-full self-end">
+          <a
+            className={`p-4 w-full ${buttonHoverClass} flex items-center`}
+            href="/app"
+            title="Back to Home"
+          >
+            <ArrowLeft className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
+            {isOpen && <span className={iconColorClass}>Back to Home</span>}
+          </a>
+        </li>}
+      </ul>
 
-          </ul>
-        </div>
-      </div>
-    </>
+    </div>
   );
 };
 

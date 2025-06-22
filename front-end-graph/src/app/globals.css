@@ -79,4 +79,13 @@
       @apply bg-background text-foreground;
     }
   }
+
+  .side-open.w-60 li {
+    opacity: 1;
+  }
+
+  .side-closed.w-14 li span {
+    opacity: 0;
+  }
+
 }

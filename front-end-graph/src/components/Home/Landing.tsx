@@ -19,7 +19,7 @@ export default function Landing() {
                 Unlock the Power of Graph Mode
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-500 sm:text-xl dark:text-gray-400">
-                Enhance your Notion workflow with our browser extension offering a Zettelkasten-style graph view—just like Obsidian. Build, visualize, and explore relationships across all your notes.
+                Enhance your Notion with Graph view extension. Build, visualize, and explore relationships across all your notes in your Browser.
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
@@ -59,7 +59,10 @@ export default function Landing() {
                 🚀 Be First to Know When It{"'"}s Live
               </h3>
               <p className="text-gray-500 md:text-xl dark:text-gray-400 max-w-2xl mx-auto transition-colors duration-200">
-                The <strong>Graph Mode Chrome extension</strong> is coming soon {"—"} bringing the same powerful visualization you love from the web app, now directly aside Notion.
+                The <strong>Graph Mode Chrome extension</strong> is coming soon, join the waitlist to be among the first to know when it{"'"}s live.
+              </p>
+              <p className="text-gray-500 md:text-xl dark:text-gray-400 max-w-2xl mx-auto transition-colors duration-200">
+                Keep an eye on our <Link href="https://ko-fi.com/post/Great-Cool-Surprise-for-Graph-Mode-X8X31ET4W2" className="text-blue-500 hover:underline">Ko-fi</Link> for real time updates.
               </p>
             </div>
             <div className="w-full mt-8">
@@ -73,12 +76,6 @@ export default function Landing() {
                 />
               </div>
             </div>
-            <p className="text-gray-500 md:text-xl dark:text-gray-400 max-w-2xl mx-auto transition-colors duration-200">
-              Ready to unlock the full power of Graph Mode? Sign up for the waitlist to be among the first to know when it{"'"}s live.
-            </p>
-            <p className="text-gray-500 md:text-xl dark:text-gray-400 max-w-2xl mx-auto transition-colors duration-200">
-              Keep an eye on our <Link href="https://ko-fi.com/post/Great-Cool-Surprise-for-Graph-Mode-X8X31ET4W2" className="text-blue-500 hover:underline">Ko-fi</Link> for updates.
-            </p>
           </div>
         </div>
       </section>
@@ -121,7 +118,7 @@ export default function Landing() {
         </div>
       </section>
       <ZettelkastenComparison />
-      {process.env.NEXT_PUBLIC_TIER_RELEASED && <PricingTierComponent />}
+      <PricingTierComponent />
       <BuyMeCoffee />
     </div>
   );

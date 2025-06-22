@@ -36,3 +36,8 @@ export const ExtensionGraphComponent = dynamic(
     ssr: false,
   },
 );
+
+export const DynamicLazySocketGraphPage = dynamic(() => import("@/components/socket/SocketGraphComponent"), {
+  loading: () => <LoadingDynamicPlaceholder message="Boosting your Notion..." />,
+  ssr: false,
+});

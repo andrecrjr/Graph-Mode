@@ -34,7 +34,6 @@ services:
 
   redis:
     image: redis:latest
-    command: ["redis-server", "--requirepass", "root"]
     volumes:
       - redis-data:/data 
     ports:
@@ -43,6 +42,7 @@ services:
       - app-network
     environment:
       - REDIS_PASSWORD=root  # Configurando a senha
+    command: ["redis-server"]
 
 networks:
   app-network:
