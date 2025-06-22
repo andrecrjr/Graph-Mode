@@ -19,7 +19,7 @@ export default function Landing() {
                 Unlock the Power of Graph Mode
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-500 sm:text-xl dark:text-gray-400">
-                Enhance your Notion with our Graph view. Build, visualize, and explore relationships across all your notes in your Browser.
+                Enhance your Notion with Graph view extension. Build, visualize, and explore relationships across all your notes in your Browser.
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
