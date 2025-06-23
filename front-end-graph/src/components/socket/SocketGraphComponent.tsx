@@ -7,6 +7,7 @@ import Link from "next/link";
 import Sidebar from "../Sidebar";
 import { useExtensionToastNotification } from "../hooks/useExtensionToastNotification";
 import { saveStorage } from "../utils";
+import { toast } from "../hooks/use-toast";
 
 interface NewSocketGraphProps {
     notionPageId?: string;
@@ -59,15 +60,25 @@ export default function SocketGraphComponent({ notionPageId = "mock" }: NewSocke
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (encodedKey) {
-            const decodedKey = atob(encodedKey);
-            const [email, token] = decodedKey.split(":");
-            setToken(token);
-            setEmail(email);
-            saveStorage.set("graph_mode_key", token);
-            saveStorage.set("graph_mode_email", email);
-            setIsAuthenticated(true);
+        try {
+            if (encodedKey) {
+                const decodedKey = atob(encodedKey);
+                const [email, token] = decodedKey.split(":");
+                setToken(token);
+                setEmail(email);
+                saveStorage.set("graph_mode_key", token);
+                saveStorage.set("graph_mode_email", email);
+                setIsAuthenticated(true);
+            }
+        } catch (error) {
+            toast({
+                title: "Invalid key",
+                description: "Please enter a valid key",
+                className: "bg-red-700 text-white",
+            });
+            console.error(error);
         }
+
     };
 
     const handleDisconnect = () => {
@@ -92,7 +103,7 @@ export default function SocketGraphComponent({ notionPageId = "mock" }: NewSocke
                         </p>
                     </div>
 
-                    <Link href="/app/extension" target="_blank" rel="noopener noreferrer">
+                    <Link href="/extension" target="_blank" rel="noopener noreferrer">
                         <p className="text-sm text-gray-500 mb-6 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-md">
                             First time? <span className="text-blue-600 dark:text-blue-400 font-medium">Get your key here →</span>
                         </p>

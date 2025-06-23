@@ -28,8 +28,7 @@ const Sidebar = () => {
   const { state } = useGraphContextData();
   const { nodes, metadata } = state;
   const path = usePathname();
-  const isPathExtension = path.includes("/graph/extension/socket/");
-  const pageId = isPathExtension ? path.replace("/graph/extension/socket/", "") : path;
+  const isPathExtension = path.includes("/graph/socket-extension/");
   const { theme, setTheme } = useTheme();
 
   const toggleSidebar = () => {
@@ -109,7 +108,7 @@ const Sidebar = () => {
               className="p-4 w-full flex items-center"
               title="Synchronize with Notion"
               onClick={(e) => {
-                syncPage(isPathExtension ? path.replace("/graph/extension/socket/", "") : path.replace("/graph/", ""));
+                syncPage(isPathExtension ? path.replace("/graph/socket-extension/", "") : path.replace("/graph/", ""));
                 window.location.reload();
               }}
             >
