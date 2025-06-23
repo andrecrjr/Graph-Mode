@@ -147,7 +147,7 @@ const Sidebar = () => {
             </div>
           )}
         </li>
-        <li className="w-full">
+        {/* <li className="w-full">
           <button
             className={`p-4 w-full ${buttonHoverClass} flex items-center`}
             title="You can fix positions to arrange the graphs later"
@@ -174,7 +174,7 @@ const Sidebar = () => {
               {isOpen && <span className={iconColorClass}>Reset Pinned Positions</span>}
             </button>
           </li>
-        )}
+        )} */}
         {!metadata?.isVip && <li className="w-full">
           <a
             className={`p-4 w-full ${buttonHoverClass} flex items-center`}
