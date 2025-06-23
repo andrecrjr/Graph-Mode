@@ -1,6 +1,6 @@
 const appBaseUrl = 'http://localhost:3000';
 
-const pathExtension = '/graph/socket-extension';
+const pathExtension = '/graph/socket-extension/';
 
 const sidebarWidth = '75%'; // 75% of the width of the page
 
