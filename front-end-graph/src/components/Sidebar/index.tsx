@@ -9,6 +9,7 @@ import {
   Palette,
   X,
   ArrowUp,
+  MessageCircle,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { memo, useState } from "react";
@@ -105,7 +106,7 @@ const Sidebar = () => {
         {(!isMock(state.pageId) || isPathExtension) && (
           <li className="w-full">
             <button
-              className="p-4 w-full flex items-center"
+              className={`p-4 ${buttonHoverClass} w-full flex items-center`}
               title="Synchronize with Notion"
               onClick={(e) => {
                 syncPage(isPathExtension ? path.replace("/graph/socket-extension/", "") : path.replace("/graph/", ""));
@@ -113,7 +114,7 @@ const Sidebar = () => {
               }}
             >
               <RefreshCcw className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-              {isOpen && <span className={iconColorClass}>Syncronize with Notion</span>}
+              {isOpen && <span className={iconColorClass}>Update Graph</span>}
             </button>
           </li>
         )}
@@ -146,38 +147,11 @@ const Sidebar = () => {
             </div>
           )}
         </li>
-        {/* <li className="w-full">
-          <button
-            className={`p-4 w-full ${buttonHoverClass} flex items-center`}
-            title="You can fix positions to arrange the graphs later"
-            onClick={(e) => {
-              e.preventDefault();
-              saveNodePositions(nodes, pageId);
-              window.location.reload();
-            }}
-          >
-            <Pin className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-            {isOpen && <span className={iconColorClass}>Pin {nodes && "current"} Positions</span>}
-          </button>
-        </li>
-        {saveStorage.get(`nodePositions-${pageId}`) && (
-          <li className="w-full">
-            <button
-              className={`p-4 w-full ${buttonHoverClass} flex items-center`}
-              title="You can fix positions to arrange the graphs later"
-              onClick={() => {
-                clearNodePositions(pageId);
-              }}
-            >
-              <PinOff className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
-              {isOpen && <span className={iconColorClass}>Reset Pinned Positions</span>}
-            </button>
-          </li>
-        )} */}
+
         {!metadata?.isVip && <li className="w-full">
           <a
             className={`p-4 w-full ${buttonHoverClass} flex items-center`}
-            href={"/pricing"}
+            href={"/pricing?utm_source=graph-mode-sidebar"}
             title="Pricing"
             target="_blank"
           >
@@ -206,6 +180,18 @@ const Sidebar = () => {
             {isOpen && <span className={iconColorClass}>Back to Home</span>}
           </a>
         </li>}
+        <li className="w-full">
+          <a
+            className={`p-4 w-full ${buttonHoverClass} flex items-center`}
+            href="https://graph-mode.com/contact?utm_source=graph-mode-sidebar"
+            title="Feedback"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <MessageCircle className={`${isOpen ? "mr-4" : "mx-auto"} ${iconColorClass}`} />
+            {isOpen && <span className={iconColorClass}>Send Your Feedback</span>}
+          </a>
+        </li>
       </ul>
 
     </div>
