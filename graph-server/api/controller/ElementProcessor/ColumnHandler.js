@@ -10,15 +10,21 @@ class ColumnListHandler extends ElementHandler {
     }
   }
 }
+
 class ColumnHandler extends ElementHandler {
   handle(child) {
-    const columnList = this.processor.columnListTrack.find(item => item.columnList === child.parent?.block_id);
+    const columnList = this.findInProcessorState(
+      'columnListTrack',
+      item => item.columnList === child.parent?.block_id
+    );
+
     if (columnList) {
-      this.processor.insideColumn.push({ ...columnList, idColumn: child.id });
+      this.processor.insideColumn.push({
+        ...columnList,
+        idColumn: child.id
+      });
     }
   }
 }
 
-
-
-export {ColumnHandler, ColumnListHandler}
+export { ColumnHandler, ColumnListHandler }
