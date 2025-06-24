@@ -17,7 +17,6 @@ export default function AuthExtension() {
     }
 
     useEffect(() => {
-        console.log(session);
         if (session?.user?.tokens?.access_token) {
             const encodedKey = btoa(`${session?.user?.person?.email}:${session?.user?.tokens?.access_token}`);
             setKey(encodedKey);
@@ -39,9 +38,9 @@ export default function AuthExtension() {
 
 
     return (
-        <section className='flex items-center justify-center w-6/12 gap-4'>
+        <section className='flex items-center justify-center gap-4'>
 
-            <Input className='w-full' type="password" placeholder="Graph Mode key" value={key} readOnly={true} />
+            <Input className='w-full dark:text-white' type="password" placeholder="Graph Mode key" value={key} readOnly={true} />
             <Button onClick={handleCopyKey}>
                 Copy Graph Mode key
             </Button>

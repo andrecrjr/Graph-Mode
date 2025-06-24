@@ -9,23 +9,15 @@ import { CheckCheckIcon, SparkleIcon } from "lucide-react";
 export const LandingAuthButton = ({ label = "Go to Graph Mode" }) => {
   const { session } = useUserSession();
   const _onClick = () => {
-    if (!!window.dataLayer) {
-      window.dataLayer.push({
-        event: "login with notion in landing page",
-        category: "authenticated user",
-        label: "login_init_landing",
-        usuario_logado: true,
-      });
-    }
     setTimeout(() => {
       signIn("notion", {
-        callbackUrl: "/app?landing=true",
+        callbackUrl: "/extension?utm_source=landing-page",
       });
     }, 100);
   };
   if (session) {
     return (
-      <Link href="/app" className="w-full">
+      <Link href="/extension?utm_source=landing-page" className="w-full">
         <Button className="w-full bg-green-600 hover:bg-green-700">
           {label}
           <CheckCheckIcon className="ml-2 w-4" />
