@@ -43,7 +43,6 @@ app.use(cors({
 app.use(express.json());
 app.use("/", router)
 app.use("/user", UserRouter)
-app.use("/translate", pageRouter)
 app.use("/redis", redisRouter)
 app.use("/socket", socketRouter)
 
