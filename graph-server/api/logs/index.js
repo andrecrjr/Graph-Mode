@@ -38,6 +38,12 @@ const logger = createLogger({
       maxsize: 1048576, // 1MB
       maxFiles: 10,
     }),
+    new transports.File({
+      filename: join(__dirname, 'debug', 'redis.log'),
+      level: 'cache',
+      maxsize: 1048576, // 1MB
+      maxFiles: 10,
+    }),
   ],
 });
 

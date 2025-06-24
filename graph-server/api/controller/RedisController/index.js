@@ -13,7 +13,7 @@ export class RedisController {
   async healthcheckRedis() {
     try {
       const value = await this.redis.keys("*")
-      logger.info(value)
+      logger.cache(value)
       return true
     } catch (error) {
       logger.error(`erro na request para pegar o redis ${error}`)
@@ -36,7 +36,7 @@ export class RedisController {
     try {
       const value = await this.redis.get(key);
       if (value) {
-        logger.info(`Cache hit for ${key}`);
+        logger.cache(`Cache hit for ${key}`);
         return JSON.parse(value);
       } else {
         return null;
@@ -52,7 +52,7 @@ export class RedisController {
       const exists = await this.redis.exists(key);
       if (exists) {
         await this.setKey(key, value);
-        logger.info(`Chave ${key} atualizada com sucesso.`);
+        logger.cache(`Chave ${key} atualizada com sucesso.`);
       }
     } catch (err) {
       logger.error(`Erro ao atualizar a chave ${key}:`, err);
@@ -64,7 +64,7 @@ export class RedisController {
     try {
       const result = await this.redis.del(key);
       if (result === 1) {
-        logger.info(`Chave ${key} deletada com sucesso.`);
+        logger.cache(`Chave ${key} deletada com sucesso.`);
       }
     } catch (err) {
       logger.error(`Erro ao deletar a chave ${key}:`, err);
