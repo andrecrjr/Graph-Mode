@@ -62,7 +62,6 @@ The application implements a tiered access system with different limitations bas
 
 |                  | Free                 | Premium       | Lifetime      |
 |------------------|----------------------|---------------|---------------|
-| Daily Fast Notes | Limited (default: 2) | Unlimited     | Unlimited     |
 | API Requests     | Limited (default: 5) | High limit    | Unlimited     |
 | Caching          | 5 minutes            | 1 minute      | No caching    |
 | Batch Processing | Small batches (2)    | Medium (5)    | Large (10)    |
@@ -93,3 +92,23 @@ The following environment variables control the rate limiting:
 LIMIT_NOTION_REFRESH=5  # Maximum API requests for free users
 MAX_NOTES=2             # Maximum daily fast notes for free users
 ```
+
+## API Implementation
+
+The backend includes the following components to support WebSocket functionality:
+
+### SocketController
+
+The `SocketController` is responsible for managing WebSocket connections. It handles the establishment of connections, broadcasting messages to connected clients, and managing disconnections. This component ensures efficient communication between the server and clients by maintaining active WebSocket connections and handling events such as message reception and transmission. It is designed to support scalable real-time communication, allowing multiple clients to interact with the server simultaneously.
+
+### StreamingProcessor
+
+The `StreamingProcessor` is tasked with processing streaming data to provide real-time updates to clients. It ensures efficient data flow by managing the rate at which data is sent over WebSocket connections. This component implements rate limiting to prevent server overload and ensure fair usage among clients. It uses algorithms to dynamically adjust the data flow based on current server load and client demand, providing a smooth and responsive real-time experience for users.
+
+## Redis Integration
+
+The application utilizes Redis for efficient data caching and session management. Redis is configured to store frequently accessed data, reducing the load on the primary database and improving response times. The Redis connection settings are defined in the environment variables, allowing for easy configuration and scaling. Custom scripts are used to interact with Redis, providing utilities for data retrieval and storage.
+
+## WebSocket Integration
+
+WebSocket is integrated into the application to provide real-time communication between the server and clients. This integration allows for instant updates and message broadcasting, enhancing the user experience with live data feeds. The WebSocket implementation is designed to handle multiple connections efficiently, using libraries that support scalable and robust communication. Configuration settings for WebSocket are defined in the server setup, ensuring secure and reliable connections.

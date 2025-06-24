@@ -59,3 +59,11 @@ make install-all-deps
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the front-end.
+
+## Redis Integration
+
+The front-end application leverages Redis for caching and session management, ensuring fast access to frequently used data. Redis is configured through environment variables, allowing for flexible deployment and scaling. The integration with Redis enhances performance by reducing database queries and providing quick data retrieval.
+
+## WebSocket Integration
+
+WebSocket is used in the front-end to enable real-time updates and communication with the backend server. This integration supports live data streaming and instant notifications, providing a dynamic user experience. The WebSocket setup is configured to handle multiple client connections, ensuring efficient and reliable data transmission. Libraries used for WebSocket communication are included in the project dependencies, facilitating seamless integration.
