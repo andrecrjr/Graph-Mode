@@ -5,6 +5,7 @@ import Link from 'next/link'
 import React from 'react'
 import AuthButton from '@/components/Buttons';
 import { BGParticle } from '@/components/Home/BgParticle';
+import { DownloadIcon } from 'lucide-react';
 
 export default async function ExtensionPage() {
     const data = await auth();
@@ -122,9 +123,7 @@ export default async function ExtensionPage() {
                                 <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
                                     <Button size="lg" className='bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-lg'>
                                         <Link href="/extension/downloaded" className='flex items-center gap-2'>
-                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                            </svg>
+                                            <DownloadIcon className='w-5 h-5' />
                                             Download Extension
                                         </Link>
                                     </Button>
