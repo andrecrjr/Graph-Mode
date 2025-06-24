@@ -14,9 +14,9 @@ class NotionAPI {
     this.userNotion = userNotion;
     this.cacheEnabled = true;
     this.cacheTTL = {
-      [ACCOUNT_TIERS.FREE]: 0,     // 5 minutes for free users
-      [ACCOUNT_TIERS.PREMIUM]: 60,   // 1 minute for premium users
-      [ACCOUNT_TIERS.LIFETIME]: 300    // No cache for lifetime users
+      [ACCOUNT_TIERS.FREE]: 0,
+      [ACCOUNT_TIERS.PREMIUM]: 60,
+      [ACCOUNT_TIERS.LIFETIME]: 0
     };
   }
 
