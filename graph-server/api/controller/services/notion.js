@@ -14,9 +14,9 @@ class NotionAPI {
     this.userNotion = userNotion;
     this.cacheEnabled = true;
     this.cacheTTL = {
-      [ACCOUNT_TIERS.FREE]: 300,     // 5 minutes for free users
+      [ACCOUNT_TIERS.FREE]: 0,     // 5 minutes for free users
       [ACCOUNT_TIERS.PREMIUM]: 60,   // 1 minute for premium users
-      [ACCOUNT_TIERS.LIFETIME]: 0    // No cache for lifetime users
+      [ACCOUNT_TIERS.LIFETIME]: 300    // No cache for lifetime users
     };
   }
 
@@ -27,7 +27,7 @@ class NotionAPI {
       this.isVip = this.userTier !== ACCOUNT_TIERS.FREE;
 
       // Adjust cache settings based on tier
-      this.cacheEnabled = this.userTier !== ACCOUNT_TIERS.LIFETIME;
+      this.cacheEnabled = this.userTier !== ACCOUNT_TIERS.FREE;
 
       logger.debug(`User ${this.userNotion} set as tier: ${this.userTier}, VIP: ${this.isVip}`);
     } catch (error) {
