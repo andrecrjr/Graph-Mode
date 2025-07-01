@@ -12,6 +12,7 @@ import { webhookStriperRouter } from "./routes/webhook.js"
 import { UserRouter } from './routes/user.js';
 import { redisRouter } from './routes/redis.js';
 import { socketRouter } from './routes/socket.js';
+import notionHookRouter from './routes/notionHook.js';
 import SocketController from './controller/SocketController/index.js';
 
 const app = express();
@@ -21,11 +22,16 @@ const PORT = process.env.PORT || 3001;
 const server = http.createServer(app);
 
 // Initialize Socket.io server
-SocketController.initSocketServer(server);
+const io = SocketController.initSocketServer(server);
+
+// Make Socket.IO instance available to routes
+app.set('socketio', io);
 
 const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS.split(",");
+app.use(express.json());
 
 app.use("/webhook", webhookStriperRouter);
+app.use("/api", notionHookRouter);
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -40,7 +46,6 @@ app.use(cors({
   }
 }));
 
-app.use(express.json());
 app.use("/", router)
 app.use("/user", UserRouter)
 app.use("/redis", redisRouter)

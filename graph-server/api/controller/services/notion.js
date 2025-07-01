@@ -46,7 +46,7 @@ class NotionAPI {
     return this.userTier;
   }
 
-  async fetchBlockChildren(blockId, nextCursor = null, children = true) {
+  async fetchBlockChildren(blockId, nextCursor = null, children = true, cache = true) {
     if (!blockId) {
       throw new Error('Block ID is required');
     }
@@ -76,7 +76,7 @@ class NotionAPI {
       const cacheKey = `block_${blockId}_${nextCursor || 'initial'}_${children}`;
       let cachedData = null;
 
-      if (this.cacheEnabled) {
+      if (this.cacheEnabled && cache) {
         cachedData = await this.redis?.getKey(cacheKey);
       }
 

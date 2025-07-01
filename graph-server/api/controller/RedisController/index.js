@@ -66,6 +66,7 @@ export class RedisController {
       if (result === 1) {
         logger.warn(`Chave ${key} deletada com sucesso.`);
       }
+      return result
     } catch (err) {
       logger.error(`Erro ao deletar a chave ${key}:`, err);
     }

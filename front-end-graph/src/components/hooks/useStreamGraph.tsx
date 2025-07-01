@@ -175,6 +175,21 @@ export const useStreamGraph = ({ pageId, token, email, theme = "default" }: Stre
             dispatch({ type: "LOADED_GRAPH", payload: false });
         });
 
+        // Listen for refetch triggers from webhook notifications
+        socket.on("notion_refetch", (data: { type: string; data: { pageId: string;[key: string]: any }; timestamp: string }) => {
+            // Check if the refetch trigger is for our current page or related to it
+            if (data.data.pageId === pageId || data.data.parentId === pageId) {
+                console.log(`Received refetch trigger for ${data.type}:`, data.data);
+
+                // Clear current data and refetch
+                setNodes([]);
+                setLinks([]);
+
+                // Trigger a fresh fetch of blocks
+                socket.emit("fetchBlocks", { blockId: pageId });
+            }
+        });
+
     }, [token, email, pageId, processElements, dispatch]);
 
     const disconnectSocket = useCallback(() => {
