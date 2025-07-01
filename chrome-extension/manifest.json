@@ -6,6 +6,11 @@
     "action": {
         "default_popup": "popup/popup.html"
     },
+    "icons": {
+        "16": "images/icons/icon-72x72.png",
+        "48": "images/icons/icon-72x72.png",
+        "128": "images/icons/icon-128x128.png"
+    },
     "permissions": [
         "activeTab",
         "tabs",
@@ -30,5 +35,16 @@
         "*://*.notion.so/*",
         "*://*.notion.site/*",
         "http://localhost:3000/*"
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "images/icons/*"
+            ],
+            "matches": [
+                "*://*.notion.so/*",
+                "*://*.notion.site/*"
+            ]
+        }
     ]
 }

@@ -15,8 +15,8 @@ class NotionAPI {
     this.cacheEnabled = true;
     this.cacheTTL = {
       [ACCOUNT_TIERS.FREE]: 0,
-      [ACCOUNT_TIERS.PREMIUM]: 60,
-      [ACCOUNT_TIERS.LIFETIME]: 800
+      [ACCOUNT_TIERS.PREMIUM]: 120,
+      [ACCOUNT_TIERS.LIFETIME]: 240
     };
   }
 

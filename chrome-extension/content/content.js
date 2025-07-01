@@ -59,10 +59,16 @@ function createGraphModeSidebar(notionUrl) {
 
     // If the sidebar exists, just toggle its visibility
     if (sidebar) {
-        if (sidebar.style.width === '0px') {
-            sidebar.style.width = sidebarWidth;
+        if (sidebar.style.width === '0px' || sidebar.style.width === '0') {
+            // Restore to last known width or default
+            const lastWidth = sidebar.getAttribute('data-last-width') || sidebarWidth;
+            sidebar.style.width = lastWidth;
+            sidebar.style.minWidth = '300px'; // Restore min-width when opening
         } else {
+            // Store current width before hiding
+            sidebar.setAttribute('data-last-width', sidebar.style.width);
             sidebar.style.width = '0px';
+            sidebar.style.minWidth = '0px'; // Override min-width when closing
         }
         return;
     }
@@ -78,9 +84,10 @@ function createGraphModeSidebar(notionUrl) {
     sidebar.style.zIndex = '10000';
     sidebar.style.backgroundColor = 'white';
     sidebar.style.boxShadow = '-5px 0 15px rgba(0, 0, 0, 0.1)';
-    sidebar.style.transition = 'width 0.3s ease';
     sidebar.style.overflow = 'hidden';
     sidebar.style.position = 'relative';
+    sidebar.style.minWidth = '300px';
+    sidebar.style.maxWidth = '90%';
 
     // Create a header for the sidebar
     const header = document.createElement('div');
@@ -99,11 +106,70 @@ function createGraphModeSidebar(notionUrl) {
     closeButton.style.color = 'black';
     closeButton.style.lineHeight = '1';
     closeButton.onclick = function () {
+        // Store current width before hiding
+        sidebar.setAttribute('data-last-width', sidebar.style.width);
         sidebar.style.width = '0px';
+        sidebar.style.minWidth = '0px'; // Override min-width when closing
     };
 
     header.appendChild(closeButton);
     sidebar.appendChild(header);
+
+    // Create resize handle
+    const resizeHandle = document.createElement('div');
+    resizeHandle.style.position = 'absolute';
+    resizeHandle.style.left = '0';
+    resizeHandle.style.top = '0';
+    resizeHandle.style.bottom = '0';
+    resizeHandle.style.width = '5px';
+    resizeHandle.style.cursor = 'ew-resize';
+    resizeHandle.style.backgroundColor = 'transparent';
+    resizeHandle.style.zIndex = '1001';
+    resizeHandle.style.transition = 'background-color 0.2s ease';
+
+    // Add hover effect for resize handle
+    resizeHandle.addEventListener('mouseenter', function () {
+        resizeHandle.style.backgroundColor = 'rgba(99, 102, 241, 0.3)';
+    });
+    resizeHandle.addEventListener('mouseleave', function () {
+        resizeHandle.style.backgroundColor = 'transparent';
+    });
+
+    // Add resize functionality
+    let isResizing = false;
+    let startX = 0;
+    let startWidth = 0;
+
+    resizeHandle.addEventListener('mousedown', function (e) {
+        isResizing = true;
+        startX = e.clientX;
+        startWidth = parseInt(window.getComputedStyle(sidebar).width, 10);
+        document.body.style.cursor = 'ew-resize';
+        document.body.style.userSelect = 'none';
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function (e) {
+        if (!isResizing) return;
+
+        const width = startWidth - (e.clientX - startX);
+        const minWidth = 300;
+        const maxWidth = window.innerWidth * 0.9;
+
+        if (width >= minWidth && width <= maxWidth) {
+            sidebar.style.width = width + 'px';
+        }
+    });
+
+    document.addEventListener('mouseup', function () {
+        if (isResizing) {
+            isResizing = false;
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+        }
+    });
+
+    sidebar.appendChild(resizeHandle);
 
 
     // Create the iframe
@@ -147,26 +213,38 @@ function addGraphViewButton() {
     // Create a floating button
     const button = document.createElement('button');
     button.id = 'graph-view-button';
-    button.textContent = 'Open in Graph-View';
+
+    // Create an icon image element
+    const icon = document.createElement('img');
+    icon.src = chrome.runtime.getURL('images/icons/icon-72x72.png');
+    icon.style.width = '32px';
+    icon.style.height = '32px';
+    icon.style.display = 'block';
+
+    button.appendChild(icon);
     button.style.position = 'fixed';
-    button.style.bottom = '20px';
-    button.style.right = '20px';
+    button.style.top = '64px';
+    button.style.right = '24px';
     button.style.zIndex = '9999';
-    button.style.padding = '8px 16px';
-    button.style.backgroundColor = '#6366f1';
+    button.style.padding = '8px';
+    button.style.backgroundColor = '#fff';
     button.style.color = 'white';
     button.style.border = 'none';
-    button.style.borderRadius = '4px';
-    button.style.fontWeight = 'bold';
+    button.style.borderRadius = '8px';
     button.style.cursor = 'pointer';
-    button.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.1)';
+    button.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
+    button.style.transition = 'all 0.2s ease';
 
     // Add hover effect
     button.addEventListener('mouseover', function () {
-        button.style.backgroundColor = '#4f46e5';
+        button.style.backgroundColor = '#fff';
+        button.style.transform = 'scale(1.05)';
+        button.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.3)';
     });
     button.addEventListener('mouseout', function () {
-        button.style.backgroundColor = '#6366f1';
+        button.style.backgroundColor = '#fff';
+        button.style.transform = 'scale(1)';
+        button.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
     });
 
     // Add click handler

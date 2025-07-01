@@ -51,8 +51,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
         chrome.storage.local.get("lastUrl", (result) => {
             const lastUrl = result.lastUrl;
-            console.log('lastUrl', lastUrl);
-            console.log('newUrl', newUrl);
 
             if (newUrl !== lastUrl) {
                 chrome.storage.local.set({ lastUrl: newUrl }, () => {
