@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "Graph Mode - Graph-View Notion Integration",
-    "version": "1.0",
+    "name": "Graph Mode - Graph-View in Notion",
+    "version": "0.1.0",
     "description": "Open Notion pages in Graph-View for better visualization",
     "action": {
         "default_popup": "popup/popup.html"
