@@ -2,15 +2,11 @@
 import React, { useEffect, useRef } from "react";
 import { useGraphContextData } from "../Context/GraphContext";
 import { useGraph } from "../hooks/useGraph";
-import { useEditorContext } from "../Context/EditorContext";
 import { useTheme } from "../Context/ThemeContext";
 import { getThemeConfig } from "../utils/theme";
 
 export default function GraphSvg() {
   const svgRef = useRef<SVGSVGElement | null>(null);
-  const {
-    state: { pageId },
-  } = useEditorContext();
   const {
     state: { nodes },
   } = useGraphContextData();
@@ -39,7 +35,7 @@ export default function GraphSvg() {
         mountGraph(nodes, svgRef, "default");
       }
     }
-  }, [nodes, mountGraph, pageId, theme]);
+  }, [nodes, mountGraph, theme]);
 
   return (
     <svg

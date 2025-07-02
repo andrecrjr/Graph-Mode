@@ -8,13 +8,7 @@ import { toast } from '../hooks/use-toast';
 export default function AuthExtension() {
     const [key, setKey] = useState<string>("");
     const { session } = useUserSession();
-    if (!session) {
-        return (
-            <section className='flex items-center justify-center w-6/12 gap-4'>
-                <p>You are not logged in</p>
-            </section>
-        )
-    }
+
 
     useEffect(() => {
         if (session?.user?.tokens?.access_token) {
@@ -24,6 +18,14 @@ export default function AuthExtension() {
             localStorage.setItem("graph_mode_email", session?.user?.person?.email || "");
         }
     }, [session]);
+
+    if (!session) {
+        return (
+            <section className='flex items-center justify-center w-6/12 gap-4'>
+                <p>You are not logged in</p>
+            </section>
+        )
+    }
 
     const handleCopyKey = () => {
         if (key) {
