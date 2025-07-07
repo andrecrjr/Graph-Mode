@@ -2,7 +2,10 @@
     "manifest_version": 3,
     "name": "Graph Mode - Graph-View in Notion",
     "version": "0.1.0",
-    "description": "Open Notion pages in Graph-View for better visualization",
+    "description": "Open Notion pages in Graph View for better visualization",
+    "author": "acjr",
+    "homepage_url": "https://graph-mode.com",
+    "short_name": "Graph Mode",
     "action": {
         "default_popup": "popup/popup.html"
     },

@@ -1,4 +1,4 @@
-const appBaseUrl = 'http://localhost:3000';
+const appBaseUrl = 'https://graph-mode.com';
 
 const pathExtension = '/graph/socket-extension/';
 
