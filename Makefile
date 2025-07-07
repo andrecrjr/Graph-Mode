@@ -71,3 +71,6 @@ exec-redis:
 
 exec-app:
 	docker exec -it graph-mode-server-1 sh
+
+deploy-chrome-extension:
+	zip -r graph-mode-extension.zip dist
