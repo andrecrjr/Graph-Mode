@@ -68,14 +68,24 @@ export class BlockStreamer {
         // Exit if limit reached during fetch
         if (this.processor.hasReachedLimit()) return;
 
-        // Add the parent block as a page
-        // When children=false, the API returns the block directly, not wrapped in results
+        // Process the parent block properly using ElementProcessor
         if (parentBlock && parentBlock.id) {
-            const parentTitle = this.getBlockTitle(parentBlock);
-            this.processor.addPage(parentBlock.id, parentTitle);
+            // Log parent block details for debugging
+            logger.debug(`Processing parent block:`, {
+                id: parentBlock.id,
+                type: parentBlock.type,
+                object: parentBlock.object,
+                hasParagraphRichText: parentBlock.paragraph?.rich_text?.length > 0,
+                hasChildPageTitle: parentBlock.child_page?.title,
+                blockId: this.blockId
+            });
+
+            // Use the ElementProcessor to handle the block properly
+            // This will correctly handle mentions, child_pages, and other block types
+            this.processor.processParent(parentBlock);
         } else {
             // Fallback: if we can't fetch the parent block details, use the blockId
-            console.log('Using blockId as fallback for parent:', this.blockId);
+            logger.warn('Using blockId as fallback for parent:', this.blockId);
             this.processor.addPage(this.blockId, 'Parent Page');
         }
 
@@ -193,6 +203,17 @@ export class BlockStreamer {
         // For root level children, use the blockId as parentId to create parent-child links
         // For deeper levels, use this.parentId
         const parentIdForChild = this.options.currentDepth === 0 ? this.blockId : this.parentId;
+
+        // Log block type for debugging mentions and other special cases
+        if (child.type === 'mention' || child.type === 'child_page') {
+            logger.debug(`Processing ${child.type} block:`, {
+                id: child.id,
+                type: child.type,
+                parentId: parentIdForChild,
+                mentionType: child.mention?.type,
+                hasPageMention: child.mention?.page?.id ? true : false
+            });
+        }
 
         // Process the child
         const childId = this.processor.processChild(child, parentIdForChild);

@@ -6,6 +6,8 @@ import { getThemeConfig } from "@/components/utils/theme";
 import Link from "next/link";
 import Sidebar from "../Sidebar";
 import { useExtensionToastNotification } from "../hooks/useExtensionToastNotification";
+import { saveStorage } from "../utils";
+import { toast } from "../hooks/use-toast";
 
 interface NewSocketGraphProps {
     notionPageId?: string;
@@ -14,17 +16,17 @@ interface NewSocketGraphProps {
 export default function SocketGraphComponent({ notionPageId = "mock" }: NewSocketGraphProps) {
     const { theme } = useTheme();
     const themeConfig = getThemeConfig(theme);
-
     const [token, setToken] = useState<string>("");
     const [email, setEmail] = useState<string>("");
+
+    const [encodedKey, setEncodedKey] = useState<string>(localStorage.getItem("graph_mode_key") || "");
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     useExtensionToastNotification()
 
-    // Initialize credentials from localStorage
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const storedToken = localStorage.getItem("notionKey") || "";
-            const storedEmail = localStorage.getItem("notion_email") || "";
+            const storedToken = localStorage.getItem("graph_mode_key") || "";
+            const storedEmail = localStorage.getItem("graph_mode_email") || "";
             setToken(storedToken);
             setEmail(storedEmail);
             setIsAuthenticated(!!(storedToken && storedEmail));
@@ -47,7 +49,6 @@ export default function SocketGraphComponent({ notionPageId = "mock" }: NewSocke
         theme
     });
 
-    // Auto-connect when authenticated
     useEffect(() => {
         if (isAuthenticated && token && email) {
             connectSocket();
@@ -59,18 +60,32 @@ export default function SocketGraphComponent({ notionPageId = "mock" }: NewSocke
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (token && email) {
-            localStorage.setItem("notionKey", token);
-            localStorage.setItem("notion_email", email);
-            setIsAuthenticated(true);
+        try {
+            if (encodedKey) {
+                const decodedKey = atob(encodedKey);
+                const [email, token] = decodedKey.split(":");
+                setToken(token);
+                setEmail(email);
+                saveStorage.set("graph_mode_key", token);
+                saveStorage.set("graph_mode_email", email);
+                setIsAuthenticated(true);
+            }
+        } catch (error) {
+            toast({
+                title: "Invalid key",
+                description: "Please enter a valid key",
+                className: "bg-red-700 text-white",
+            });
+            console.error(error);
         }
+
     };
 
     const handleDisconnect = () => {
         disconnectSocket();
         setIsAuthenticated(false);
-        localStorage.removeItem("notionKey");
-        localStorage.removeItem("notion_email");
+        localStorage.removeItem("graph_mode_key");
+        localStorage.removeItem("graph_mode_email");
         setToken("");
         setEmail("");
     };
@@ -81,16 +96,16 @@ export default function SocketGraphComponent({ notionPageId = "mock" }: NewSocke
                 <form onSubmit={handleSubmit} className="w-full max-w-md p-8 rounded-lg shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                     <div className="text-center mb-6">
                         <h2 className="text-2xl font-bold mb-2 dark:text-white">
-                            Socket Graph Mode
+                            Graph Mode Extension
                         </h2>
                         <p className="text-gray-600 dark:text-gray-400 text-sm">
-                            Connect in real-time to your Notion workspace
+                            Connect in real-time to your Notion Page
                         </p>
                     </div>
 
-                    <Link href="/app/extension" target="_blank" rel="noopener noreferrer">
+                    <Link href="/extension" target="_blank" rel="noopener noreferrer">
                         <p className="text-sm text-gray-500 mb-6 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-md">
-                            First time? <span className="text-blue-600 dark:text-blue-400 font-medium">Get your credentials here →</span>
+                            First time? <span className="text-blue-600 dark:text-blue-400 font-medium">Get your key here →</span>
                         </p>
                     </Link>
 
@@ -100,40 +115,26 @@ export default function SocketGraphComponent({ notionPageId = "mock" }: NewSocke
                         </div>
                     )}
 
-                    <div className="mb-6">
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Notion Email
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 transition-colors"
-                            placeholder="your@email.com"
-                            required
-                        />
-                    </div>
 
                     <div className="mb-6">
                         <label htmlFor="token" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Notion Secret Key
+                            Graph Mode Key
                         </label>
                         <input
                             type="password"
                             id="token"
-                            value={token}
-                            onChange={(e) => setToken(e.target.value)}
+                            value={encodedKey}
+                            onChange={(e) => setEncodedKey(e.target.value)}
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 transition-colors"
-                            placeholder="secret_xxxxxxxxx"
                             required
+                            placeholder="******************************************"
                         />
                     </div>
 
                     <button
                         type="submit"
                         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled={isLoading || !token || !email}
+                        disabled={isLoading || !encodedKey}
                     >
                         {isLoading ? (
                             <span className="flex items-center justify-center">
@@ -144,7 +145,7 @@ export default function SocketGraphComponent({ notionPageId = "mock" }: NewSocke
                                 Connecting...
                             </span>
                         ) : (
-                            'Connect Socket'
+                            'Login'
                         )}
                     </button>
                 </form>
@@ -154,10 +155,8 @@ export default function SocketGraphComponent({ notionPageId = "mock" }: NewSocke
 
     return (
         <div className={`min-h-screen ${themeConfig.backgroundClass}`}>
-            {/* Header */}
             {!isLoading && <Sidebar />}
 
-            {/* Graph Container */}
             <div className="relative w-full h-screen overflow-hidden">
                 <svg
                     ref={setSVGRef}

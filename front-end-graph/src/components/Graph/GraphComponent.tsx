@@ -2,7 +2,6 @@
 import React from "react";
 
 import Sidebar from "../Sidebar";
-import EditorPage from "@/components/pages/EditorPage";
 import { GraphSVGLazyComponent, LoadingGraphLazyComponent } from "./index";
 import { LoadPageData } from "./LoadPageData";
 import MockPage from "@/components/pages/MockPage";
@@ -29,7 +28,6 @@ export const GraphComponent: React.FC = () => {
           <Sidebar />
           <LoadingGraphLazyComponent />
           <GraphSVGLazyComponent />
-          {/* <EditorPage /> */}
         </div>
       </LoadPageData>
     </MockPage>

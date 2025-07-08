@@ -16,7 +16,6 @@ chrome.action.onClicked.addListener((tab) => {
 // Optional: Listen for messages from the popup or content scripts
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     // Handle the legacy 'openInGraphView' action by redirecting it to the content script
-    console.log('message', message);
     if (message.action === 'openInGraphView' && message.notionUrl) {
         // Extract tab id from the sender
         const tabId = sender.tab?.id;
@@ -52,8 +51,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
         chrome.storage.local.get("lastUrl", (result) => {
             const lastUrl = result.lastUrl;
-            console.log('lastUrl', lastUrl);
-            console.log('newUrl', newUrl);
 
             if (newUrl !== lastUrl) {
                 chrome.storage.local.set({ lastUrl: newUrl }, () => {

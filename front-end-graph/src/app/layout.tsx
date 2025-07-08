@@ -5,7 +5,6 @@ import AuthProvider from "@/components/Auth/AuthProvider";
 import { GraphContextProvider } from "@/components/Context/GraphContext";
 import { MainContainer } from "@/components/Layout/MainLayout";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { EditorProvider } from "@/components/Context/EditorContext";
 import { ThemeProvider } from "@/components/Context/ThemeContext";
 import { DarkModeProvider } from "@/components/Context/DarkModeContext";
 import { Toaster } from "@/components/ui/toaster";
@@ -67,7 +66,7 @@ export default async function RootLayout({
             <MainContainer>
               <GraphContextProvider>
                 <ThemeProvider>
-                  <EditorProvider>{children}</EditorProvider>
+                  {children}
                 </ThemeProvider>
                 <ButtonPWA />
               </GraphContextProvider>

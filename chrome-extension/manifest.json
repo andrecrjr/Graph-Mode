@@ -1,10 +1,18 @@
 {
     "manifest_version": 3,
-    "name": "Graph-View Notion Integration",
-    "version": "1.0",
-    "description": "Open Notion pages in Graph-View for enhanced visualization",
+    "name": "Graph Mode - Graph-View in Notion",
+    "version": "0.1.0",
+    "description": "Open Notion pages in Graph View for better visualization",
+    "author": "acjr",
+    "homepage_url": "https://graph-mode.com",
+    "short_name": "Graph Mode",
     "action": {
         "default_popup": "popup/popup.html"
+    },
+    "icons": {
+        "16": "images/icons/icon-72x72.png",
+        "48": "images/icons/icon-72x72.png",
+        "128": "images/icons/icon-128x128.png"
     },
     "permissions": [
         "activeTab",
@@ -30,5 +38,16 @@
         "*://*.notion.so/*",
         "*://*.notion.site/*",
         "http://localhost:3000/*"
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "images/icons/*"
+            ],
+            "matches": [
+                "*://*.notion.so/*",
+                "*://*.notion.site/*"
+            ]
+        }
     ]
 }

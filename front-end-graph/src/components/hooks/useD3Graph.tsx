@@ -64,7 +64,7 @@ export const useD3Graph = ({ theme, pageId, isExtension, onNodeClick }: UseD3Gra
         } else {
             const notionUrl = `https://notion.so/${pageId !== "mock" && node.id ? node.id.replaceAll("-", "") : "#"}`;
             if (isExtension) {
-                window.parent.postMessage({ redirectGraphModeUrl: notionUrl }, '*');
+                window.parent.postMessage({ redirectGraphModeUrl: notionUrl, openInGraphMode: true }, '*');
             } else {
                 window.open(notionUrl, "_blank");
             }

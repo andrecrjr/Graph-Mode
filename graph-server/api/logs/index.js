@@ -25,6 +25,8 @@ const logger = createLogger({
         format.colorize(),
         format.simple()
       ),
+      level: 'info',
+      filter: (info) => info.level !== 'warn'
     }),
     new transports.File({
       filename: join(__dirname, 'debug', 'combined.log'),
@@ -35,6 +37,12 @@ const logger = createLogger({
     new transports.File({
       filename: join(__dirname, 'debug', 'error.log'),
       level: 'error',
+      maxsize: 1048576, // 1MB
+      maxFiles: 10,
+    }),
+    new transports.File({
+      filename: join(__dirname, 'debug', 'redis.log'),
+      level: 'warn',
       maxsize: 1048576, // 1MB
       maxFiles: 10,
     }),

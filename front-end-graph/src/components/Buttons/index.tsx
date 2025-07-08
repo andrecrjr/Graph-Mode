@@ -4,7 +4,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "../ui/button";
 import { useUserSession } from "../Context/UserSessionContext";
 
-const AuthButton = ({ label = "Login with Notion" }: { label?: string }) => {
+const AuthButton = ({ label = "Sign in with Notion", className, callbackUrl }: { label?: string, className?: string, callbackUrl?: string }) => {
   const { session } = useUserSession();
 
   return (
@@ -16,19 +16,12 @@ const AuthButton = ({ label = "Login with Notion" }: { label?: string }) => {
       ) : (
         <Button
           onClick={() => {
-            if (window && window.dataLayer) {
-              window.dataLayer.push({
-                event: "login_with_AuthButton",
-                category: "authenticated user",
-                label: "login_init",
-                usuario_logado: true,
-              });
-            }
             signIn("notion", {
-              callbackUrl: "/app",
+              callbackUrl: callbackUrl || "/app?utm_source=login-button",
+              redirect: true,
             });
           }}
-          className="w-fit text-white top-0 right-0 font-semibold py-2 px-4 rounded-lg shadow mt-2 z-50 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+          className={`w-fit text-white top-0 right-0 font-semibold py-2 px-4 rounded-lg shadow mt-2 z-50 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-600 ${className}`}
         >
           {label}
           <img
