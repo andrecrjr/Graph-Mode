@@ -48,7 +48,7 @@ function ButtonPWA() {
 
   const handleInstallClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    router.push("/#chrome-extension");
+    router.push("/extension");
     // if (deferredPrompt) {
     //   deferredPrompt.prompt();
     //   deferredPrompt.userChoice.then((choiceResult) => {
