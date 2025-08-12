@@ -1,68 +1,61 @@
 FRONT_END_DIR = front-end-graph
 BACK_END_DIR = graph-server
 IMAGE_PREFIX = graph-mode
-
 COMPOSE = docker-compose -f docker-compose.dev.yaml
 
+# Setup and run all services
 setup: install-bun install-all-deps run-dev
-
 install-all-deps: install_deps install_deps_server
+run-all: run-dev
 
-run-all:
-	make run-dev -j 3
-
-# Comando para subir os serviços em modo de desenvolvimento
+# Development commands
 run-dev:
 	@$(COMPOSE) up
 
-# Comando para derrubar os serviços
 down:
 	@$(COMPOSE) down
 
+restart: down run-dev
+
+# Build commands
 build-front-end:
 	cd $(FRONT_END_DIR) && pnpm run clean && pnpm run build
 
-# Comando para reconstruir os serviços
 build:
-	# Derrubando os containers existentes
-	$(COMPOSE) down
-	
-	# Removendo imagens Docker que começam com 'IMAGE_PREFIX', se existirem
+	@$(COMPOSE) down
 	@if docker images | grep '^$(IMAGE_PREFIX)' > /dev/null; then \
-	    echo "Removendo imagens com prefixo '$(IMAGE_PREFIX)'..."; \
-	    docker images | grep '^$(IMAGE_PREFIX)' | awk '{print $$3}' | xargs docker rmi; \
+		echo "Removing images with prefix '$(IMAGE_PREFIX)'..."; \
+		docker images | grep '^$(IMAGE_PREFIX)' | awk '{print $3}' | xargs docker rmi -f; \
 	else \
-	    echo "Nenhuma imagem com prefixo '$(IMAGE_PREFIX)' encontrada."; \
+		echo "No images with prefix '$(IMAGE_PREFIX)' found."; \
 	fi
-	
-	# Fazendo o build dos serviços com docker-compose
-	$(COMPOSE) build
+	@$(COMPOSE) build --no-cache
 
-# Comando para ver logs
+# Utility commands
 logs:
 	@$(COMPOSE) logs
 
-# Verifica se o Bun está instalado, se não estiver, instala
+logs-follow:
+	@$(COMPOSE) logs -f
+
+# Dependency management
 install-bun:
 	@if ! command -v bun > /dev/null; then \
-		echo "Bun não encontrado. Instalando Bun..."; \
+		echo "Installing Bun..."; \
 		curl -fsSL https://bun.sh/install | bash; \
-		echo "Adicionando Bun ao PATH..."; \
-		export PATH="\$$HOME/.bun/bin:\$$PATH"; \
 	else \
-		echo "Bun já está instalado."; \
+		echo "Bun already installed."; \
 	fi
 
-.PHONY: all run_dev down build logs install-bun install_deps install_deps_server
-
 install_deps: install-bun
-	@echo "Instalando dependências na pasta $(FRONT_END_DIR)..."
+	@echo "Installing frontend dependencies..."
 	cd $(FRONT_END_DIR) && bun install
 
 install_deps_server:
-	@echo "Instalando dependências na pasta $(BACK_END_DIR)..."
+	@echo "Installing backend dependencies..."
 	cd $(BACK_END_DIR) && pnpm install
 
+# Development tools
 stripe-dev:
 	stripe listen --forward-to http://localhost:3001/webhook/stripe
 
@@ -72,5 +65,8 @@ exec-redis:
 exec-app:
 	docker exec -it graph-mode-server-1 sh
 
+# Deployment
 deploy-chrome-extension:
-	zip -r graph-mode-extension.zip dist
+	cd chrome-extension && zip -r graph-mode-extension.zip dist
+
+.PHONY: setup install-all-deps run-all run-dev down restart build-front-end build logs logs-follow install-bun install_deps install_deps_server stripe-dev exec-redis exec-app deploy-chrome-extension
