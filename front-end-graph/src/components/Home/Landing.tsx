@@ -28,14 +28,9 @@ export default function Landing() {
                   View Demo <LucideChartNetwork className="ml-1" />
                 </Button>
               </Link>
-              <Link href="/extension">
+              <Link href={process.env.NEXT_PUBLIC_EXTENSION_URL!}>
                 <Button variant={"secondary"} className="dark:bg-green-700 dark:text-gray-100 dark:hover:bg-green-600">
                   Chrome Extension <Puzzle className="ml-2" />
-                </Button>
-              </Link>
-              <Link href="/app">
-                <Button className="bg-green-700 hover:bg-green-700 dark:text-white dark:hover:bg-green-600">
-                  Go to Graph Mode
                 </Button>
               </Link>
             </div>
