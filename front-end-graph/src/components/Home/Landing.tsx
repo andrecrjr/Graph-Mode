@@ -3,21 +3,20 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 import BuyMeCoffee from "./BuyCoffee";
-import { NotionHome } from "../svg/NotionHome";
 
 
 export default function Landing() {
   return (
     <div className="flex flex-col min-h-screen">
       <section className="w-full md:py-24 h-screen flex flex-col items-center justify-center dark:bg-gray-900 transition-colors duration-200">
-        <div className="container mt-auto px-4 md:px-6">
-          <div className="flex flex-col items-center space-y-4 text-center">
+        <div className="container items-center">
+          <div className="flex flex-col justify-center items-center space-y-4 text-center">
             <div className="space-y-3">
               <h1 className="text-4xl font-bold sm:text-7xl tracking-tight dark:text-white">
                 Graph Mode
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-500 sm:text-xl dark:text-gray-400">
-                It was a nice ride, but we will be moving forward! Look at our <Link href="#last-dance" rel="noopener noreferrer">project status</Link> below!
+                It was a nice ride, but we will be moving forward! Look at our <Link href="#last-dance" className="underline" rel="noopener noreferrer">project status</Link> below!
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
