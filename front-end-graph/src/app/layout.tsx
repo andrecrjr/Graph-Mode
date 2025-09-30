@@ -19,11 +19,11 @@ const roboto = Roboto({
 });
 export const metadata: Metadata = {
   title: "Graph Mode - Browser Extension for Graph View in Notion",
-  description:
-    "Transform your Notion pages into an interactive Graph View with Graph Mode Browser Extension. Boost your productivity and note organization with this Extension.",
-  keywords:
-    "Graph Mode, Graph View, Notion, Zettelkasten, Interactive Graph, Productivity App, Note-Taking, Knowledge Management, Browser Extension, Chrome Extension, Google Chrome Extension, Notion Chrome Extension",
-  robots: "index, follow",
+  // description:
+  //   "Transform your Notion pages into an interactive Graph View with Graph Mode Browser Extension. Boost your productivity and note organization with this Extension.",
+  // keywords:
+  //   "Graph Mode, Graph View, Notion, Zettelkasten, Interactive Graph, Productivity App, Note-Taking, Knowledge Management, Browser Extension, Chrome Extension, Google Chrome Extension, Notion Chrome Extension",
+  robots: "index",
   icons: {
     icon: "/images/icons/icon-72x72.png",
   },
